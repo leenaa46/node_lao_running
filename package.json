@@ -1,24 +1,28 @@
 {
-  "name": "node_lao_running",
+  "name": "auto-install",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "dependencies": {
-    "nodemon": "^2.0.12"
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql2": "^2.3.0",
+    "nodemon": "^2.0.12",
+    "sequelize": "^6.6.5"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "serve": "nodemon server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leenaa46/node_lao_running.git"
   },
-  "author": "",
+  "author": "Billy Vongphachan",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/leenaa46/node_lao_running/issues"
   },
-  "homepage": "https://github.com/leenaa46/node_lao_running#readme"
+  "homepage": "https://github.com/leenaa46/node_lao_running#readme",
+  "description": ""
 }
