@@ -1,23 +1,23 @@
 module.exports = app => {
-  const run_results = require("../controllers/run_result.controller.js");
+  const run_result = require("../controllers/run_result.controller.js");
+  const auth = require("../middleware/auth.middleware");
 
   var router = require("express").Router();
 
   // Create a new run_result
-  router.post("/", run_results.create);
+  router.post("/", auth, run_result.create);
 
   // Retrieve all run_results
-  router.get("/", run_results.findAll);
+  router.get("/", auth, run_result.findAll);
 
   // Retrieve a single run_result with id
-  router.get("/:id", run_results.findOne);
+  router.get("/:id", run_result.findOne);
 
   // Update a run_result with id
-  router.put("/:id", run_results.update);
+  router.put("/:id", run_result.update);
 
   // Delete a run_result with id
-  router.delete("/:id", run_results.delete);
-
+  router.delete("/:id", run_result.delete);
 
   app.use('/api/run-results', router);
 };

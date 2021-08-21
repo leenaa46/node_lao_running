@@ -5,7 +5,7 @@ module.exports = (sequelize, Datatype) => {
       allowNull: false
     },
     range: {
-      type: Datatype.INTEGER.UNSIGN,
+      type: Datatype.INTEGER.UNSIGNED,
       allowNull: false
     },
     status: {

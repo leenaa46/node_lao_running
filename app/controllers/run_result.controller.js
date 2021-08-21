@@ -1,9 +1,3 @@
-const {
-  exit
-} = require("process");
-const {
-  run_results
-} = require("../models");
 const db = require("../models");
 const RunResult = db.run_results;
 const Op = db.Sequelize.Op;
