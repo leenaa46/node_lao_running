@@ -1,15 +1,12 @@
 module.exports = (sequelize, Datatype) => {
   const Package = sequelize.define("package", {
-    user_id: {
-      type: Datatype.INTEGER.UNSIGNED,
-      allowNull: false
-    },
-    package_id: {
-      type: Datatype.INTEGER.UNSIGNED,
-      allowNull: false
-    },
-    payment_slip: {
+    name: {
       type: Datatype.STRING,
+      allowNull: false
+    },
+    range: {
+      type: Datatype.INTEGER.UNSIGN,
+      allowNull: false
     },
     status: {
       type: Datatype.ENUM('pending', 'confirmed', 'rejected'),
