@@ -6,52 +6,47 @@ const Message = require('../helpers/message.helper')
 
 
 // Create and Save a new RunResult
-exports.create = (req, res) => {
-  // Validate request
+exports.create = async (req, res) => {
   if (!req.body.package_id) {
     return Response.error(res, Message.fail._validator, {}, Status.Validation)
   }
 
-  // Create a RunResult
-  const run_result = {
-    user_id: req.body.user_id,
-    package_id: req.body.package_id,
-    time: req.body.time,
-    is_free_user: true
-  };
+  try {
+    const run_result = {
+      user_id: req.body.user_id,
+      package_id: req.body.package_id,
+      time: req.body.time,
+      is_free_user: true
+    };
 
-  // Save RunResult in the database
-  RunResult.create(run_result)
-    .then(data => {
-      return Response.success(res, Message.success._addData, data)
+    const runResult = await RunResult.create(run_result)
 
-    })
-    .catch(err => {
-      return Response.error(res, Message.serverError._serverError, err, Status.ServerError)
-    });
+    return Response.success(res, Message.success._addData, runResult)
+  } catch (err) {
+    return Response.error(res, Message.serverError._serverError, err, Status.ServerError)
+  }
 };
 
-// Retrieve all RunResults from the database.
-exports.findAll = (req, res) => {
-  RunResult.findAll().then(data => {
-    return Response.success(res, Message.success._getData, data)
-
-  }).catch(err => {
+exports.findAll = async (req, res) => {
+  try {
+    const runResult = await RunResult.findAll()
+    return Response.success(res, Message.success._getData, runResult)
+  } catch (error) {
     return Response.error(res, Message.serverError._serverError, err, Status.ServerError)
-  })
+  }
 };
 
-// Find a single RunResult with an id
-exports.findOne = (req, res) => {
-  const id = req.params.id
+exports.findOne = async (req, res) => {
+  try {
+    const id = req.params.id
 
-  RunResult.findByPk(id).then(data => {
-    return Response.success(res, Message.success._addData, data)
+    const runResult = await RunResult.findByPk(id)
+    return Response.success(res, Message.success._addData, runResult)
 
-  }).catch(err => {
-    return Response.error(res, Message.serverError._serverError, err, Status.ServerError)
+  } catch (error) {
+    return Response.error(res, Message.serverError._serverError, error, Status.ServerError)
+  }
 
-  })
 };
 
 // Update a RunResult by the id in the request
