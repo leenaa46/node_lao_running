@@ -2,6 +2,9 @@ const db = require("../models");
 const User = db.users;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Response = require('../helpers/response.helper')
+const Status = require('../helpers/status.helper')
+const Message = require('../helpers/message.helper')
 
 exports.register = async (req, res) => {
   console.log(process.env.JWT_SECRET);
@@ -17,7 +20,7 @@ exports.register = async (req, res) => {
 
     // Validate user input
     if (!(email && password && name && phone)) {
-      res.status(400).send("All input is required");
+      return Response.error(res, Message.fail._validator, {}, Status.Validation)
     }
 
     // check if user already exist
@@ -29,7 +32,7 @@ exports.register = async (req, res) => {
     });
 
     if (oldUser) {
-      return res.status(409).send("User Already Exist. Please Login");
+      return Response.error(res, 'User is exists.', {}, Status.Validation)
     }
 
     //Encrypt user password
@@ -56,7 +59,8 @@ exports.register = async (req, res) => {
     user.token = token;
 
     // return new user
-    res.status(201).json(user);
+    return Response.success(res, Message.success._register, user)
+
   } catch (err) {
     console.log(err);
   }
@@ -73,7 +77,8 @@ exports.login = async (req, res) => { // Our login logic starts here
 
     // Validate user input
     if (!(email && password)) {
-      res.status(400).send("All input is required");
+      return Response.error(res, Message.fail._validator, {}, Status.Validation)
+
     }
     // Validate if user exist in our database
     const user = await User.findOne({
@@ -97,7 +102,8 @@ exports.login = async (req, res) => { // Our login logic starts here
       // user
       res.status(200).json(user);
     }
-    res.status(400).send("Invalid Credentials");
+    return Response.error(res, 'Invalid Credential.', {}, Status.BadRequest)
+
   } catch (err) {
     console.log(err);
   }

@@ -11,13 +11,13 @@ module.exports = app => {
   router.get("/", auth, run_result.findAll);
 
   // Retrieve a single run_result with id
-  router.get("/:id", run_result.findOne);
+  router.get("/:id", auth, run_result.findOne);
 
   // Update a run_result with id
-  router.put("/:id", run_result.update);
+  router.put("/:id", auth, run_result.update);
 
   // Delete a run_result with id
-  router.delete("/:id", run_result.delete);
+  router.delete("/:id", auth, run_result.delete);
 
   app.use('/api/run-results', router);
 };

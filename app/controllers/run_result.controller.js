@@ -1,17 +1,15 @@
 const db = require("../models");
 const RunResult = db.run_results;
-const Op = db.Sequelize.Op;
+const Response = require('../helpers/response.helper')
+const Status = require('../helpers/status.helper')
+const Message = require('../helpers/message.helper')
+
 
 // Create and Save a new RunResult
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.package_id) {
-    res.status(422).send({
-      error: false,
-      code: 422,
-      message: "Content can not be empty!"
-    });
-    return;
+    return Response.error(res, Message.fail._validator, {}, Status.Validation)
   }
 
   // Create a RunResult
@@ -25,37 +23,21 @@ exports.create = (req, res) => {
   // Save RunResult in the database
   RunResult.create(run_result)
     .then(data => {
-      res.status(200).send({
-        error: false,
-        code: 200,
-        message: 'success',
-        data: data
-      })
+      return Response.success(res, Message.success._addData, data)
+
     })
     .catch(err => {
-      res.status(500).send({
-        error: false,
-        code: 500,
-        message: err.message || "Some error occurred while creating the RunResult."
-      });
+      return Response.error(res, Message.serverError._serverError, err, Status.ServerError)
     });
 };
 
 // Retrieve all RunResults from the database.
 exports.findAll = (req, res) => {
   RunResult.findAll().then(data => {
-    res.status(200).send({
-      error: false,
-      code: 200,
-      message: 'success',
-      data: data
-    })
+    return Response.success(res, Message.success._getData, data)
+
   }).catch(err => {
-    res.status(500).send({
-      error: false,
-      code: 500,
-      message: err.message || 'Something when wrong'
-    })
+    return Response.error(res, Message.serverError._serverError, err, Status.ServerError)
   })
 };
 
@@ -64,18 +46,11 @@ exports.findOne = (req, res) => {
   const id = req.params.id
 
   RunResult.findByPk(id).then(data => {
-    res.status(200).send({
-      error: false,
-      code: 200,
-      message: 'success',
-      data: data
-    })
+    return Response.success(res, Message.success._addData, data)
+
   }).catch(err => {
-    res.status(500).send({
-      error: false,
-      code: 500,
-      message: err.message || 'Something when wrong'
-    })
+    return Response.error(res, Message.serverError._serverError, err, Status.ServerError)
+
   })
 };
 
