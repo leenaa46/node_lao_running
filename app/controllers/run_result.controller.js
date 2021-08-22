@@ -3,12 +3,22 @@ const RunResult = db.run_results;
 const Response = require('../helpers/response.helper')
 const Status = require('../helpers/status.helper')
 const Message = require('../helpers/message.helper')
+const
+  validationResult = require('express-validator');
 
-
-// Create and Save a new RunResult
+/**
+ * Create run result
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper 
+ */
 exports.create = async (req, res) => {
-  if (!req.body.package_id) {
-    return Response.error(res, Message.fail._validator, {}, Status.Validation)
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return Response.error(res, 'error', errors, 422)
   }
 
   try {
@@ -27,6 +37,14 @@ exports.create = async (req, res) => {
   }
 };
 
+/**
+ * Get all run result
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
 exports.findAll = async (req, res) => {
   try {
     const runResult = await RunResult.findAll()
@@ -36,6 +54,14 @@ exports.findAll = async (req, res) => {
   }
 };
 
+/**
+ * Get one run result
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
 exports.findOne = async (req, res) => {
   try {
     const id = req.params.id
