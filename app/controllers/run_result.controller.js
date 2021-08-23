@@ -1,10 +1,8 @@
-const db = require("../models");
-const RunResult = db.run_results;
-const Response = require('../helpers/response.helper')
-const Status = require('../helpers/status.helper')
-const Message = require('../helpers/message.helper')
-const
-  validationResult = require('express-validator');
+import db from "../../models";
+const RunResult = db.run_results
+import Response from '../helpers/response.helper'
+import Status from '../helpers/status.helper'
+import Message from '../helpers/message.helper'
 
 /**
  * Create run result
@@ -15,11 +13,7 @@ const
  * @returns \app\helpers\response.helper 
  */
 exports.create = async (req, res) => {
-  const errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    return Response.error(res, 'error', errors, 422)
-  }
 
   try {
     const run_result = {

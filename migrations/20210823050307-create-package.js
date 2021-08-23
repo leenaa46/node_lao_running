@@ -1,0 +1,48 @@
+'use strict';
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable('packages', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      range: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false
+      },
+      price: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false
+      },
+      status: {
+        type: Sequelize.ENUM('pending', 'confirmed', 'rejected'),
+        defaultValue: 'pending',
+        allowNull: false
+      },
+      description: {
+        type: Sequelize.STRING,
+      },
+      profile_image: {
+        type: Sequelize.STRING,
+      },
+
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+  },
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('packages');
+  }
+};

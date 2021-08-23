@@ -1,13 +1,17 @@
-const db = require("../models");
+import db from "../../models";
 const User = db.users;
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const Response = require('../helpers/response.helper')
-const Status = require('../helpers/status.helper')
-const Message = require('../helpers/message.helper')
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import Response from '../helpers/response.helper';
+import Status from '../helpers/status.helper';
+import Message from '../helpers/message.helper';
 
 exports.register = async (req, res) => {
+
+  const transaction = await db.sequelize.transaction();
+
   try {
+
     const {
       name,
       phone,
@@ -15,8 +19,7 @@ exports.register = async (req, res) => {
       password
     } = req.body;
 
-
-    encryptedPassword = await bcrypt.hash(password, 10);
+    const encryptedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
       name,
@@ -26,7 +29,7 @@ exports.register = async (req, res) => {
     });
 
     const token = jwt.sign({
-        user_id: user._id,
+        user_id: user.id,
         email
       },
       process.env.JWT_SECRET, {
@@ -36,9 +39,10 @@ exports.register = async (req, res) => {
 
     user.token = token;
 
-    return Response.success(res, Message.success._register, user)
+    return Response.success(res, Message.success._register, user);
 
   } catch (err) {
+    await transaction.rollback()
     return Response.error(res, Message.serverError._serverError, err)
   }
 }
@@ -51,7 +55,9 @@ exports.login = async (req, res) => {
     } = req.body;
 
     const user = await User.findOne({
-      email
+      where: {
+        email: email
+      }
     });
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -68,9 +74,10 @@ exports.login = async (req, res) => {
 
       return Response.success(res, Message.success._register, user)
     }
-    return Response.error(res, Message.fail._invalidCredential, {}, Status.BadRequest)
+    return Response.error(res, Message.fail._invalidCredential, {}, Status.code.BadRequest)
 
   } catch (err) {
+    console.log(err);
     return Response.error(res, Message.serverError._serverError, err)
   }
 }

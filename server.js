@@ -1,10 +1,11 @@
-const express = require("express");
-const cors = require("cors");
-require('dotenv').config()
+import express from "express";
+import cors from "cors";
+import 'dotenv/config';
+
 
 const app = express();
 
-var corsOptions = {
+const corsOptions = {
   origin: "http://localhost:8080"
 };
 
@@ -18,12 +19,6 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-const db = require("./app/models");
-// db.sequelize.sync({
-//   force: true
-// });
-
-db.sequelize.sync();
 
 // simple route
 app.get("/", (req, res) => {
@@ -32,8 +27,11 @@ app.get("/", (req, res) => {
   });
 });
 
-require("./app/routes/run_result.routes")(app);
-require("./app/routes/user.routes")(app);
+import run from "./app/routes/run_result.routes";
+run(app);
+
+import user from "./app/routes/user.routes";
+user(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;

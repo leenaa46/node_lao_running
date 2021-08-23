@@ -1,14 +1,16 @@
-  module.exports = app => {
-    const user = require("../controllers/user.controller.js");
-    const Request = require('../validations/user.validation')
+    import user from "../controllers/user.controller.js";
+    import Request from '../validations/user.validation';
+    import express from "express";
+    const router = express.Router();
 
-    var router = require("express").Router();
+    module.exports = app => {
 
-    // Register User
-    router.post("/register", Request.register, user.register);
 
-    // Login User
-    router.post("/login", Request.login, user.login);
+      // Register User
+      router.post("/register", Request.register, user.register);
 
-    app.use('/api/auth', router);
-  }
+      // Login User
+      router.post("/login", Request.login, user.login);
+
+      app.use('/api/auth', router);
+    }

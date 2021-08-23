@@ -9,7 +9,7 @@ exports.success = (res, msg, data, code = 200) => {
 };
 
 exports.error = (res, msg, error, code = 500) => {
-  var resData = {
+  const resData = {
     error: true,
     code: code,
     message: msg,

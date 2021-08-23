@@ -1,23 +1,24 @@
-module.exports = app => {
-  const run_result = require("../controllers/run_result.controller.js");
-  const auth = require("../middleware/auth.middleware");
+  import run_result from "../controllers/run_result.controller.js";
+  import auth from "../middleware/auth.middleware";
+  import express from "express";
+  const router = express.Router();
 
-  var router = require("express").Router();
+  module.exports = app => {
 
-  // Create a new run_result
-  router.post("/", auth, run_result.create);
+    // Create a new run_result
+    router.post("/", auth, run_result.create);
 
-  // Retrieve all run_results
-  router.get("/", auth, run_result.findAll);
+    // Retrieve all run_results
+    router.get("/", auth, run_result.findAll);
 
-  // Retrieve a single run_result with id
-  router.get("/:id", auth, run_result.findOne);
+    // Retrieve a single run_result with id
+    router.get("/:id", auth, run_result.findOne);
 
-  // Update a run_result with id
-  router.put("/:id", auth, run_result.update);
+    // Update a run_result with id
+    router.put("/:id", auth, run_result.update);
 
-  // Delete a run_result with id
-  router.delete("/:id", auth, run_result.delete);
+    // Delete a run_result with id
+    router.delete("/:id", auth, run_result.delete);
 
-  app.use('/api/run-results', router);
-};
+    app.use('/api/run-results', router);
+  };

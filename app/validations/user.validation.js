@@ -1,7 +1,8 @@
-const Response = require('../helpers/response.helper')
-const Status = require('../helpers/status.helper')
-const Message = require('../helpers/message.helper')
-const db = require("../models");
+import Response from '../helpers/response.helper'
+import Status from '../helpers/status.helper'
+import Message from '../helpers/message.helper'
+import db from "../../models"
+
 const User = db.users;
 const Package = db.packages;
 
