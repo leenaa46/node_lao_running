@@ -19,14 +19,6 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-
-// simple route
-app.get("/", (req, res) => {
-  res.json({
-    message: "Welcome to bezkoder application."
-  });
-});
-
 import run from "./app/routes/run_result.routes";
 run(app);
 

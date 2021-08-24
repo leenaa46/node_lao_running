@@ -40,10 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: {
-          tableName: 'packages',
-          schema: 'schema'
-        },
+        model: 'packages',
         key: 'id'
       },
     },
