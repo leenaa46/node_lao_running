@@ -7,10 +7,8 @@ import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
 
 exports.register = async (req, res) => {
-
-  const transaction = await db.sequelize.transaction();
-
   try {
+    const transaction = await db.sequelize.transaction();
 
     const {
       name,
@@ -19,13 +17,15 @@ exports.register = async (req, res) => {
       password
     } = req.body;
 
-    const encryptedPassword = await bcrypt.hash(password, 10);
+    const encryptedPassword = password ? await bcrypt.hash(password, 10) : null;
 
     const user = await User.create({
       name,
       phone,
-      email: email.toLowerCase(),
+      email: email ? email.toLowerCase() : null,
       password: encryptedPassword,
+    }, {
+      transaction
     });
 
     const token = jwt.sign({
@@ -38,12 +38,14 @@ exports.register = async (req, res) => {
     );
 
     user.token = token;
-
+    await transaction.commit()
     return Response.success(res, Message.success._register, user);
 
   } catch (err) {
-    await transaction.rollback()
+    // await transaction.rollback()
+
     return Response.error(res, Message.serverError._serverError, err)
+
   }
 }
 
@@ -77,7 +79,6 @@ exports.login = async (req, res) => {
     return Response.error(res, Message.fail._invalidCredential, {}, Status.code.BadRequest)
 
   } catch (err) {
-    console.log(err);
     return Response.error(res, Message.serverError._serverError, err)
   }
 }

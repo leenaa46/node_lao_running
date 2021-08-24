@@ -1,13 +1,14 @@
     import user from "../controllers/user.controller.js";
     import Request from '../validations/user.validation';
     import express from "express";
+
     const router = express.Router();
 
     module.exports = app => {
 
 
       // Register User
-      router.post("/register", Request.register, user.register);
+      router.post("/register", user.register);
 
       // Login User
       router.post("/login", Request.login, user.login);

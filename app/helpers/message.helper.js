@@ -22,5 +22,7 @@ exports.validation = (validationCase, key, value = null) => {
       return `${key} is not exists.`
     case 'min':
       return `${key} can not be less than ${value}.`
+    case 'is_email':
+      return `${key} must be an valid email.`
   }
 }

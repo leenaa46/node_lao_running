@@ -3,6 +3,7 @@ import {
   Model
 }
 from 'sequelize';
+import Message from '../app/helpers/message.helper'
 
 module.exports = (sequelize, DataTypes) => {
   class users extends Model {
@@ -41,7 +42,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isEmail: {
+          msg: Message.validation('is_email', 'users.email')
+        }
+      }
     },
     phone: {
       type: DataTypes.STRING,

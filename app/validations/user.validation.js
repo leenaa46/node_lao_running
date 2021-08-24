@@ -2,6 +2,9 @@ import Response from '../helpers/response.helper'
 import Status from '../helpers/status.helper'
 import Message from '../helpers/message.helper'
 import db from "../../models"
+import {
+  Joi
+} from 'express-validation'
 
 const User = db.users;
 const Package = db.packages;
@@ -39,7 +42,8 @@ exports.register = async (req, res, next) => {
       where: {
         id: package_id
       }
-    })) errors.package_id = Message.validation('not_exists', 'package_id')
+    })) errors.package_id = [Message.validation('not_exists', 'package_id')]
+
   if (package_id != 1) {
     if (!payment_slip) errors.payment_slip = Message.validation('required', 'package_id')
   }
@@ -63,3 +67,15 @@ exports.login = async (req, res, next) => {
 
   return Response.error(res, Message.fail._validation, errors, Status.code.Validation)
 };
+
+exports.JoiRegist = {
+  body: Joi.object({
+    email: Joi.string()
+      .email()
+      .required(),
+    password: Joi.string()
+      .regex(/[a-zA-Z0-9]{3,30}/)
+      .required(),
+  })
+
+}
