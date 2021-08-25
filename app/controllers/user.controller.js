@@ -7,9 +7,8 @@ import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
 
 exports.register = async (req, res) => {
+  const transaction = await db.sequelize.transaction();
   try {
-    const transaction = await db.sequelize.transaction();
-
     const {
       name,
       phone,
@@ -24,8 +23,6 @@ exports.register = async (req, res) => {
       phone,
       email: email ? email.toLowerCase() : null,
       password: encryptedPassword,
-    }, {
-      transaction
     });
 
     const token = jwt.sign({
@@ -42,19 +39,16 @@ exports.register = async (req, res) => {
     return Response.success(res, Message.success._register, user);
 
   } catch (err) {
-    // await transaction.rollback()
+    await transaction.rollback()
 
     return Response.error(res, Message.serverError._serverError, err)
-
   }
 }
 
 exports.login = async (req, res) => {
   try {
-    const {
-      email,
-      password
-    } = req.body;
+    const email = req.body.email ? req.body.email : null
+    const password = req.body.password ? req.body.password : null
 
     const user = await User.findOne({
       where: {
@@ -64,7 +58,7 @@ exports.login = async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign({
-          user_id: user._id,
+          user_id: user.id,
           email
         },
         process.env.JWT_SECRET, {
@@ -79,6 +73,7 @@ exports.login = async (req, res) => {
     return Response.error(res, Message.fail._invalidCredential, {}, Status.code.BadRequest)
 
   } catch (err) {
+    console.log(err);
     return Response.error(res, Message.serverError._serverError, err)
   }
 }

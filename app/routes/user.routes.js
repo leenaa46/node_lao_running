@@ -11,7 +11,7 @@
       router.post("/register", user.register);
 
       // Login User
-      router.post("/login", Request.login, user.login);
+      router.post("/login", user.login);
 
       app.use('/api/auth', router);
     }
