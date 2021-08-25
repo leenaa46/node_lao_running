@@ -1,5 +1,5 @@
 import db from "../../models";
-const User = db.users;
+const User = db.User;
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Response from '../helpers/response.helper';
@@ -9,21 +9,38 @@ import Message from '../helpers/message.helper';
 exports.register = async (req, res) => {
   const transaction = await db.sequelize.transaction();
   try {
-    const {
+
+    const name = req.body.name ? req.body.name : null
+    const surname = req.body.surname ? req.body.surname : null
+    const phone = req.body.phone ? req.body.phone : null
+    const email = req.body.email ? req.body.email : null
+    const password = req.body.password ? req.body.password : null
+    const package_id = req.body.package_id ? req.body.package_id : null
+
+    const encryptedPassword = password ? await bcrypt.hash(password, 10) : null;
+    const is_active = package_id == 1 ? true : false;
+    const status = package_id == 1 ? Status.userPackageStatus.Success : Status.userPackageStatus.Pending;
+
+    const user = await db.User.create({
       name,
       phone,
       email,
-      password
-    } = req.body;
-
-    const encryptedPassword = password ? await bcrypt.hash(password, 10) : null;
-
-    const user = await User.create({
-      name,
-      phone,
-      email: email ? email.toLowerCase() : null,
       password: encryptedPassword,
+      package_id,
+      is_active: is_active
     });
+
+    await db.UserProfile.create({
+      user_id: user.id,
+      name,
+      surname
+    })
+
+    await db.UserPackage.create({
+      user_id: user.id,
+      package_id,
+      status: status
+    })
 
     const token = jwt.sign({
         user_id: user.id,
@@ -34,11 +51,20 @@ exports.register = async (req, res) => {
       }
     );
 
-    user.token = token;
+    const userData = {
+      id: user.id,
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+      phone: user.phone,
+      token: token,
+    }
+
     await transaction.commit()
-    return Response.success(res, Message.success._register, user);
+    return Response.success(res, Message.success._register, userData);
 
   } catch (err) {
+    console.log(err);
     await transaction.rollback()
 
     return Response.error(res, Message.serverError._serverError, err)
@@ -50,7 +76,7 @@ exports.login = async (req, res) => {
     const email = req.body.email ? req.body.email : null
     const password = req.body.password ? req.body.password : null
 
-    const user = await User.findOne({
+    const user = await db.User.findOne({
       where: {
         email: email
       }
@@ -66,9 +92,16 @@ exports.login = async (req, res) => {
         }
       );
 
-      user.token = token;
+      const userData = {
+        id: user.id,
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        phone: user.phone,
+        token: token,
+      }
 
-      return Response.success(res, Message.success._register, user)
+      return Response.success(res, Message.success._register, userData)
     }
     return Response.error(res, Message.fail._invalidCredential, {}, Status.code.BadRequest)
 

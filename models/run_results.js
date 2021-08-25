@@ -3,25 +3,25 @@ import {
   Model
 } from 'sequelize';
 module.exports = (sequelize, DataTypes) => {
-  class run_results extends Model {
+  class RunResult extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      run_results.belongsTo(models.users, {
+      RunResult.belongsTo(models.User, {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       })
 
-      run_results.belongsTo(models.user_packages, {
+      RunResult.belongsTo(models.UserPackage, {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       })
     }
   };
-  run_results.init({
+  RunResult.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -54,7 +54,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'run_results',
+    modelName: 'RunResult',
+    tableName: 'run_results'
   });
-  return run_results;
+  return RunResult;
 };

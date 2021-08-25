@@ -3,25 +3,25 @@ import {
   Model
 } from 'sequelize';
 module.exports = (sequelize, DataTypes) => {
-  class user_packages extends Model {
+  class UserPackage extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      user_packages.belongsTo(models.users, {
+      UserPackage.belongsTo(models.User, {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       })
 
-      user_packages.belongsTo(models.packages, {
+      UserPackage.belongsTo(models.Package, {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       })
     }
   };
-  user_packages.init({
+  UserPackage.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -57,7 +57,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'user_packages',
+    modelName: 'UserPackage',
+    tableName: 'user_packages',
   });
-  return user_packages;
+  return UserPackage;
 };

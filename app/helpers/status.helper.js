@@ -8,3 +8,9 @@ exports.code = {
   ServerError: 500,
   Validation: 422
 };
+
+exports.userPackageStatus = {
+  Pending: 'pending',
+  Success: 'confirmed',
+  Cancel: 'rejected',
+};

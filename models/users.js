@@ -6,30 +6,32 @@ from 'sequelize';
 import Message from '../app/helpers/message.helper'
 
 module.exports = (sequelize, DataTypes) => {
-  class users extends Model {
+  class User extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      users.hasOne(models.user_profiles, {
+      User.hasOne(models.UserProfile, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      }, {
+        through: 'user_id'
+      })
+
+      User.hasMany(models.UserPackage, {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       })
 
-      users.hasMany(models.user_packages, {
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
-      })
-
-      users.hasMany(models.run_results, {
+      User.hasMany(models.RunResult, {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       })
     }
   };
-  users.init({
+  User.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -43,15 +45,17 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         isEmail: {
           msg: Message.validation('is_email', 'users.email')
-        }
+        },
       }
     },
     phone: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     is_active: {
       type: DataTypes.BOOLEAN,
@@ -67,7 +71,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'users',
+    modelName: 'User',
+    tableName: 'users',
   });
-  return users;
+  return User;
 };

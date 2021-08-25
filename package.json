@@ -26,7 +26,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec babel-node server.js",
-    "re_migrate": "babel-node scrypt/migrate_fresh.js"
+    "re_migrate": "babel-node scrypt/migrate_fresh.js",
+    "seed": "npx sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",

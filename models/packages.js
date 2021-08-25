@@ -3,21 +3,21 @@ import {
   Model
 } from 'sequelize';
 module.exports = (sequelize, DataTypes) => {
-  class packages extends Model {
+  class Package extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      packages.hasMany(models.user_packages, {
+      Package.hasMany(models.UserPackage, {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       })
     }
   };
 
-  packages.init({
+  Package.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -49,7 +49,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'packages',
+    modelName: 'Package',
+    tableName: 'packages',
   });
-  return packages;
+  return Package;
 };

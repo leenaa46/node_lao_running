@@ -3,20 +3,20 @@ import {
   Model
 } from 'sequelize';
 module.exports = (sequelize, DataTypes) => {
-  class user_profiles extends Model {
+  class UserProfile extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      user_profiles.belongsTo(models.users, {
+      UserProfile.belongsTo(models.User, {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       })
     }
   };
-  user_profiles.init({
+  UserProfile.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -44,7 +44,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'user_profiles',
+    modelName: 'UserProfile',
+    tableName: 'user_profiles',
   });
-  return user_profiles;
+  return UserProfile;
 };
