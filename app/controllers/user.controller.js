@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import Response from '../helpers/response.helper';
 import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
+import Cloudinary from '../utils/cloudinary'
 
 exports.register = async (req, res) => {
   const transaction = await db.sequelize.transaction();
@@ -36,10 +37,18 @@ exports.register = async (req, res) => {
       surname
     })
 
+    let cloudImage
+    if (req.file) {
+
+      cloudImage = await Cloudinary.uploader.upload(req.file.path)
+      console.log(cloudImage);
+    }
+
     await db.UserPackage.create({
       user_id: user.id,
       package_id,
-      status: status
+      status: status,
+      payment_slip: cloudImage.secure_url
     })
 
     const token = jwt.sign({
