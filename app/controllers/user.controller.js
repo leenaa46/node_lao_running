@@ -5,10 +5,7 @@ import jwt from 'jsonwebtoken';
 import Response from '../helpers/response.helper';
 import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
-import Cloudinary from '../utils/cloudinary'
-import Sharp from 'sharp'
-import fs from 'fs'
-import path from 'path'
+import Image from '../helpers/upload.helper'
 
 exports.register = async (req, res) => {
   const transaction = await db.sequelize.transaction();
@@ -46,34 +43,14 @@ exports.register = async (req, res) => {
 
     let cloudImage
     if (req.file) {
-      const {
-        filename: image
-      } = req.file;
-
-      const originalImage = req.file.destination + image;
-      const resizedImage = req.file.destination + 'payment_' + image
-      await Sharp(originalImage)
-        .resize({
-          width: 720
-        })
-        .jpeg({
-          quality: 90
-        })
-        .toFile(
-          resizedImage
-        )
-
-      cloudImage = await Cloudinary.uploader.upload(resizedImage)
-
-      fs.unlinkSync(originalImage)
-      fs.unlinkSync(resizedImage)
+      cloudImage = await Image.upload(req.file)
     }
 
     await db.UserPackage.create({
       user_id: user.id,
       package_id,
       status: status,
-      payment_slip: cloudImage.secure_url
+      payment_slip: cloudImage ? cloudImage.secure_url : null
     }, {
       transaction: transaction
     })
