@@ -25,21 +25,6 @@ exports.register = async (req, res) => {
     const is_active = package_id == 1 ? true : false;
     const status = package_id == 1 ? Status.userPackageStatus.Success : Status.userPackageStatus.Pending;
 
-    function resize(path, format, width, height) {
-      const readStream = fs.createReadStream(path)
-      let transform = Sharp()
-
-      if (format) {
-        transform = transform.toFormat(format)
-      }
-
-      if (width || height) {
-        transform = transform.resize(width, height)
-      }
-
-      return readStream.pipe(transform)
-    }
-
     const user = await db.User.create({
       name,
       phone,
@@ -64,25 +49,24 @@ exports.register = async (req, res) => {
       const {
         filename: image
       } = req.file;
-      console.log('path', req.file.path, req.file.destination, image);
 
+      const originalImage = req.file.destination + image;
+      const resizedImage = req.file.destination + 'payment_' + image
+      await Sharp(originalImage)
+        .resize({
+          width: 720
+        })
+        .jpeg({
+          quality: 90
+        })
+        .toFile(
+          resizedImage
+        )
 
-      res.type(`image/jpeg`);
+      cloudImage = await Cloudinary.uploader.upload(resizedImage)
 
-      const result = resize(req.file.path, 'jpeg', 200, 200)
-
-      cloudImage = await Cloudinary.uploader.upload(result)
-      // const resizeImage = await Sharp(req.file.path)
-      //   .resize(200, 200)
-      //   .jpeg({
-      //     quality: 90
-      //   })
-      //   .toFile(
-      //     path.resolve(req.file.destination, 'resized', image)
-      //   )
-
-      // fs.unlinkSync(req.file.path)
-      // console.log(resizeImage);
+      fs.unlinkSync(originalImage)
+      fs.unlinkSync(resizedImage)
     }
 
     await db.UserPackage.create({
