@@ -85,3 +85,38 @@ exports.getProfile = async (req, res) => {
     return Response.error(res, Message.serverError._serverError, error)
   }
 }
+
+/**
+ * Check Phone Number unique.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.isUnique = async (req, res) => {
+  try {
+    const phone = req.body.phone ? req.body.phone : null
+
+    if (phone < 8)
+      return Response.error(res, Message.fail._validation, {
+        phone: Message.validation('min', 'phone', 8)
+      }, Status.code.Validation)
+
+    const user = await db.User.findOne({
+      where: {
+        phone: phone
+      }
+    })
+
+    if (!user)
+      return Response.success(res, Message.success._success, true);
+
+    return Response.success(res, Message.success._success, false);
+
+
+  } catch (error) {
+    console.log(error);
+    return Response.error(res, Message.serverError._serverError, error)
+  }
+}
