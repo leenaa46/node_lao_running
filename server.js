@@ -27,6 +27,9 @@ user(app);
 import runner from "./app/routes/runner.routes";
 runner(app);
 
+import info from "./app/routes/info.routes";
+info(app);
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

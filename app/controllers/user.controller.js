@@ -7,6 +7,14 @@ import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
 import Image from '../helpers/upload.helper'
 
+/**
+ * Register User.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
 exports.register = async (req, res) => {
   const transaction = await db.sequelize.transaction();
   try {
@@ -91,6 +99,14 @@ exports.register = async (req, res) => {
   }
 }
 
+/**
+ * Login User.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
 exports.login = async (req, res) => {
   try {
     const email = req.body.email ? req.body.email : null

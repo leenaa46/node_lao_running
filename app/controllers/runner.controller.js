@@ -4,6 +4,14 @@ import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
 import Image from '../helpers/upload.helper'
 
+/**
+ * Update User Profile.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
 exports.updateProfile = async (req, res) => {
   const transaction = await db.sequelize.transaction();
   try {
@@ -51,6 +59,14 @@ exports.updateProfile = async (req, res) => {
   }
 }
 
+/**
+ * Get User Profile.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
 exports.getProfile = async (req, res) => {
   try {
     const userProfile = await db.UserProfile.findOne({
