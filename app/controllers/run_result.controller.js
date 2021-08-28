@@ -24,7 +24,7 @@ exports.create = async (req, res) => {
 
     const runResult = await db.RunResult.create(run_result)
 
-    return Response.success(res, Message.success._addData, runResult)
+    return Response.success(res, Message.success._success, runResult)
   } catch (err) {
     return Response.error(res, Message.serverError._serverError, err, Status.ServerError)
   }
@@ -41,8 +41,10 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
   try {
     const runResult = await db.RunResult.findAll()
-    return Response.success(res, Message.success._getData, runResult)
+
+    return Response.success(res, Message.success._success, runResult)
   } catch (error) {
+    console.log(error);
     return Response.error(res, Message.serverError._serverError, error, Status.code.ServerError)
   }
 };
@@ -57,10 +59,8 @@ exports.findAll = async (req, res) => {
  */
 exports.findOne = async (req, res) => {
   try {
-    const id = req.params.id
-
     const runResult = await db.RunResult.findByPk(id)
-    return Response.success(res, Message.success._addData, runResult)
+    return Response.success(res, Message.success._success, runResult)
 
   } catch (error) {
     return Response.error(res, Message.serverError._serverError, error, Status.ServerError)

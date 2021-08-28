@@ -41,6 +41,9 @@ module.exports = (sequelize, DataTypes) => {
     profile_image: {
       type: DataTypes.STRING,
     },
+    profile_image_id: {
+      type: DataTypes.STRING,
+    },
   }, {
     sequelize,
     modelName: 'UserProfile',

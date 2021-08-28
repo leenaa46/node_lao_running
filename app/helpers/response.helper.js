@@ -8,12 +8,12 @@ exports.success = (res, msg, data, code = 200) => {
     message: msg,
     data: data,
   };
+
   return res.status(code).json(resData);
 };
 
 exports.error = (res, msg, error, code = 500) => {
   if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
-
     error = error.errors.map((error) => {
       const obj = {};
       obj[error.path] = error.message;

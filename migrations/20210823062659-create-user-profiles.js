@@ -27,6 +27,9 @@ module.exports = {
       profile_image: {
         type: Sequelize.STRING,
       },
+      profile_image_id: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

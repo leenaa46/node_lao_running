@@ -4,18 +4,24 @@ import Status from '../helpers/status.helper'
 
 exports.hasRole = role => {
   return (req, res, next) => {
+    let hasRole = false
     try {
-      req.user.role.forEach(userRole => {
+      req.user.role.some(userRole => {
         if (userRole.name == role) {
-          return next();
+          hasRole = true
+          throw hasRole
         }
       });
     } catch (error) {
-      return Response.error(res, Message.fail._badRole, error, Status.code.AuthError)
+      if (error !== hasRole)
+        return Response.error(res, Message.fail._badRole, error, Status.code.AuthError)
     }
+    console.log(hasRole);
+    if (!hasRole)
+      return Response.error(res, Message.fail._badRole, {
+        required_role: role
+      }, Status.code.AuthError)
 
-    return Response.error(res, Message.fail._badRole, {
-      required_role: role
-    }, Status.code.AuthError)
+    return next()
   };
 }

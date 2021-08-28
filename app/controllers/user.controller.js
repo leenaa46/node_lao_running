@@ -82,7 +82,7 @@ exports.register = async (req, res) => {
     }
 
     await transaction.commit()
-    return Response.success(res, Message.success._register, userData);
+    return Response.success(res, Message.success._success, userData);
 
   } catch (err) {
     await transaction.rollback()
@@ -126,7 +126,7 @@ exports.login = async (req, res) => {
 
 
 
-      return Response.success(res, Message.success._register, userData)
+      return Response.success(res, Message.success._success, userData)
     }
     return Response.error(res, Message.fail._invalidCredential, {}, Status.code.BadRequest)
 
