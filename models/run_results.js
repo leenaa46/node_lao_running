@@ -12,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       RunResult.belongsTo(models.User, {
         onDelete: 'cascade',
-        onUpdate: 'cascade'
+        onUpdate: 'cascade',
+        foreignKey: 'user_id'
       })
 
       RunResult.belongsTo(models.UserPackage, {
         onDelete: 'cascade',
-        onUpdate: 'cascade'
+        onUpdate: 'cascade',
+        foreignKey: 'user_id'
       })
     }
   };

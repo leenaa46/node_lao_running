@@ -33,21 +33,20 @@ exports.register = async (req, res) => {
       transaction: transaction
     });
 
-    await db.UserProfile.create({
-      user_id: user.id,
+    await user.createUserProfile({
       name,
       surname
     }, {
       transaction: transaction
     })
 
+
     let cloudImage
     if (req.file) {
       cloudImage = await Image.upload(req.file)
     }
 
-    await db.UserPackage.create({
-      user_id: user.id,
+    await user.createUserPackage({
       package_id,
       status: status,
       payment_slip: cloudImage ? cloudImage.secure_url : null
@@ -112,7 +111,10 @@ exports.login = async (req, res) => {
         email: user.email,
         phone: user.phone,
         token: token,
+
       }
+
+
 
       return Response.success(res, Message.success._register, userData)
     }

@@ -14,20 +14,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasOne(models.UserProfile, {
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
-      }, {
-        through: 'user_id'
+        foreignKey: 'user_id'
       })
 
       User.hasMany(models.UserPackage, {
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
+        foreignKey: 'user_id'
       })
 
       User.hasMany(models.RunResult, {
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
+        foreignKey: 'user_id'
       })
     }
   };

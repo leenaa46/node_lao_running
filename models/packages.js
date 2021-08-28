@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Package.hasMany(models.UserPackage, {
         onDelete: 'cascade',
-        onUpdate: 'cascade'
+        onUpdate: 'cascade',
+        foreignKey: 'package_id'
       })
     }
   };

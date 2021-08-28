@@ -11,13 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       UserPackage.belongsTo(models.User, {
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
+        foreignKey: 'user_id'
       })
 
       UserPackage.belongsTo(models.Package, {
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
+        foreignKey: 'package_id'
       })
     }
   };
