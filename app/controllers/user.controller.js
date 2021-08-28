@@ -63,6 +63,14 @@ exports.register = async (req, res) => {
       }
     );
 
+    const roleUser = await db.Role.findOne({
+      where: {
+        name: 'User'
+      }
+    })
+
+    user.addRoles([roleUser])
+
     const userData = {
       id: user.id,
       name: user.name,
