@@ -54,15 +54,6 @@ exports.register = async (req, res) => {
       transaction: transaction
     })
 
-    const token = jwt.sign({
-        user_id: user.id,
-        email
-      },
-      process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      }
-    );
-
     const roleUser = await db.Role.findOne({
       where: {
         name: 'User'
@@ -70,6 +61,16 @@ exports.register = async (req, res) => {
     })
 
     user.addRoles([roleUser])
+
+    const token = jwt.sign({
+        user_id: user.id,
+        email,
+        role: roleUser
+      },
+      process.env.JWT_SECRET, {
+        expiresIn: "30d",
+      }
+    );
 
     const userData = {
       id: user.id,
@@ -84,7 +85,6 @@ exports.register = async (req, res) => {
     return Response.success(res, Message.success._register, userData);
 
   } catch (err) {
-    console.log(err);
     await transaction.rollback()
 
     return Response.error(res, Message.serverError._serverError, err)
@@ -103,9 +103,11 @@ exports.login = async (req, res) => {
     });
 
     if (user && (await bcrypt.compare(password, user.password))) {
+      const role = await user.getRoles()
       const token = jwt.sign({
           user_id: user.id,
-          email
+          email,
+          role: role
         },
         process.env.JWT_SECRET, {
           expiresIn: "30d",
@@ -129,7 +131,6 @@ exports.login = async (req, res) => {
     return Response.error(res, Message.fail._invalidCredential, {}, Status.code.BadRequest)
 
   } catch (err) {
-    console.log(err);
     return Response.error(res, Message.serverError._serverError, err)
   }
 }

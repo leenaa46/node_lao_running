@@ -1,5 +1,4 @@
 import db from "../../models";
-const RunResult = db.run_results
 import Response from '../helpers/response.helper'
 import Status from '../helpers/status.helper'
 import Message from '../helpers/message.helper'
@@ -23,7 +22,7 @@ exports.create = async (req, res) => {
       is_free_user: true
     };
 
-    const runResult = await RunResult.create(run_result)
+    const runResult = await db.RunResult.create(run_result)
 
     return Response.success(res, Message.success._addData, runResult)
   } catch (err) {
@@ -41,10 +40,10 @@ exports.create = async (req, res) => {
  */
 exports.findAll = async (req, res) => {
   try {
-    const runResult = await RunResult.findAll()
+    const runResult = await db.RunResult.findAll()
     return Response.success(res, Message.success._getData, runResult)
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, err, Status.ServerError)
+    return Response.error(res, Message.serverError._serverError, error, Status.code.ServerError)
   }
 };
 
@@ -60,7 +59,7 @@ exports.findOne = async (req, res) => {
   try {
     const id = req.params.id
 
-    const runResult = await RunResult.findByPk(id)
+    const runResult = await db.RunResult.findByPk(id)
     return Response.success(res, Message.success._addData, runResult)
 
   } catch (error) {

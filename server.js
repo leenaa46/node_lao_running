@@ -1,10 +1,6 @@
 import express from "express";
 import cors from "cors";
 import 'dotenv/config';
-import {
-  ValidationError
-} from 'express-validation'
-
 
 const app = express();
 
@@ -27,14 +23,6 @@ run(app);
 
 import user from "./app/routes/user.routes";
 user(app);
-
-app.use(function (err, req, res, next) {
-  if (err instanceof ValidationError) {
-    return res.status(err.statusCode).json(err)
-  }
-
-  return res.status(500).json(err)
-})
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;

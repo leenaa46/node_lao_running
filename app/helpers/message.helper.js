@@ -6,6 +6,9 @@ exports.fail = {
   _validation: 'validation error.',
   _notFound: 'not found.',
   _invalidCredential: 'invalid Credential.',
+  _invalidToken: 'Invalid token.',
+  _noToken: 'A token is required for authentication',
+  _badRole: 'can not access with current role.',
 }
 
 exports.serverError = {
