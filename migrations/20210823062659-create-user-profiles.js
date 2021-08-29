@@ -24,12 +24,33 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      gender: {
+        type: Sequelize.ENUM('male', 'female'),
+        allowNull: false
+      },
+      dob: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+      national: {
+        type: Sequelize.STRING,
+      },
+      reward_location: {
+        type: Sequelize.STRING,
+      },
       profile_image: {
         type: Sequelize.STRING,
       },
       profile_image_id: {
         type: Sequelize.STRING,
       },
+      identity_image: {
+        type: Sequelize.STRING,
+      },
+      identity_image_id: {
+        type: Sequelize.STRING,
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

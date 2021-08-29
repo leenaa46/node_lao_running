@@ -8,6 +8,9 @@ module.exports = {
       {
         name: 'User',
       },
+      {
+        name: 'Super_Admin',
+      },
     ], {});
   },
 

@@ -20,15 +20,7 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false
       },
-      status: {
-        type: Sequelize.ENUM('pending', 'confirmed', 'rejected'),
-        defaultValue: 'pending',
-        allowNull: false
-      },
       description: {
-        type: Sequelize.STRING,
-      },
-      profile_image: {
         type: Sequelize.STRING,
       },
 

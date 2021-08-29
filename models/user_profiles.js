@@ -38,10 +38,30 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    gender: {
+      type: DataTypes.ENUM('male', 'female'),
+      allowNull: false
+    },
+    dob: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    national: {
+      type: DataTypes.STRING,
+    },
+    reward_location: {
+      type: DataTypes.STRING,
+    },
     profile_image: {
       type: DataTypes.STRING,
     },
     profile_image_id: {
+      type: DataTypes.STRING,
+    },
+    identity_image: {
+      type: DataTypes.STRING,
+    },
+    identity_image_id: {
       type: DataTypes.STRING,
     },
   }, {

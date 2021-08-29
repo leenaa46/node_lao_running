@@ -37,15 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
     },
-    status: {
-      type: DataTypes.ENUM('pending', 'confirmed', 'rejected'),
-      defaultValue: 'pending',
-      allowNull: false
-    },
     description: {
-      type: DataTypes.STRING,
-    },
-    profile_image: {
       type: DataTypes.STRING,
     },
   }, {

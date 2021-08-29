@@ -16,6 +16,20 @@ module.exports = {
         role_id: 1,
       }, ], {})
     });
+
+    await queryInterface.bulkInsert('users', [{
+      name: 'super_admin',
+      email: 'super_admin@gmail.com',
+      password: await bcrypt.hash('11111111', 10),
+      is_active: true
+    }, ], {
+      returning: true
+    }).then(user => {
+      return queryInterface.bulkInsert('role_users', [{
+        user_id: user,
+        role_id: 3,
+      }, ], {})
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
