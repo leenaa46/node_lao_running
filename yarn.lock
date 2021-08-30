@@ -1548,6 +1548,11 @@ cors@^2.8.5:
     object-assign "^4"
     vary "^1"
 
+countries-list@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/countries-list/-/countries-list-2.6.1.tgz#d479757ac873b1e596ccea0a925962d20396c0cb"
+  integrity sha512-jXM1Nv3U56dPQ1DsUSsEaGmLHburo4fnB7m+1yhWDUVvx5gXCd1ok/y3gXCjXzhqyawG+igcPYcAl4qjkvopaQ==
+
 country-data-list@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/country-data-list/-/country-data-list-1.2.1.tgz#fbc87163b93a0fbae16dbc26911891c3862556d0"

@@ -1,6 +1,7 @@
 import db from "../../models";
 import Response from '../helpers/response.helper';
 import Message from '../helpers/message.helper';
+import Country from 'countries-list'
 
 /**
  * Get all Package.
@@ -11,6 +12,15 @@ import Message from '../helpers/message.helper';
  * @returns \app\helpers\response.helper
  */
 exports.findAll = async (req, res) => {
+  const countryList = await Country.countries;
+  const nameList = []
+  Object.keys(countryList).map((key) => {
+    delete countryList[key].languages
+    nameList.push({
+      name: countryList[key].name
+    })
+  })
+  return res.json(nameList)
   try {
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
