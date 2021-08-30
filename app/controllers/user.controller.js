@@ -18,17 +18,21 @@ import Image from '../helpers/upload.helper'
 exports.register = async (req, res) => {
   const transaction = await db.sequelize.transaction();
   try {
-
-    const name = req.body.name ? req.body.name : null
-    const surname = req.body.surname ? req.body.surname : null
-    const phone = req.body.phone ? req.body.phone : null
-    const email = req.body.email ? req.body.email : null
-    const password = req.body.password ? req.body.password : null
-    const package_id = req.body.package_id ? req.body.package_id : null
+    const {
+      name,
+      surname,
+      phone,
+      email,
+      password,
+      national_id,
+      hal_branche_id,
+      gender,
+      dob,
+      identity_image,
+      profile_image
+    } = req.body
 
     const encryptedPassword = password ? await bcrypt.hash(password, 10) : null;
-    const is_active = package_id == 1 ? true : false;
-    const status = package_id == 1 ? Status.userPackageStatus.Success : Status.userPackageStatus.Pending;
 
     const user = await db.User.create({
       name,
@@ -36,28 +40,24 @@ exports.register = async (req, res) => {
       email,
       password: encryptedPassword,
       package_id,
-      is_active: is_active
+      is_active: true
     }, {
       transaction: transaction
     });
 
     await user.createUserProfile({
       name,
-      surname
+      surname,
+      gender,
+      national_id,
+      hal_branche_id,
+      dob,
     }, {
       transaction: transaction
     })
 
-
-    let cloudImage
-    if (req.file) {
-      cloudImage = await Image.upload(req.file)
-    }
-
     await user.createUserPackage({
-      package_id,
-      status: status,
-      payment_slip: cloudImage ? cloudImage.secure_url : null
+      package_id: 1
     }, {
       transaction: transaction
     })
