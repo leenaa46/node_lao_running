@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       UserProfile.belongsTo(models.User, {
         foreignKey: 'user_id'
       })
+      UserProfile.belongsTo(models.HalBranche, {
+        foreignKey: 'hal_branche_id'
+      })
     }
   };
   UserProfile.init({
@@ -46,23 +49,37 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false
     },
-    national: {
-      type: DataTypes.STRING,
+    national_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'nationals',
+        key: 'id'
+      }
     },
-    reward_location: {
-      type: DataTypes.STRING,
+    hal_branche_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'hal_branches',
+        key: 'id'
+      }
     },
     profile_image: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     profile_image_id: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     identity_image: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     identity_image_id: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
   }, {
     sequelize,

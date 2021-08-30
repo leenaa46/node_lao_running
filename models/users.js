@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'user_id'
       })
 
+      User.belongsTo(models.National, {
+        foreignKey: 'national_id'
+      })
+
       User.belongsToMany(models.Role, {
         through: models.RoleUser,
         foreignKey: 'user_id'

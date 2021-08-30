@@ -32,23 +32,37 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
-      national: {
-        type: Sequelize.STRING,
+      national_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'nationals',
+          key: 'id'
+        }
       },
-      reward_location: {
-        type: Sequelize.STRING,
+      hal_branche_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'hal_branches',
+          key: 'id'
+        }
       },
       profile_image: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       profile_image_id: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       identity_image: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       identity_image_id: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
 
       createdAt: {
