@@ -24,6 +24,7 @@ exports.upload = async (file) => {
         resizedImage
       )
 
+
     cloudImage = await Cloudinary.uploader.upload(resizedImage)
 
     fs.unlinkSync(originalImage)

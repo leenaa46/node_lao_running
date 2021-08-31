@@ -28,8 +28,6 @@ exports.register = async (req, res) => {
       hal_branche_id,
       gender,
       dob,
-      identity_image,
-      profile_image
     } = req.body
 
     const encryptedPassword = password ? await bcrypt.hash(password, 10) : null;
@@ -39,11 +37,17 @@ exports.register = async (req, res) => {
       phone,
       email,
       password: encryptedPassword,
-      package_id,
       is_active: true
     }, {
       transaction: transaction
     });
+
+    let identity_image, profile_image
+
+    if (req.files) {
+      identity_image = req.files.identity_image ? await Image.upload(req.files.identity_image[0]) : null
+      profile_image = req.files.profile_image ? await Image.upload(req.files.profile_image[0]) : null
+    }
 
     await user.createUserProfile({
       name,
@@ -52,6 +56,10 @@ exports.register = async (req, res) => {
       national_id,
       hal_branche_id,
       dob,
+      profile_image: profile_image.secure_url,
+      profile_image_id: profile_image.public_id,
+      identity_image: identity_image.secure_url,
+      identity_image_id: identity_image.public_id,
     }, {
       transaction: transaction
     })
@@ -94,7 +102,6 @@ exports.register = async (req, res) => {
 
   } catch (err) {
     await transaction.rollback()
-
     return Response.error(res, Message.serverError._serverError, err)
   }
 }

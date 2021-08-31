@@ -19,14 +19,21 @@ exports.updateProfile = async (req, res) => {
     const userProfile = await db.UserProfile.findOne({
       where: {
         user_id: req.user.user_id
-      }
+      },
     })
 
     if (!userProfile)
       return Response.error(res, Message.fail._notFound, null, Status.code.NotFound)
 
-    const name = req.body.name ? req.body.name : null
-    const surname = req.body.surname ? req.body.surname : null
+    const {
+      name,
+      surname,
+      gender,
+      dob,
+      national_id,
+      hal_branche_id,
+    } = req.body
+
     let profile_image = userProfile.profile_image ? userProfile.profile_image : null
     let profile_image_id = userProfile.profile_image_id ? userProfile.profile_image_id : null
 
@@ -40,21 +47,25 @@ exports.updateProfile = async (req, res) => {
     }
 
     const updateData = await userProfile.update({
-      name: name,
-      surname: surname,
+      name,
+      surname,
+      gender,
+      dob,
+      hal_branche_id,
+      national_id,
       profile_image_id,
       profile_image_id,
       profile_image: profile_image
     }, {
-      transaction: transaction
+      transaction: transaction,
     })
+
 
     await transaction.commit()
     return Response.success(res, Message.success._success, updateData);
 
   } catch (error) {
     await transaction.rollback()
-    console.log(error);
     return Response.error(res, Message.serverError._serverError, error)
   }
 }
@@ -72,16 +83,14 @@ exports.getProfile = async (req, res) => {
     const userProfile = await db.UserProfile.findOne({
       where: {
         user_id: req.user.user_id
-      }
+      },
     })
-
     if (!userProfile)
       return Response.error(res, Message.fail._notFound, null, Status.code.NotFound)
 
     return Response.success(res, Message.success._success, userProfile);
 
   } catch (error) {
-    console.log(error);
     return Response.error(res, Message.serverError._serverError, error)
   }
 }
@@ -116,7 +125,6 @@ exports.isUnique = async (req, res) => {
 
 
   } catch (error) {
-    console.log(error);
     return Response.error(res, Message.serverError._serverError, error)
   }
 }

@@ -1,22 +1,24 @@
 import Response from '../helpers/response.helper'
 import Message from '../helpers/message.helper'
 import Status from '../helpers/status.helper'
+import db from '../../models/'
 
 exports.hasRole = role => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     let hasRole = false
     try {
-      req.user.role.some(userRole => {
+      const user = await db.User.findByPk(req.user.user_id)
+      const userRoles = await user.getRoles()
+      userRoles.some(async userRole => {
         if (userRole.name == role) {
           hasRole = true
-          throw hasRole
+          return hasRole
         }
       });
     } catch (error) {
-      if (error !== hasRole)
-        return Response.error(res, Message.fail._badRole, error, Status.code.AuthError)
+      return Response.error(res, Message.serverError._serverError, error, Status.code.ServerError)
     }
-    console.log(hasRole);
+
     if (!hasRole)
       return Response.error(res, Message.fail._badRole, {
         required_role: role

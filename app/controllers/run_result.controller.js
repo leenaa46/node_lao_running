@@ -44,7 +44,6 @@ exports.findAll = async (req, res) => {
 
     return Response.success(res, Message.success._success, runResult)
   } catch (error) {
-    console.log(error);
     return Response.error(res, Message.serverError._serverError, error, Status.code.ServerError)
   }
 };

@@ -2,6 +2,8 @@
 import {
   Model
 } from 'sequelize';
+import Moment from 'moment'
+
 module.exports = (sequelize, DataTypes) => {
   class UserProfile extends Model {
     /**
@@ -16,6 +18,17 @@ module.exports = (sequelize, DataTypes) => {
       UserProfile.belongsTo(models.HalBranche, {
         foreignKey: 'hal_branche_id'
       })
+      UserProfile.belongsTo(models.National, {
+        foreignKey: 'national_id'
+      })
+    }
+
+    toJSON() {
+      return {
+        ...this.get(),
+        id: undefined,
+        dob: Moment(this.dob).format('YYYY-MM-DD')
+      }
     }
   };
   UserProfile.init({

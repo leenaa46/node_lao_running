@@ -30,6 +30,10 @@ runner(app);
 import info from "./app/routes/info.routes";
 info(app);
 
+process.on('unhandledRejection', function (err) {
+  console.log('unhandledRejection: ', err);
+});
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

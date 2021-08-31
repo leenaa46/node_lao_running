@@ -9,16 +9,22 @@
 
     module.exports = app => {
       // Register User
-      router.post("/register", upload.single('payment_slip'), user.register);
+      router.post("/register", upload.fields([{
+        name: 'profile_image',
+        maxCount: 1
+      }, {
+        name: 'identity_image',
+        maxCount: 1
+      }]), user.register);
 
       // Register User
-      router.post("/is-unique", upload.single('payment_slip'), runner.isUnique);
+      router.post("/is-unique", runner.isUnique);
 
       // Update User Profile
       router.post("/profile", auth, role.hasRole('User'), upload.single('profile_image'), runner.updateProfile);
 
       // Get User Profile
-      router.get("/profile", auth, role.hasRole('User'), upload.single('profile_image'), runner.getProfile);
+      router.get("/profile", auth, role.hasRole('User'), runner.getProfile);
 
       app.use('/api/runner', router);
     }
