@@ -9,13 +9,7 @@
 
     module.exports = app => {
       // Register User
-      router.post("/register", upload.fields([{
-        name: 'profile_image',
-        maxCount: 1
-      }, {
-        name: 'identity_image',
-        maxCount: 1
-      }]), user.register);
+      router.post("/register", upload.single('profile_image'), user.register);
 
       // Register User
       router.post("/is-unique", runner.isUnique);

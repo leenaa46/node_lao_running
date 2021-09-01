@@ -37,7 +37,8 @@
     "migrate:fresh": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all",
     "migrate:fresh:seed": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
-    "migrate:seed": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
+    "migrate:seed": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "jwt:secret":"set NODE_ENV=YOURENV"
   },
   "repository": {
     "type": "git",

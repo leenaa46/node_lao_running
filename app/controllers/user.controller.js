@@ -25,7 +25,6 @@ exports.register = async (req, res) => {
       email,
       password,
       national_id,
-      hal_branche_id,
       gender,
       dob,
     } = req.body
@@ -33,33 +32,25 @@ exports.register = async (req, res) => {
     const encryptedPassword = password ? await bcrypt.hash(password, 10) : null;
 
     const user = await db.User.create({
-      name,
-      phone,
-      email,
+      name: name,
+      phone: phone,
+      email: email,
       password: encryptedPassword,
       is_active: true
     }, {
       transaction: transaction
     });
 
-    let identity_image, profile_image
-
-    if (req.files) {
-      identity_image = req.files.identity_image ? await Image.upload(req.files.identity_image[0]) : null
-      profile_image = req.files.profile_image ? await Image.upload(req.files.profile_image[0]) : null
-    }
+    let profile_image = req.file ? await Image.upload(req.file) : null
 
     await user.createUserProfile({
-      name,
-      surname,
-      gender,
-      national_id,
-      hal_branche_id,
-      dob,
-      profile_image: profile_image.secure_url,
-      profile_image_id: profile_image.public_id,
-      identity_image: identity_image.secure_url,
-      identity_image_id: identity_image.public_id,
+      name: name,
+      surname: surname,
+      gender: gender,
+      national_id: national_id,
+      dob: dob,
+      profile_image: profile_image ? profile_image.secure_url : null,
+      profile_image_id: profile_image ? profile_image.public_id : null,
     }, {
       transaction: transaction
     })
@@ -81,7 +72,6 @@ exports.register = async (req, res) => {
     const token = jwt.sign({
         user_id: user.id,
         email,
-        role: roleUser
       },
       process.env.JWT_SECRET, {
         expiresIn: "30d",
@@ -102,6 +92,7 @@ exports.register = async (req, res) => {
 
   } catch (err) {
     await transaction.rollback()
+    console.log(err);
     return Response.error(res, Message.serverError._serverError, err)
   }
 }

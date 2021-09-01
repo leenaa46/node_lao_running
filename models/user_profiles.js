@@ -26,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     toJSON() {
       return {
         ...this.get(),
-        id: undefined,
         dob: Moment(this.dob).format('YYYY-MM-DD')
       }
     }
@@ -72,7 +71,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     hal_branche_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       references: {
         model: 'hal_branches',
         key: 'id'
@@ -83,14 +81,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     profile_image_id: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    identity_image: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    identity_image_id: {
       type: DataTypes.STRING,
       allowNull: false,
     },

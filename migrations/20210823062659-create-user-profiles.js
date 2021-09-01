@@ -42,7 +42,6 @@ module.exports = {
       },
       hal_branche_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
           model: 'hal_branches',
           key: 'id'
@@ -53,14 +52,6 @@ module.exports = {
         allowNull: false,
       },
       profile_image_id: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      identity_image: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      identity_image_id: {
         type: Sequelize.STRING,
         allowNull: false,
       },
