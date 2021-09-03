@@ -23,5 +23,8 @@
       // Get Bcel Qr
       router.get("/payment/:packageId", auth, role.hasRole('User'), runner.getBcelQr);
 
+      // Pay Bcel Qr
+      router.post("/payment/:packageId", auth, role.hasRole('User'), runner.payBcelQr);
+
       app.use('/api/runner', router);
     }

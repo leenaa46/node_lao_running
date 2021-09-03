@@ -144,7 +144,7 @@ exports.getBcelQr = async (req, res) => {
   const transaction = await db.sequelize.transaction()
   try {
     const runnerPackage = await db.Package.findByPk(req.params.packageId)
-    if (!runnerPackage) return Response.error(res, Message.fail._notFound, {}, 404)
+    if (!runnerPackage) return Response.error(res, Message.fail._notFound, {}, Status.code.NotFound)
 
     let userPackage = await db.UserPackage.findOne({
       where: {
@@ -177,15 +177,59 @@ exports.getBcelQr = async (req, res) => {
 
       const qr = await QRCode.toDataURL(Onepay.getCode(data))
 
+      const paymentData = {
+        id: userPackage.id,
+        package_id: userPackage.package_id,
+        total: userPackage.total,
+        status: userPackage.status,
+        transaction_id: userPackage.transaction_id,
+        invoice_id: userPackage.invoice_id,
+        terminal_id: userPackage.terminal_id,
+        payment_qr: qr
+      }
+
       await transaction.commit()
-      return Response.success(res, Message.success._success, qr);
+      return Response.success(res, Message.success._success, paymentData);
     }
     await transaction.commit()
-    return Response.error(res, Message.fail._userAreadyPaid, userPackage, 400)
+    return Response.error(res, Message.fail._userAreadyPaid, userPackage, Status.code.BadRequest)
   } catch (error) {
     await transaction.rollback()
     console.log(error);
     return Response.error(res, Message.serverError._serverError, error)
   }
+}
 
+/**
+ * Pay Bcel Qr.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.payBcelQr = async (req, res) => {
+  const transaction = await db.sequelize.transaction()
+  try {
+    const payment = await db.UserPackage.findOne({
+      where: {
+        user_id: req.user.user_id
+      }
+    })
+    if (!payment) return Response.error(res, Message.fail._notFound, {}, 404)
+    if (payment.status == 'success') return Response.error(res, Message.fail._userAreadyPaid, payment, Status.code.BadRequest)
+
+    const paid = await payment.update({
+      status: 'success'
+    })
+
+    await transaction.commit()
+
+    return Response.success(res, Message.success._success, paid);
+
+  } catch (error) {
+    await transaction.rollback()
+    console.log(error);
+    return Response.error(res, Message.serverError._serverError, error)
+  }
 }
