@@ -3,6 +3,7 @@ import Response from '../helpers/response.helper';
 import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
 import Image from '../helpers/upload.helper'
+import Onepay from '../helpers/bcel.helper'
 
 /**
  * Update User Profile.
@@ -105,7 +106,7 @@ exports.getProfile = async (req, res) => {
  */
 exports.isUnique = async (req, res) => {
   try {
-    const phone = req.body.phone ? req.body.phone : null
+    const phone = req.query.phone ? req.query.phone : null
 
     if (phone < 8)
       return Response.error(res, Message.fail._validation, {
@@ -125,6 +126,35 @@ exports.isUnique = async (req, res) => {
 
 
   } catch (error) {
+    return Response.error(res, Message.serverError._serverError, error)
+  }
+}
+
+/**
+ * Get Bcel Qr.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.getBcelQr = async (req, res) => {
+  try {
+    const data = {
+      transactionid: '111111111',
+      invoiceid: '222222222',
+      terminalid: '3333333333',
+      amount: '2',
+      description: 'loacadcadcSK',
+    }
+    console.log(Onepay);
+    const qr = Onepay.getCode(data)
+
+    return Response.success(res, Message.success._success, qr);
+
+
+  } catch (error) {
+    console.log(error);
     return Response.error(res, Message.serverError._serverError, error)
   }
 }

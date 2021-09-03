@@ -12,13 +12,16 @@
       router.post("/register", upload.single('profile_image'), user.register);
 
       // Register User
-      router.post("/is-unique", runner.isUnique);
+      router.get("/is-unique", runner.isUnique);
 
       // Update User Profile
       router.post("/profile", auth, role.hasRole('User'), upload.single('profile_image'), runner.updateProfile);
 
       // Get User Profile
       router.get("/profile", auth, role.hasRole('User'), runner.getProfile);
+
+      // Get Bcel Qr
+      router.get("/qr", runner.getBcelQr);
 
       app.use('/api/runner', router);
     }
