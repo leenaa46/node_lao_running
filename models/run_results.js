@@ -40,7 +40,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     package_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       references: {
         model: 'packages',
         key: 'id'

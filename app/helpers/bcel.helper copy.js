@@ -1,9 +1,18 @@
+import PubNub from 'pubnub'
+
 exports.getCode = (params) => {
   const mcid = process.env.BCEL_MCID_V2;
   const mcc = process.env.BCEL_MCC_V2;
+  const shopcode = process.env.BCEL_SHOPCODE_V2;
+  const lastToken = new Date().getTime() - 30 * 60 * 1000 + "0000";
   const ccy = 418;
-  const province = 'VTE';
-  const country = 'LA';
+  const province = 'LA';
+  const country = 'VTE';
+  const expiretime = 3;
+  let pubnub
+  let onpaid = (res) => {
+    console.log('res', res)
+  }
 
   function pad2(data) {
     return ("0" + (data + "")).substr(-2);
@@ -30,6 +39,21 @@ exports.getCode = (params) => {
     return val > 10 ? val : "0" + val;
   }
 
+  function getExpiredTime(expiretime) {
+    var dateTime = new Date();
+    dateTime.setMinutes(dateTime.getMinutes() + expiretime);
+
+    var expiredTime = dateTime.getFullYear().toString() +
+      padLeft((dateTime.getMonth() + 1)) +
+      padLeft(dateTime.getDate()) +
+      padLeft(dateTime.getHours()) +
+      padLeft(dateTime.getMinutes()) +
+      padLeft(dateTime.getSeconds());
+
+    console.log("TIME", expiredTime);
+    return expiredTime;
+  }
+
   function crc16(s) {
     var crc = 0xFFFF;
     var j, i;
@@ -46,6 +70,57 @@ exports.getCode = (params) => {
 
     return ((crc ^ 0) & 0xFFFF).toString(16).toUpperCase();
   }
+
+  function pubnubSubscribe(tid, uuid) {
+    var channel = shopcode ? 'mcid-' + mcid + "-" + shopcode : 'uuid-' + mcid + "-" + uuid;
+    if (tid && shopcode) {
+      channel = 'tid-' + mcid + "-" + shopcode + '-' + tid;
+    }
+    pubnub.subscribe({
+      channels: [channel, 'mcid-' + mcid + "-" + shopcode, 'uuid-' + mcid + "-" + uuid],
+      timetoken: lastToken,
+    });
+  };
+
+  function paymentCallback(res) {
+    if (onpaid) onpaid(res);
+    onpaid = null; // Stop receiving additional callback
+    pubnub.stop();
+  };
+
+  function stop() {
+    pubnub.stop();
+  };
+
+  function subscribe(params, onpaid) {
+    console.log("subscribe parameters:", params);
+
+    if (onpaid != null) throw "You have already subscribed. Please wait until payment is completed to subscribe again, or create a new OnePay object.";
+
+    const uuid = params.uuid;
+    const tid = params.transactionid ? params.transactionid : null;
+
+    pubnub = new PubNub({
+      subscribeKey: 'sub-c-91489692-fa26-11e9-be22-ea7c5aada356',
+      ssl: true
+    });
+
+    pubnub.addListener({
+      status: function (statusEvent) {
+        console.log("PubNub status changed", statusEvent);
+
+        if (statusEvent.category === "PNNetworkUpCategory")
+          pubnubSubscribe(tid, uuid)
+      }.bind(this),
+      message: function (msg) {
+        console.log("Callback received", msg);
+        var callback = JSON.parse(msg.message);
+        paymentCallback(callback)
+      }.bind(this)
+    });
+
+    pubnubSubscribe(tid, uuid)
+  };
 
   var crcTable = [0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5,
     0x60c6, 0x70e7, 0x8108, 0x9129, 0xa14a, 0xb16b,
@@ -92,6 +167,9 @@ exports.getCode = (params) => {
     0x2e93, 0x3eb2, 0x0ed1, 0x1ef0
   ];
 
+
+  if (expiretime) field33.push(['03', getExpiredTime(expiretime)]); // expired time
+
   var rawqr = buildqr([
     ["00", "01"],
     ["01", "11"],
@@ -112,6 +190,8 @@ exports.getCode = (params) => {
   var fullqr = rawqr + buildqr([
     ["63", crc16(rawqr + "6304")]
   ]); // Adding itself into checksum
+
+  subscribe(params, null)
 
   return fullqr
 };

@@ -24,16 +24,30 @@ module.exports = {
           key: 'id'
         },
       },
-      payment_slip: {
-        type: Sequelize.STRING,
+      total: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
       },
       status: {
-        type: Sequelize.ENUM('pending', 'confirmed', 'rejected'),
-        defaultValue: 'pending',
-        allowNull: false
+        type: Sequelize.ENUM('pendding', 'success'),
+        allowNull: false,
+        defaultValue: 'pendding'
       },
-      profile_image: {
-        type: Sequelize.STRING,
+      invoiceid: {
+        type: Sequelize.UUID,
+        defaultValue: 'invoice-' + Sequelize.UUIDV1,
+        primaryKey: true
+      },
+      transactionid: {
+        type: Sequelize.UUID,
+        defaultValue: 'transaction-' + Sequelize.UUIDV1,
+        primaryKey: true
+      },
+      terminalid: {
+        type: Sequelize.UUID,
+        defaultValue: 'terminalid-' + Sequelize.UUIDV1,
+        primaryKey: true
       },
 
       createdAt: {

@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
       UserPackage.belongsTo(models.Package, {
         foreignKey: 'package_id'
       })
+
+
     }
   };
   UserPackage.init({
@@ -42,16 +44,30 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
-    payment_slip: {
-      type: DataTypes.STRING,
+    total: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
     },
     status: {
-      type: DataTypes.ENUM('pending', 'confirmed', 'rejected'),
-      defaultValue: 'pending',
-      allowNull: false
+      type: DataTypes.ENUM('pendding', 'success'),
+      allowNull: false,
+      defaultValue: 'pendding'
     },
-    profile_image: {
-      type: DataTypes.STRING,
+    invoiceid: {
+      type: DataTypes.UUID,
+      defaultValue: 'invoice-' + DataTypes.UUIDV1,
+      primaryKey: true
+    },
+    transactionid: {
+      type: DataTypes.UUID,
+      defaultValue: 'transaction-' + DataTypes.UUIDV1,
+      primaryKey: true
+    },
+    terminalid: {
+      type: DataTypes.UUID,
+      defaultValue: 'terminalid-' + DataTypes.UUIDV1,
+      primaryKey: true
     },
   }, {
     sequelize,

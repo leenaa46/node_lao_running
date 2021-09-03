@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'user_id'
       })
 
-      User.hasMany(models.UserPackage, {
+      User.hasOne(models.UserPackage, {
         foreignKey: 'user_id'
       })
 
