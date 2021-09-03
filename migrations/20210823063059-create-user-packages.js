@@ -30,24 +30,21 @@ module.exports = {
         defaultValue: 0
       },
       status: {
-        type: Sequelize.ENUM('pendding', 'success'),
+        type: Sequelize.ENUM('pending', 'success'),
         allowNull: false,
-        defaultValue: 'pendding'
+        defaultValue: 'pending'
       },
-      invoiceid: {
-        type: Sequelize.UUID,
-        defaultValue: 'invoice-' + Sequelize.UUIDV1,
-        primaryKey: true
+      invoice_id: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
-      transactionid: {
-        type: Sequelize.UUID,
-        defaultValue: 'transaction-' + Sequelize.UUIDV1,
-        primaryKey: true
+      transaction_id: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
-      terminalid: {
-        type: Sequelize.UUID,
-        defaultValue: 'terminalid-' + Sequelize.UUIDV1,
-        primaryKey: true
+      terminal_id: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
 
       createdAt: {

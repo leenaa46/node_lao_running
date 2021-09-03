@@ -4,6 +4,7 @@ import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
 import Image from '../helpers/upload.helper'
 import Onepay from '../helpers/bcel.helper'
+import UniqueId from '../helpers/uniqueId.helper'
 import QRCode from 'qrcode'
 
 /**
@@ -140,23 +141,51 @@ exports.isUnique = async (req, res) => {
  * @returns \app\helpers\response.helper
  */
 exports.getBcelQr = async (req, res) => {
+  const transaction = await db.sequelize.transaction()
   try {
-    const data = {
-      uuid: '9999992',
-      transactionid: '1111112',
-      invoiceid: '2222224',
-      terminalid: '3333334',
-      amount: '2',
-      description: 'loacadcadcSK',
+    const runnerPackage = await db.Package.findByPk(req.params.packageId)
+    if (!runnerPackage) return Response.error(res, Message.fail._notFound, {}, 404)
+
+    let userPackage = await db.UserPackage.findOne({
+      where: {
+        user_id: req.user.user_id
+      },
+    })
+
+    /**
+     * @overide  userPackage
+     */
+    if (!userPackage) {
+      userPackage = await runnerPackage.createUserPackage({
+        total: runnerPackage.price,
+        user_id: req.user.user_id,
+        transaction_id: await UniqueId.generateRandomTransactionId(),
+        invoice_id: await UniqueId.generateRandomInvoiceId(),
+        terminal_id: await UniqueId.generateRandomTerminalId(),
+      }, {
+        transaction: transaction
+      })
     }
-    console.log(Onepay);
-    const qr = await QRCode.toDataURL(Onepay.getCode(data))
 
-    return Response.success(res, Message.success._success, qr);
+    if (userPackage.status == 'pending') {
+      const data = {
+        transactionid: userPackage.transaction_id,
+        invoiceid: userPackage.invoice_id,
+        terminalid: userPackage.terminal_id,
+        amount: userPackage.total,
+      }
 
+      const qr = await QRCode.toDataURL(Onepay.getCode(data))
 
+      await transaction.commit()
+      return Response.success(res, Message.success._success, qr);
+    }
+    await transaction.commit()
+    return Response.error(res, Message.fail._userAreadyPaid, userPackage, 400)
   } catch (error) {
+    await transaction.rollback()
     console.log(error);
     return Response.error(res, Message.serverError._serverError, error)
   }
+
 }

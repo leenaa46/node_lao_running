@@ -50,29 +50,28 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     },
     status: {
-      type: DataTypes.ENUM('pendding', 'success'),
+      type: DataTypes.ENUM('pending', 'success'),
       allowNull: false,
-      defaultValue: 'pendding'
+      defaultValue: 'pending'
     },
-    invoiceid: {
-      type: DataTypes.UUID,
-      defaultValue: 'invoice-' + DataTypes.UUIDV1,
-      primaryKey: true
+    invoice_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    transactionid: {
-      type: DataTypes.UUID,
-      defaultValue: 'transaction-' + DataTypes.UUIDV1,
-      primaryKey: true
+    transaction_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    terminalid: {
-      type: DataTypes.UUID,
-      defaultValue: 'terminalid-' + DataTypes.UUIDV1,
-      primaryKey: true
+    terminal_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   }, {
     sequelize,
     modelName: 'UserPackage',
     tableName: 'user_packages',
   });
+
+
   return UserPackage;
 };

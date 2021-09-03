@@ -105,7 +105,7 @@ exports.getCode = (params) => {
       ["01", params.invoiceid],
       ["05", params.transactionid],
       ["07", params.terminalid],
-      ["08", params.description]
+      ["08", 'LaoRunning Package Subscription.']
     ])]
   ]);
 

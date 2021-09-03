@@ -9,6 +9,7 @@ exports.fail = {
   _invalidToken: 'Invalid token.',
   _noToken: 'A token is required for authentication',
   _badRole: 'can not access with current role.',
+  _userAreadyPaid: 'User aready had a package.'
 }
 
 exports.serverError = {
