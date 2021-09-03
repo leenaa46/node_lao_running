@@ -4,6 +4,7 @@ import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
 import Image from '../helpers/upload.helper'
 import Onepay from '../helpers/bcel.helper'
+import QRCode from 'qrcode'
 
 /**
  * Update User Profile.
@@ -141,14 +142,15 @@ exports.isUnique = async (req, res) => {
 exports.getBcelQr = async (req, res) => {
   try {
     const data = {
-      transactionid: '111111111',
-      invoiceid: '222222222',
-      terminalid: '3333333333',
+      uuid: '9999992',
+      transactionid: '1111112',
+      invoiceid: '2222224',
+      terminalid: '3333334',
       amount: '2',
       description: 'loacadcadcSK',
     }
     console.log(Onepay);
-    const qr = Onepay.getCode(data)
+    const qr = await QRCode.toDataURL(Onepay.getCode(data))
 
     return Response.success(res, Message.success._success, qr);
 

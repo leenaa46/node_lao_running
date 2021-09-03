@@ -34,6 +34,9 @@ process.on('unhandledRejection', function (err) {
   console.log('unhandledRejection: ', err);
 });
 
+app.use((req, res, next) => {
+
+})
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
