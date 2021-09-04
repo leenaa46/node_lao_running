@@ -7,14 +7,16 @@ const verifyToken = (req, res, next) => {
   let token =
     req.body.token || req.query.token || req.headers["x-access-token"] || req.headers["authorization"];
 
+  if (!token) {
+    return Response.error(res, Message.fail._noToken, {}, Status.code.AuthError)
+  }
+
   if (token.substring(0, 6) === 'Bearer') {
     const bearer = token.split(' ');
     token = bearer[1];
   }
 
-  if (!token) {
-    return Response.error(res, Message.fail._noToken, {}, Status.code.AuthError)
-  }
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 

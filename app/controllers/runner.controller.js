@@ -4,6 +4,8 @@ import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
 import Image from '../helpers/upload.helper'
 import Onepay from '../helpers/bcel.helper'
+import UniqueId from '../helpers/uniqueId.helper'
+import QRCode from 'qrcode'
 
 /**
  * Update User Profile.
@@ -139,21 +141,94 @@ exports.isUnique = async (req, res) => {
  * @returns \app\helpers\response.helper
  */
 exports.getBcelQr = async (req, res) => {
+  const transaction = await db.sequelize.transaction()
   try {
-    const data = {
-      transactionid: '111111111',
-      invoiceid: '222222222',
-      terminalid: '3333333333',
-      amount: '2',
-      description: 'loacadcadcSK',
+    const runnerPackage = await db.Package.findByPk(req.params.packageId)
+    if (!runnerPackage) return Response.error(res, Message.fail._notFound, {}, Status.code.NotFound)
+
+    let userPackage = await db.UserPackage.findOne({
+      where: {
+        user_id: req.user.user_id
+      },
+    })
+
+    /**
+     * @overide  userPackage
+     */
+    if (!userPackage) {
+      userPackage = await runnerPackage.createUserPackage({
+        total: runnerPackage.price,
+        user_id: req.user.user_id,
+        transaction_id: await UniqueId.generateRandomTransactionId(),
+        invoice_id: await UniqueId.generateRandomInvoiceId(),
+        terminal_id: await UniqueId.generateRandomTerminalId(),
+      }, {
+        transaction: transaction
+      })
     }
-    console.log(Onepay);
-    const qr = Onepay.getCode(data)
 
-    return Response.success(res, Message.success._success, qr);
+    if (userPackage.status == 'pending') {
+      const data = {
+        transactionid: userPackage.transaction_id,
+        invoiceid: userPackage.invoice_id,
+        terminalid: userPackage.terminal_id,
+        amount: userPackage.total,
+      }
 
+      const qr = await QRCode.toDataURL(Onepay.getCode(data))
+
+      const paymentData = {
+        id: userPackage.id,
+        package_id: userPackage.package_id,
+        total: userPackage.total,
+        status: userPackage.status,
+        transaction_id: userPackage.transaction_id,
+        invoice_id: userPackage.invoice_id,
+        terminal_id: userPackage.terminal_id,
+        payment_qr: qr
+      }
+
+      await transaction.commit()
+      return Response.success(res, Message.success._success, paymentData);
+    }
+    await transaction.commit()
+    return Response.error(res, Message.fail._userAreadyPaid, userPackage, Status.code.BadRequest)
+  } catch (error) {
+    await transaction.rollback()
+    console.log(error);
+    return Response.error(res, Message.serverError._serverError, error)
+  }
+}
+
+/**
+ * Pay Bcel Qr.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.payBcelQr = async (req, res) => {
+  const transaction = await db.sequelize.transaction()
+  try {
+    const payment = await db.UserPackage.findOne({
+      where: {
+        user_id: req.user.user_id
+      }
+    })
+    if (!payment) return Response.error(res, Message.fail._notFound, {}, 404)
+    if (payment.status == 'success') return Response.error(res, Message.fail._userAreadyPaid, payment, Status.code.BadRequest)
+
+    const paid = await payment.update({
+      status: 'success'
+    })
+
+    await transaction.commit()
+
+    return Response.success(res, Message.success._success, paid);
 
   } catch (error) {
+    await transaction.rollback()
     console.log(error);
     return Response.error(res, Message.serverError._serverError, error)
   }

@@ -55,12 +55,6 @@ exports.register = async (req, res) => {
       transaction: transaction
     })
 
-    await user.createUserPackage({
-      package_id: 1
-    }, {
-      transaction: transaction
-    })
-
     const roleUser = await db.Role.findOne({
       where: {
         name: 'User'
