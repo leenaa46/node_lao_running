@@ -76,16 +76,18 @@ exports.register = async (req, res, next) => {
       }
     );
 
+
+    await transaction.commit()
+
     const userData = {
       id: user.id,
       name: user.name,
       surname: user.surname,
       email: user.email,
       phone: user.phone,
+      role: await user.getRoles(),
       token: token,
     }
-
-    await transaction.commit()
     return Response.success(res, Message.success._success, userData);
 
   } catch (error) {
@@ -118,7 +120,6 @@ exports.login = async (req, res, next) => {
       const token = jwt.sign({
           user_id: user.id,
           email,
-          role: role
         },
         process.env.JWT_SECRET, {
           expiresIn: "30d",
@@ -131,6 +132,7 @@ exports.login = async (req, res, next) => {
         surname: user.surname,
         email: user.email,
         phone: user.phone,
+        role: role,
         token: token,
 
       }
