@@ -6,6 +6,10 @@ import Response from '../helpers/response.helper';
 import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
 import Image from '../helpers/upload.helper'
+import createError from 'http-errors'
+import {
+  create
+} from "qrcode";
 
 /**
  * Register User.
@@ -15,7 +19,7 @@ import Image from '../helpers/upload.helper'
  * 
  * @returns \app\helpers\response.helper
  */
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
   const transaction = await db.sequelize.transaction();
   try {
     const {
@@ -90,10 +94,9 @@ exports.register = async (req, res) => {
     await transaction.commit()
     return Response.success(res, Message.success._success, userData);
 
-  } catch (err) {
+  } catch (error) {
     await transaction.rollback()
-    console.log(err);
-    return Response.error(res, Message.serverError._serverError, err)
+    next(error)
   }
 }
 
@@ -105,7 +108,7 @@ exports.register = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
   try {
     const email = req.body.email ? req.body.email : null
     const password = req.body.password ? req.body.password : null
@@ -142,9 +145,9 @@ exports.login = async (req, res) => {
 
       return Response.success(res, Message.success._success, userData)
     }
-    return Response.error(res, Message.fail._invalidCredential, {}, Status.code.BadRequest)
+    next(createError(Status.code.BadRequest, Message.fail._invalidCredential))
 
-  } catch (err) {
-    return Response.error(res, Message.serverError._serverError, err)
+  } catch (error) {
+    next(error)
   }
 }

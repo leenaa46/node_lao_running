@@ -5,6 +5,7 @@ import Message from '../helpers/message.helper';
 import Image from '../helpers/upload.helper'
 import Onepay from '../helpers/bcel.helper'
 import QRCode from 'qrcode'
+import createError from 'http-errors'
 
 /**
  * Update User Profile.
@@ -14,7 +15,7 @@ import QRCode from 'qrcode'
  * 
  * @returns \app\helpers\response.helper
  */
-exports.updateProfile = async (req, res) => {
+exports.updateProfile = async (req, res, next) => {
   const transaction = await db.sequelize.transaction();
   try {
 
@@ -25,7 +26,7 @@ exports.updateProfile = async (req, res) => {
     })
 
     if (!userProfile)
-      return Response.error(res, Message.fail._notFound, null, Status.code.NotFound)
+      next(createError(Status.code.NotFound, Message.fail._notFound))
 
     const {
       name,
@@ -68,7 +69,7 @@ exports.updateProfile = async (req, res) => {
 
   } catch (error) {
     await transaction.rollback()
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -80,7 +81,7 @@ exports.updateProfile = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.getProfile = async (req, res) => {
+exports.getProfile = async (req, res, next) => {
   try {
     const userProfile = await db.UserProfile.findOne({
       where: {
@@ -88,12 +89,12 @@ exports.getProfile = async (req, res) => {
       },
     })
     if (!userProfile)
-      return Response.error(res, Message.fail._notFound, null, Status.code.NotFound)
+      next(createError(Status.code.NotFound, Message.fail._notFound))
 
     return Response.success(res, Message.success._success, userProfile);
 
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -105,14 +106,14 @@ exports.getProfile = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.isUnique = async (req, res) => {
+exports.isUnique = async (req, res, next) => {
   try {
     const phone = req.query.phone ? req.query.phone : null
 
     if (phone < 8)
-      return Response.error(res, Message.fail._validation, {
+      next(createError(Status.code.Validation, {
         phone: Message.validation('min', 'phone', 8)
-      }, Status.code.Validation)
+      }))
 
     const user = await db.User.findOne({
       where: {
@@ -127,7 +128,7 @@ exports.isUnique = async (req, res) => {
 
 
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -139,7 +140,7 @@ exports.isUnique = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.getBcelQr = async (req, res) => {
+exports.getBcelQr = async (req, res, next) => {
   try {
     const data = {
       uuid: '9999992',
@@ -156,7 +157,6 @@ exports.getBcelQr = async (req, res) => {
 
 
   } catch (error) {
-    console.log(error);
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }

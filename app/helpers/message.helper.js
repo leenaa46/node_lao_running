@@ -9,6 +9,8 @@ exports.fail = {
   _invalidToken: 'Invalid token.',
   _noToken: 'A token is required for authentication',
   _badRole: 'can not access with current role.',
+  _routeNotfound: 'Route not found.',
+  _unAutorize: 'UnAutorize.'
 }
 
 exports.serverError = {

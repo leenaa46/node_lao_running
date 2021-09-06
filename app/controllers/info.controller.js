@@ -13,7 +13,7 @@ import Message from '../helpers/message.helper';
  * 
  * @returns \app\helpers\response.helper
  */
-exports.findAllPackage = async (req, res) => {
+exports.findAllPackage = async (req, res, next) => {
   try {
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
@@ -44,7 +44,7 @@ exports.findAllPackage = async (req, res) => {
     return Response.success(res, Message.success._success, packages);
 
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -56,7 +56,7 @@ exports.findAllPackage = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.findOnePackage = async (req, res) => {
+exports.findOnePackage = async (req, res, next) => {
   try {
     const id = req.params.id
     const packages = await db.Package.findByPk(id)
@@ -64,7 +64,7 @@ exports.findOnePackage = async (req, res) => {
     return Response.success(res, Message.success._success, packages);
 
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -76,7 +76,7 @@ exports.findOnePackage = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.findAllBranche = async (req, res) => {
+exports.findAllBranche = async (req, res, next) => {
   try {
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
@@ -106,8 +106,7 @@ exports.findAllBranche = async (req, res) => {
 
     return Response.success(res, Message.success._success, branches);
   } catch (error) {
-    console.log(error);
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -119,15 +118,16 @@ exports.findAllBranche = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.findOneBranche = async (req, res) => {
+exports.findOneBranche = async (req, res, next) => {
   try {
     const id = req.params.id
     const branches = await db.HalBranche.findByPk(id)
+    throw new Error('ee')
 
     return Response.success(res, Message.success._success, branches);
 
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -139,7 +139,7 @@ exports.findOneBranche = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.findAllNation = async (req, res) => {
+exports.findAllNation = async (req, res, next) => {
   try {
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
@@ -184,8 +184,7 @@ exports.findAllNation = async (req, res) => {
 
     return Response.success(res, Message.success._success, nationData);
   } catch (error) {
-    console.log(error);
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -197,7 +196,7 @@ exports.findAllNation = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.findOneNation = async (req, res) => {
+exports.findOneNation = async (req, res, next) => {
   try {
     const id = req.params.id
     const nation = await db.National.findByPk(id)
@@ -205,6 +204,6 @@ exports.findOneNation = async (req, res) => {
     return Response.success(res, Message.success._success, nation);
 
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }

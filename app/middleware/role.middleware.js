@@ -2,6 +2,7 @@ import Response from '../helpers/response.helper'
 import Message from '../helpers/message.helper'
 import Status from '../helpers/status.helper'
 import db from '../../models/'
+import createError from 'http-errors'
 
 exports.hasRole = role => {
   return async (req, res, next) => {
@@ -16,13 +17,13 @@ exports.hasRole = role => {
         }
       });
     } catch (error) {
-      return Response.error(res, Message.serverError._serverError, error, Status.code.ServerError)
+      next(error)
     }
 
     if (!hasRole)
-      return Response.error(res, Message.fail._badRole, {
+      next(createError(Status.code.AuthError, {
         required_role: role
-      }, Status.code.AuthError)
+      }))
 
     return next()
   };

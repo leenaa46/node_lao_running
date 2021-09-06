@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import 'dotenv/config';
+import createError from 'http-errors'
+import Response from './app/helpers/response.helper'
+import Message from './app/helpers/message.helper'
 
 const app = express();
 
@@ -18,6 +21,7 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+
 import run from "./app/routes/run_result.routes";
 run(app);
 
@@ -30,13 +34,23 @@ runner(app);
 import info from "./app/routes/info.routes";
 info(app);
 
+import error from "./app/routes/error.routes";
+error(app);
+
 process.on('unhandledRejection', function (err) {
   console.log('unhandledRejection: ', err);
 });
 
 app.use((req, res, next) => {
-
+  const error = createError(404, Message.fail._routeNotfound)
+  next(error)
 })
+
+app.use((error, req, res, next) => {
+  console.log(error);
+  Response.error(res, error)
+})
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
