@@ -7,13 +7,14 @@ import Message from '../helpers/message.helper';
 
 /**
  * Get all Package.
- * 
- * @param {*} req 
- * @param {*} res 
- * 
+ *
+ * @param {*} req
+ * @param {*} res
+ *
  * @returns \app\helpers\response.helper
  */
 exports.findAllPackage = async (req, res) => {
+
   try {
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
@@ -50,10 +51,10 @@ exports.findAllPackage = async (req, res) => {
 
 /**
  * Get one Package.
- * 
- * @param {*} req 
- * @param {*} res 
- * 
+ *
+ * @param {*} req
+ * @param {*} res
+ *
  * @returns \app\helpers\response.helper
  */
 exports.findOnePackage = async (req, res) => {
@@ -70,10 +71,10 @@ exports.findOnePackage = async (req, res) => {
 
 /**
  * Get all Branche.
- * 
- * @param {*} req 
- * @param {*} res 
- * 
+ *
+ * @param {*} req
+ * @param {*} res
+ *
  * @returns \app\helpers\response.helper
  */
 exports.findAllBranche = async (req, res) => {
@@ -113,10 +114,10 @@ exports.findAllBranche = async (req, res) => {
 
 /**
  * Get one Branche.
- * 
- * @param {*} req 
- * @param {*} res 
- * 
+ *
+ * @param {*} req
+ * @param {*} res
+ *
  * @returns \app\helpers\response.helper
  */
 exports.findOneBranche = async (req, res) => {
@@ -133,10 +134,10 @@ exports.findOneBranche = async (req, res) => {
 
 /**
  * Get all Nation.
- * 
- * @param {*} req 
- * @param {*} res 
- * 
+ *
+ * @param {*} req
+ * @param {*} res
+ *
  * @returns \app\helpers\response.helper
  */
 exports.findAllNation = async (req, res) => {
@@ -191,10 +192,10 @@ exports.findAllNation = async (req, res) => {
 
 /**
  * Get one Nation.
- * 
- * @param {*} req 
- * @param {*} res 
- * 
+ *
+ * @param {*} req
+ * @param {*} res
+ *
  * @returns \app\helpers\response.helper
  */
 exports.findOneNation = async (req, res) => {

@@ -5,7 +5,7 @@ import 'dotenv/config';
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:8080"
+    origin: "http://localhost:8080"
 };
 
 app.use(cors(corsOptions));
@@ -15,30 +15,31 @@ app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({
-  extended: true
+    extended: true
 }));
 
 import run from "./app/routes/run_result.routes";
+
 run(app);
 
 import user from "./app/routes/user.routes";
+
 user(app);
 
 import runner from "./app/routes/runner.routes";
+
 runner(app);
 
 import info from "./app/routes/info.routes";
+
 info(app);
 
 process.on('unhandledRejection', function (err) {
-  console.log('unhandledRejection: ', err);
+    console.log('unhandledRejection: ', err);
 });
 
-app.use((req, res, next) => {
-
-})
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+    console.log(`Server is running on port ${PORT}.`);
 });
