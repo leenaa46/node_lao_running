@@ -6,6 +6,7 @@ import Image from '../helpers/upload.helper'
 import Onepay from '../helpers/bcel.helper'
 import UniqueId from '../helpers/uniqueId.helper'
 import QRCode from 'qrcode'
+import createError from 'http-errors'
 
 /**
  * Update User Profile.
@@ -15,7 +16,7 @@ import QRCode from 'qrcode'
  * 
  * @returns \app\helpers\response.helper
  */
-exports.updateProfile = async (req, res) => {
+exports.updateProfile = async (req, res, next) => {
   const transaction = await db.sequelize.transaction();
   try {
 
@@ -26,7 +27,7 @@ exports.updateProfile = async (req, res) => {
     })
 
     if (!userProfile)
-      return Response.error(res, Message.fail._notFound, null, Status.code.NotFound)
+      next(createError(Status.code.NotFound, Message.fail._notFound('user_profile')))
 
     const {
       name,
@@ -69,7 +70,7 @@ exports.updateProfile = async (req, res) => {
 
   } catch (error) {
     await transaction.rollback()
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -81,7 +82,7 @@ exports.updateProfile = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.getProfile = async (req, res) => {
+exports.getProfile = async (req, res, next) => {
   try {
     const userProfile = await db.UserProfile.findOne({
       where: {
@@ -89,12 +90,12 @@ exports.getProfile = async (req, res) => {
       },
     })
     if (!userProfile)
-      return Response.error(res, Message.fail._notFound, null, Status.code.NotFound)
+      next(createError(Status.code.NotFound, Message.fail._notFound('user_profile')))
 
     return Response.success(res, Message.success._success, userProfile);
 
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -106,14 +107,14 @@ exports.getProfile = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.isUnique = async (req, res) => {
+exports.isUnique = async (req, res, next) => {
   try {
     const phone = req.query.phone ? req.query.phone : null
 
     if (phone < 8)
-      return Response.error(res, Message.fail._validation, {
+      next(createError(Status.code.Validation, {
         phone: Message.validation('min', 'phone', 8)
-      }, Status.code.Validation)
+      }))
 
     const user = await db.User.findOne({
       where: {
@@ -128,7 +129,7 @@ exports.isUnique = async (req, res) => {
 
 
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -140,11 +141,11 @@ exports.isUnique = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.getBcelQr = async (req, res) => {
+exports.getBcelQr = async (req, res, next) => {
   const transaction = await db.sequelize.transaction()
   try {
     const runnerPackage = await db.Package.findByPk(req.params.packageId)
-    if (!runnerPackage) return Response.error(res, Message.fail._notFound, {}, Status.code.NotFound)
+    if (!runnerPackage) next(createError(Status.code.NotFound, Message.fail._notFound('runner_package')))
 
     let userPackage = await db.UserPackage.findOne({
       where: {
@@ -192,11 +193,10 @@ exports.getBcelQr = async (req, res) => {
       return Response.success(res, Message.success._success, paymentData);
     }
     await transaction.commit()
-    return Response.error(res, Message.fail._userAreadyPaid, userPackage, Status.code.BadRequest)
+    next(createError(Status.code.BadRequest, userPackage))
   } catch (error) {
     await transaction.rollback()
-    console.log(error);
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }
 
@@ -216,8 +216,8 @@ exports.payBcelQr = async (req, res) => {
         user_id: req.user.user_id
       }
     })
-    if (!payment) return Response.error(res, Message.fail._notFound, {}, 404)
-    if (payment.status == 'success') return Response.error(res, Message.fail._userAreadyPaid, payment, Status.code.BadRequest)
+    if (!payment) next(createError(Status.code.NotFound, Message.fail._notFound('payment')))
+    if (payment.status == 'success') next(createError(Status.code.BadRequest, payment))
 
     const paid = await payment.update({
       status: 'success'
@@ -229,7 +229,6 @@ exports.payBcelQr = async (req, res) => {
 
   } catch (error) {
     await transaction.rollback()
-    console.log(error);
-    return Response.error(res, Message.serverError._serverError, error)
+    next(error)
   }
 }

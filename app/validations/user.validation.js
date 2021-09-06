@@ -2,6 +2,7 @@ import Response from '../helpers/response.helper'
 import Status from '../helpers/status.helper'
 import Message from '../helpers/message.helper'
 import db from "../../models"
+import createError from 'http-errors'
 import {
   Joi
 } from 'express-validation'
@@ -47,7 +48,7 @@ exports.register = async (req, res, next) => {
   if (!Object.keys(errors).length)
     return next();
 
-  return Response.error(res, Message.fail._validation, errors, Status.code.Validation)
+  next(createError(Status.code.Validation, errors))
 };
 
 exports.login = async (req, res, next) => {
@@ -61,7 +62,7 @@ exports.login = async (req, res, next) => {
   if (!Object.keys(errors).length)
     return next();
 
-  return Response.error(res, Message.fail._validation, errors, Status.code.Validation)
+  next(createError(Status.code.Validation, errors))
 };
 
 exports.JoiRegist = {

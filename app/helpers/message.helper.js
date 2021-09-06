@@ -4,11 +4,15 @@ exports.success = {
 
 exports.fail = {
   _validation: 'validation error.',
-  _notFound: 'not found.',
+  _notFound: (value = null) => {
+    return `${value} not found.`
+  },
   _invalidCredential: 'invalid Credential.',
   _invalidToken: 'Invalid token.',
   _noToken: 'A token is required for authentication',
   _badRole: 'can not access with current role.',
+  _routeNotfound: 'Route not found.',
+  _unAutorize: 'UnAutorize.',
   _userAreadyPaid: 'User aready had a package.'
 }
 

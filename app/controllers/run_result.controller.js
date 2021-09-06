@@ -11,7 +11,7 @@ import Message from '../helpers/message.helper'
  * 
  * @returns \app\helpers\response.helper 
  */
-exports.create = async (req, res) => {
+exports.create = async (req, res, next) => {
 
 
   try {
@@ -25,8 +25,8 @@ exports.create = async (req, res) => {
     const runResult = await db.RunResult.create(run_result)
 
     return Response.success(res, Message.success._success, runResult)
-  } catch (err) {
-    return Response.error(res, Message.serverError._serverError, err, Status.ServerError)
+  } catch (error) {
+    next(error)
   }
 };
 
@@ -38,13 +38,13 @@ exports.create = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.findAll = async (req, res) => {
+exports.findAll = async (req, res, next) => {
   try {
     const runResult = await db.RunResult.findAll()
 
     return Response.success(res, Message.success._success, runResult)
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, error, Status.code.ServerError)
+    next(error)
   }
 };
 
@@ -56,13 +56,13 @@ exports.findAll = async (req, res) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.findOne = async (req, res) => {
+exports.findOne = async (req, res, next) => {
   try {
     const runResult = await db.RunResult.findByPk(id)
     return Response.success(res, Message.success._success, runResult)
 
   } catch (error) {
-    return Response.error(res, Message.serverError._serverError, error, Status.ServerError)
+    next(error)
   }
 
 };

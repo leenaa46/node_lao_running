@@ -13,8 +13,7 @@ import Message from '../helpers/message.helper';
  *
  * @returns \app\helpers\response.helper
  */
-exports.findAllPackage = async (req, res) => {
-
+exports.findAllPackage = async (req, res, next) => {
   try {
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
