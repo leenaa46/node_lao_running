@@ -17,7 +17,6 @@ exports.register = async (req, res, next) => {
   const password = req.body.password ? req.body.password : null
   const package_id = req.body.package_id ? req.body.package_id : null
   const phone = req.body.phone ? req.body.phone : null
-  const payment_slip = req.body.payment_slip ? req.body.payment_slip : null
 
   const passwordMin = 8
 
@@ -45,9 +44,6 @@ exports.register = async (req, res, next) => {
       }
     })) errors.package_id = [Message.validation('not_exists', 'package_id')]
 
-  if (package_id != 1) {
-    if (!payment_slip) errors.payment_slip = Message.validation('required', 'package_id')
-  }
 
   if (!Object.keys(errors).length)
     return next();

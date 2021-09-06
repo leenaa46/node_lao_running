@@ -4,27 +4,26 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
 
     await queryInterface.bulkInsert('packages', [{
-        name: 'Free',
-        range: 0,
-        price: 0,
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.'
-      },
-      {
         name: 'Starter',
-        range: 100,
-        price: 99000,
+        range: 10,
+        price: 2,
         description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.'
       },
       {
         name: 'Pro',
-        range: 300,
-        price: 199000,
+        range: 42,
+        price: 2,
         description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.'
       },
       {
         name: 'Premium',
-        range: 500,
-        price: 499000,
+        range: 100,
+        price: 2,
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.'
+      }, {
+        name: 'Ultimate',
+        range: 200,
+        price: 2,
         description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.'
       }
     ], {});
