@@ -66,6 +66,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    ticket_id: {
+      type: DataTypes.STRING,
+    },
   }, {
     sequelize,
     modelName: 'UserPackage',

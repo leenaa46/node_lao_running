@@ -7,6 +7,7 @@ import Onepay from '../helpers/bcel.helper'
 import UniqueId from '../helpers/uniqueId.helper'
 import QRCode from 'qrcode'
 import createError from 'http-errors'
+import axios from 'axios'
 
 /**
  * Update User Profile.
@@ -173,7 +174,7 @@ exports.getBcelQr = async (req, res, next) => {
         transactionid: userPackage.transaction_id,
         invoiceid: userPackage.invoice_id,
         terminalid: userPackage.terminal_id,
-        amount: userPackage.total,
+        amount: runnerPackage.price,
       }
 
       const qr = await QRCode.toDataURL(Onepay.getCode(data))
@@ -208,9 +209,18 @@ exports.getBcelQr = async (req, res, next) => {
  * 
  * @returns \app\helpers\response.helper
  */
-exports.payBcelQr = async (req, res) => {
+exports.payBcelQr = async (req, res, next) => {
   const transaction = await db.sequelize.transaction()
   try {
+    const transaction_id = req.body.transaction_id
+    const bcelTransaction = await axios.get('https://bcel.la:8083/onepay/gettransaction.php', {
+      params: {
+        mcid: process.env.BCEL_MCID_V2,
+        uuid: transaction_id,
+      }
+    })
+    if (!bcelTransaction) next(createError(Status.code.NotFound, Message.fail._notFound('transaction')))
+    console.log('\x1b[31m', bcelTransaction.data, bcelTransaction.data.ticket);
     const payment = await db.UserPackage.findOne({
       where: {
         user_id: req.user.user_id
@@ -220,10 +230,15 @@ exports.payBcelQr = async (req, res) => {
     if (payment.status == 'success') next(createError(Status.code.BadRequest, payment))
 
     const paid = await payment.update({
-      status: 'success'
+      ticket_id: bcelTransaction.data.ticket,
+      status: 'success',
+    }, {
+      transaction: transaction
     })
 
     await transaction.commit()
+
+
 
     return Response.success(res, Message.success._success, paid);
 

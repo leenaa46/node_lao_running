@@ -46,6 +46,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      ticket_id: {
+        type: Sequelize.STRING,
+      },
 
       createdAt: {
         allowNull: false,
