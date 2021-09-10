@@ -170,10 +170,18 @@ exports.getBcelQr = async (req, res, next) => {
     }
 
     if (userPackage.status == 'pending') {
+      await userPackage.update({
+        package_id: runnerPackage.id,
+        total: runnerPackage.price,
+      }, {
+        transaction: transaction
+      })
+
       const data = {
         transactionid: userPackage.transaction_id,
         invoiceid: userPackage.invoice_id,
         terminalid: userPackage.terminal_id,
+        description: Message.description._paymentDescription(runnerPackage.name),
         amount: runnerPackage.price,
       }
 
