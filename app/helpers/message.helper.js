@@ -2,6 +2,12 @@ exports.success = {
   _success: 'success.',
 }
 
+exports.description = {
+  _paymentDescription: (packageName) => {
+    return `LaoRunning ${packageName} Package Subscription.`
+  },
+}
+
 exports.fail = {
   _validation: 'validation error.',
   _notFound: (value = null) => {
