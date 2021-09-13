@@ -147,3 +147,20 @@ exports.login = async (req, res, next) => {
     next(error)
   }
 }
+
+/**
+ * Get User from token.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.me = async (req, res, next) => {
+  try {
+    const userData = req.user
+    return Response.success(res, Message.success._success, userData)
+  } catch (error) {
+    next(error)
+  }
+}
