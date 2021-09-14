@@ -25,7 +25,7 @@ exports.error = (res, error) => {
       }),
     };
 
-    res.status(resData.code).json(resData);
+    return res.status(resData.code).json(resData);
   }
 
   if (error.message === 'jwt malformed') {
@@ -38,8 +38,21 @@ exports.error = (res, error) => {
       },
     };
 
-    res.status(resData.code).json(resData);
+    return res.status(resData.code).json(resData);
   }
+
+  if (error.status === 422) {
+    let resData = {
+      error: true,
+      code: error.status,
+      message: Message.fail._validation,
+      data: error
+
+    };
+
+    return res.status(resData.code).json(resData);
+  }
+
 
   let resData = {
     error: true,
@@ -49,6 +62,5 @@ exports.error = (res, error) => {
       message: error.message
     },
   };
-
-  res.status(resData.code).json(resData);
+  return res.status(resData.code).json(resData);
 };

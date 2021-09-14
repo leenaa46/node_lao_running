@@ -15,12 +15,6 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'cascade',
         foreignKey: 'user_id'
       })
-
-      RunResult.belongsTo(models.UserPackage, {
-        onDelete: 'cascade',
-        onUpdate: 'cascade',
-        foreignKey: 'user_id'
-      })
     }
   };
   RunResult.init({
@@ -38,20 +32,21 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
-    package_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'packages',
-        key: 'id'
-      },
+    range: {
+      type: DataTypes.DOUBLE,
+      allowNull: false
     },
     time: {
       type: DataTypes.TIME,
       allowNull: false
     },
-    is_free_user: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    image_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   }, {
     sequelize,

@@ -38,5 +38,9 @@ exports.validation = (validationCase, key, value = null) => {
       return `${key} can not be less than ${value}.`
     case 'is_email':
       return `${key} must be an valid email.`
+    case 'is_time':
+      return `${key} must be an valid time.`
+    case 'is_number':
+      return `${key} must be an valid number.`
   }
 }

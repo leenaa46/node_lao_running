@@ -6,7 +6,6 @@ module.exports = {
     // Seed Provices.
     const provinces = await axios.get('https://hal.hal-logistics.la/api/v1/listing/provinces')
     const provinceLists = []
-    console.log(provinces.data);
     provinces.data.map((province) => {
       provinceLists.push({
         id: province.id,

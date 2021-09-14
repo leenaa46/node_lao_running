@@ -16,21 +16,21 @@ module.exports = {
           key: 'id'
         },
       },
-      package_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'packages',
-          key: 'id'
-        },
+      range: {
+        type: Sequelize.DOUBLE,
+        allowNull: false
       },
       time: {
         type: Sequelize.TIME,
         allowNull: false
       },
-      is_free_user: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
+      image: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      image_id: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
