@@ -18,6 +18,19 @@ exports.findAllPackage = async (req, res, next) => {
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
 
+    let myPackage
+
+    if (req.user) {
+      const userPackage = await db.UserPackage.findOne({
+        where: {
+          user_id: req.user.user_id
+        }
+      })
+      if (userPackage) {
+        myPackage = await userPackage.getPackage()
+      }
+    }
+
     if (per_page) {
       let packageData = {}
       page = page && page > 0 ? page : 1
@@ -28,6 +41,7 @@ exports.findAllPackage = async (req, res, next) => {
         subQuery: false
       })
 
+      packageData.myPackage = myPackage
       packageData.data = packages.rows
       packageData.pagination = {
         total: packages.count,
@@ -40,8 +54,12 @@ exports.findAllPackage = async (req, res, next) => {
     }
 
     const packages = await db.Package.findAll()
+    const data = {
+      myPackage,
+      data: packages
+    }
 
-    return Response.success(res, Message.success._success, packages);
+    return Response.success(res, Message.success._success, data);
 
   } catch (error) {
     return Response.error(res, Message.serverError._serverError, error)

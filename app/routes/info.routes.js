@@ -1,11 +1,12 @@
     import info from "../controllers/info.controller.js";
     import express from "express";
+    import semiAuth from "../middleware/semiAuth.middleware";
 
     const router = express.Router();
 
     module.exports = app => {
       // Get all Package.
-      router.get("/package", info.findAllPackage);
+      router.get("/package", semiAuth, info.findAllPackage);
 
       // Get one Package.
       router.get("/package/:id", info.findOnePackage);

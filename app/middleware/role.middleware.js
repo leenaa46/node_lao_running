@@ -9,7 +9,7 @@ exports.hasRole = role => {
     let hasRole = false
     try {
       const user = await db.User.findByPk(req.user.user_id)
-      if (!user) next(createError(Status.code.NotFound, Message.fail._notFound('user')))
+      if (!user) next(createError(Status.code.AuthError, Message.fail._unAutorize))
       const userRoles = await user.getRoles()
       userRoles.some(async userRole => {
         if (userRole.name == role) {

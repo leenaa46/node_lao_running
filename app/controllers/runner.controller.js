@@ -237,8 +237,13 @@ exports.payBcelQr = async (req, res, next) => {
     if (!payment) next(createError(Status.code.NotFound, Message.fail._notFound('payment')))
     if (payment.status == 'success') next(createError(Status.code.BadRequest, payment))
 
+    const runnerPackage = await db.Package.findByPk(req.params.packageId)
+    if (!runnerPackage) next(createError(Status.code.NotFound, Message.fail._notFound('package')))
+
     const paid = await payment.update({
       ticket_id: bcelTransaction.data.ticket,
+      package_id: runnerPackage.id,
+      total: runnerPackage.price,
       status: 'success',
     }, {
       transaction: transaction
