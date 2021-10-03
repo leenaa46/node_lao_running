@@ -246,7 +246,8 @@ exports.findAllRanking = async (req, res, next) => {
           model: db.UserPackage,
           attributes: [],
           where: {
-            package_id: packageId
+            package_id: packageId,
+            status: 'success'
           }
         }]
       : { model: db.UserProfile }
