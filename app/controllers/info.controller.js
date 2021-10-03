@@ -225,3 +225,67 @@ exports.findOneNation = async (req, res, next) => {
     next(error)
   }
 }
+
+/**
+ * Get all Ranking.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.findAllRanking = async (req, res, next) => {
+  try {
+    const per_page = Number.parseInt(req.query.per_page)
+    let page = Number.parseInt(req.query.page)
+    const packageId = Number.parseInt(req.query.package)
+    const includeUser = packageId
+      ? [
+        { model: db.UserProfile }
+        , {
+          model: db.UserPackage,
+          attributes: [],
+          where: {
+            package_id: packageId
+          }
+        }]
+      : { model: db.UserProfile }
+    if (per_page) {
+      let rannkingData = {}
+      page = page && page > 0 ? page : 1
+
+      const ranking = await db.Ranking.findAndCountAll({
+        limit: per_page,
+        offset: (page - 1) * per_page,
+        subQuery: false,
+        attributes: [[db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'],
+        include: includeUser
+      })
+
+      rannkingData.data = ranking.rows
+      rannkingData.pagination = {
+        total: ranking.count,
+        per_page: per_page,
+        total_pages: Math.ceil(ranking.count / per_page),
+        current_page: page,
+
+      }
+
+      return Response.success(res, Message.success._success, rannkingData);
+    }
+
+    const ranking = await await db.Ranking.findAll({
+      attributes: [[db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'],
+      include: {
+        model: db.User,
+        required: true,
+        attributes: ['id', 'name', 'email', 'phone'],
+        include: includeUser
+      }
+    })
+    return Response.success(res, Message.success._success, ranking);
+
+  } catch (error) {
+    next(error)
+  }
+}

@@ -14,6 +14,9 @@ exports.create = async (body) => {
 
     if (!Object.keys(errors).length) {
       if (!(isInt(range) || isFloat(range))) errors.range = Message.validation('is_number', 'range')
+      if (!isInt(time)) errors.time = Message.validation('is_number', 'time')
+
+      console.log(isInt(time), isFloat(time), time, Number(time));
     }
 
     return errors
@@ -21,9 +24,8 @@ exports.create = async (body) => {
     next(error)
   }
 
-
   function isInt(n) {
-    return Number(n) === n && n % 1 === 0;
+    return Number(n) == n && n % 1 === 0;
   }
 
   function isFloat(n) {

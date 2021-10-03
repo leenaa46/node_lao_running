@@ -1,27 +1,30 @@
-    import info from "../controllers/info.controller.js";
-    import express from "express";
-    import semiAuth from "../middleware/semiAuth.middleware";
+import info from "../controllers/info.controller.js";
+import express from "express";
+import semiAuth from "../middleware/semiAuth.middleware";
 
-    const router = express.Router();
+const router = express.Router();
 
-    module.exports = app => {
-      // Get all Package.
-      router.get("/package", semiAuth, info.findAllPackage);
+module.exports = app => {
+  // Get all Package.
+  router.get("/package", semiAuth, info.findAllPackage);
 
-      // Get one Package.
-      router.get("/package/:id", info.findOnePackage);
+  // Get one Package.
+  router.get("/package/:id", info.findOnePackage);
 
-      // Get all Branche.
-      router.get("/hal-branche", info.findAllBranche);
+  // Get all Branche.
+  router.get("/hal-branche", info.findAllBranche);
 
-      // Get one Branche.
-      router.get("/hal-branche/:id", info.findOneBranche);
+  // Get one Branche.
+  router.get("/hal-branche/:id", info.findOneBranche);
 
-      // Get all Nation.
-      router.get("/national", info.findAllNation);
+  // Get all Nation.
+  router.get("/national", info.findAllNation);
 
-      // Get one Nation.
-      router.get("/national/:id", info.findOneNation);
+  // Get one Nation.
+  router.get("/national/:id", info.findOneNation);
 
-      app.use('/api/info', router);
-    }
+  // Get all Ranking.
+  router.get("/ranking/", info.findAllRanking);
+
+  app.use('/api/info', router);
+}

@@ -2,7 +2,7 @@
 import {
   Model
 }
-from 'sequelize';
+  from 'sequelize';
 import Message from '../app/helpers/message.helper'
 
 module.exports = (sequelize, DataTypes) => {
