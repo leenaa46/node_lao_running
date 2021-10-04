@@ -2,7 +2,7 @@
 import {
   Model
 }
-from 'sequelize';
+  from 'sequelize';
 import Message from '../app/helpers/message.helper'
 
 module.exports = (sequelize, DataTypes) => {
@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
 
       User.belongsToMany(models.Role, {
         through: models.RoleUser,
+        foreignKey: 'user_id'
+      })
+
+      User.hasOne(models.Ranking, {
         foreignKey: 'user_id'
       })
     }

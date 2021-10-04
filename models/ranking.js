@@ -1,29 +1,21 @@
 'use strict';
-import {
+const {
   Model
-} from 'sequelize';
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class RunResult extends Model {
+  class Ranking extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      RunResult.belongsTo(models.User, {
-        onDelete: 'cascade',
-        onUpdate: 'cascade',
+      Ranking.belongsTo(models.User, {
         foreignKey: 'user_id'
       })
     }
   };
-  RunResult.init({
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER
-    },
+  Ranking.init({
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -32,26 +24,20 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
-    range: {
+    total_range: {
       type: DataTypes.DOUBLE,
+      defaultValue: 0,
       allowNull: false
     },
-    time: {
+    total_time: {
       type: DataTypes.DOUBLE,
+      defaultValue: 0,
       allowNull: false
-    },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    image_id: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
   }, {
     sequelize,
-    modelName: 'RunResult',
-    tableName: 'run_results'
+    modelName: 'Ranking',
+    tableName: 'rankings',
   });
-  return RunResult;
+  return Ranking;
 };

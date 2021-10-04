@@ -38,9 +38,21 @@ exports.create = async (req, res, next) => {
       transaction: transaction
     })
 
+    let ranking = await db.Ranking.findOne({ where: { user_id: req.user.user_id } })
+    if (!ranking) {
+      ranking = await db.Ranking.create({
+        user_id: req.user.user_id
+      },
+        {
+          transaction: transaction
+        })
+    }
+
+    await ranking.increment({ total_range: range, total_time: time }, { transaction: transaction })
+
     await transaction.commit()
 
-    return Response.success(res, Message.success._success, runResult)
+    return Response.success(res, Message.success._success, { runResult, ranking: ranking })
   } catch (error) {
     await transaction.rollback()
     next(error)
@@ -99,7 +111,7 @@ exports.findAll = async (req, res, next) => {
  */
 exports.findOne = async (req, res, next) => {
   try {
-    const runResult = await db.RunResult.findByPk(id)
+    const runResult = await db.RunResult.findOne(id)
     return Response.success(res, Message.success._success, runResult)
 
   } catch (error) {
