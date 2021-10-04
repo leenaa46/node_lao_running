@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false
       },
       time: {
-        type: Sequelize.TIME,
+        type: Sequelize.DOUBLE,
         allowNull: false
       },
       image: {
