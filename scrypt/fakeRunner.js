@@ -1,32 +1,92 @@
 import db from '../models'
-import faker, { random } from 'faker'
-import bcrypt from 'bcrypt'
+import faker from 'faker'
+import bcrypt from 'bcryptjs'
+import { create } from 'qrcode'
 
-const packages = await db.Package.findAll()
-packages.array.forEach(package => {
-  const user = await db.User.create({
-    name: faker.name.firstName,
-    enail: faker.internet.email,
-    phone: faker.random.number({ min: 20000000, max: 99999999 }),
-    is_active: 1,
-    password: bcrypt('11111111')
-  })
+db.Package.findAll()
+  .then(packages => {
+    bcrypt.hash('11111111', 10).then(encryptedPassword => {
+      packages.forEach((pack) => createPackageResult(3, pack, encryptedPassword));
+    }).catch(error => {
+      console.log("bcrypt.hash: ", error);
+    })
+    return true
+  }
+  ).catch(error => {
+    console.log("Package.findAll: ", error);
+  });
 
-  const profile = await user.createProfile({
-    name: user.name,
-    surname: faker.name.lastName,
-    gender: faker.random.arrayElement(['male', 'female']),
-    dob: faker.date.past(20),
-    national_id: 126,
-    profile_image: faker.image.avatar,
-  })
+/// Create package result
+function createPackageResult(count, pack, encryptedPassword) {
 
-  const user_package = await user.addPackages({
-    total: 3,
-    status: 'success',
-    invoice_id: '964e7f7a25',
-    transaction_id: '007110268a',
-    terminal_id: '2fa384dbd6',
-    ticket_id: 'F5DNQ7F065BB'
-  })
-});
+  const fakerBuilder = Array.from(Array(count).keys());
+
+  const userFakers = [];
+  fakerBuilder.forEach(() => {
+    userFakers.push(db.User.create({
+      name: faker.name.firstName(),
+      email: faker.internet.email(),
+      phone: faker.datatype.number({ min: 20000000, max: 99999999 }),
+      is_active: 1,
+      password: encryptedPassword
+    }));
+  });
+
+
+  function userCreatedState(user) {
+    user.createUserProfile({
+      name: user.name,
+      surname: faker.name.lastName(),
+      gender: faker.random.arrayElement(['male', 'female']),
+      dob: faker.date.past(20),
+      national_id: 126,
+      profile_image: faker.image.imageUrl(),
+      profile_image_id: 'AAAAAAAA'
+    });
+
+    user.createUserPackage({
+      total: 3,
+      package_id: pack.id,
+      status: 'success',
+      invoice_id: '964e7f7a25',
+      transaction_id: '007110268a',
+      terminal_id: '2fa384dbd6',
+      ticket_id: 'F5DNQ7F065BB'
+    });
+
+
+    let runnerResultFakers = [];
+    fakerBuilder.forEach(() => {
+      runnerResultFakers.push(
+        user.createRunResult({
+          time: faker.datatype.number({ min: 1000, max: 6200 }),
+          range: faker.datatype.float({ min: 0.5, max: 5, precision: 2 }),
+          image: faker.image.imageUrl(),
+          image_id: 'AAAAAAAA'
+        })
+      );
+    });
+
+    Promise.all(runnerResultFakers).then((runnerResults) => {
+      const summary = runnerResults.reduce((pre, curr) => {
+        let total_range = pre.total_range + curr.dataValues.range;
+        let total_time = pre.total_time + curr.dataValues.time;
+        return {
+          total_range,
+          total_time,
+        }
+      }, {
+        total_range: 0,
+        total_time: 0,
+      });
+      user.createRanking({
+        total_range: summary.total_range,
+        total_time: summary.total_time
+      })
+    });
+  }
+
+  Promise.all(userFakers).then((users) => users.forEach((user) => userCreatedState(user)));
+}
+
+
