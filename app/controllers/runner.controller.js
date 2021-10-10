@@ -93,7 +93,14 @@ exports.getProfile = async (req, res, next) => {
     if (!userProfile)
       next(createError(Status.code.NotFound, Message.fail._notFound('user_profile')))
 
-    return Response.success(res, Message.success._success, userProfile);
+    const ranking = await req.auth.getRanking({
+      attributes: ['total_range', 'total_time']
+    })
+
+    let resData = userProfile.dataValues
+    resData.ranking = ranking
+
+    return Response.success(res, Message.success._success, resData);
 
   } catch (error) {
     next(error)

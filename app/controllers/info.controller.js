@@ -275,7 +275,7 @@ exports.findAllRanking = async (req, res, next) => {
       return Response.success(res, Message.success._success, rannkingData);
     }
 
-    const ranking = await await db.Ranking.findAll({
+    const ranking = await db.Ranking.findAll({
       attributes: [[db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'],
       include: {
         model: db.User,
