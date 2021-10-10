@@ -6,7 +6,7 @@ import { create } from 'qrcode'
 db.Package.findAll()
   .then(packages => {
     bcrypt.hash('11111111', 10).then(encryptedPassword => {
-      packages.forEach((pack) => createPackageResult(3, pack, encryptedPassword));
+      packages.forEach((pack) => createPackageResult(10, pack, encryptedPassword));
     }).catch(error => {
       console.log("bcrypt.hash: ", error);
     })
@@ -54,13 +54,15 @@ function createPackageResult(count, pack, encryptedPassword) {
       ticket_id: 'F5DNQ7F065BB'
     });
 
+    user.addRoles([2])
+
 
     let runnerResultFakers = [];
     fakerBuilder.forEach(() => {
       runnerResultFakers.push(
         user.createRunResult({
           time: faker.datatype.number({ min: 1000, max: 6200 }),
-          range: faker.datatype.float({ min: 0.5, max: 5, precision: 2 }),
+          range: faker.datatype.float({ min: 0.5, max: 5 }),
           image: faker.image.imageUrl(),
           image_id: 'AAAAAAAA'
         })
