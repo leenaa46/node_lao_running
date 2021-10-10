@@ -24,8 +24,7 @@
     "pubnub": "^4.33.0",
     "qrcode": "^1.4.4",
     "sequelize": "^6.6.5",
-    "sharp": "^0.29.0",
-    "yarn": "^1.22.11"
+    "sharp": "^0.29.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
@@ -37,7 +36,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cls": "nodemon --exec babel-node server.js",
+    "dev": "nodemon --exec babel-node server.js",
+    "start": "nodemon --exec babel-node server.js",
     "fake:runner": "babel-node scrypt/fakeRunner.js",
     "migrate": "npx sequelize-cli db:migrate",
     "migrate:fresh": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate",
