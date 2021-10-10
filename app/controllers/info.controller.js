@@ -38,7 +38,8 @@ exports.findAllPackage = async (req, res, next) => {
       const packages = await db.Package.findAndCountAll({
         limit: per_page,
         offset: (page - 1) * per_page,
-        subQuery: false
+        subQuery: false,
+        include: [{ model: db.PackageRegisterReward }, { model: db.PackageCompleteReward }]
       })
 
       packageData.myPackage = myPackage
@@ -53,7 +54,9 @@ exports.findAllPackage = async (req, res, next) => {
       return Response.success(res, Message.success._success, packageData);
     }
 
-    const packages = await db.Package.findAll()
+    const packages = await db.Package.findAll({
+      include: [{ model: db.PackageRegisterReward }, { model: db.PackageCompleteReward }]
+    })
     const data = {
       myPackage,
       data: packages
@@ -77,7 +80,9 @@ exports.findAllPackage = async (req, res, next) => {
 exports.findOnePackage = async (req, res, next) => {
   try {
     const id = req.params.id
-    const packages = await db.Package.findByPk(id)
+    const packages = await db.Package.findByPk(id, {
+      include: [{ model: db.PackageRegisterReward }, { model: db.PackageCompleteReward }]
+    })
 
     return Response.success(res, Message.success._success, packages);
 

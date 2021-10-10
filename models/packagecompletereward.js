@@ -26,15 +26,26 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
-    winner_type: {
-      type: DataTypes.ENUM('ຈາກ​ການ​ສຸ່ມສະ​ເພາະ​ຜູ້​ທີ່​ແລ່ນ​ຕາມ​ເປົ້າ​ໝາຍ', 'ຈາກ​ການ​ສຸ່ມຜູ້ໂຊກດີ'),
+    winner_type_la: {
+      type: DataTypes.ENUM('ຈາກ​ການ​ສຸ່ມສະ​ເພາະ​ຜູ້​ທີ່​ແລ່ນ​ຕາມ​ເປົ້າ​ໝາຍ', 'ໄດ້ທັນທີເມື່ອແລ່ນຄົບຕາມເປົ້າໝາຍ'),
       allowNull: false
     },
-    ranking: {
-      type: DataTypes.ENUM('1st', '2nd', '3rd', 'random'),
+    winner_type_en: {
+      type: DataTypes.ENUM('From a lucky draw', 'When complete the goal'),
       allowNull: false
     },
-    prize: {
+    ranking_en: {
+      type: DataTypes.ENUM('1st', '2nd', '3rd', 'none'),
+      allowNull: false
+    },
+    ranking_la: {
+      type: DataTypes.ENUM('ທີ 1', 'ທີ 2', 'ທີ 3', 'ບໍ່ຈັດອັນດັບ'),
+      allowNull: false
+    },
+    prize_la: {
+      type: DataTypes.STRING
+    },
+    prize_en: {
       type: DataTypes.STRING
     },
   }, {
