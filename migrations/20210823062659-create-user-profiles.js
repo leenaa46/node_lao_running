@@ -42,6 +42,7 @@ module.exports = {
       },
       hal_branche_id: {
         type: Sequelize.INTEGER,
+        allowNull: true,
         references: {
           model: 'hal_branches',
           key: 'id'

@@ -33,19 +33,24 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     tel: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
     email: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
     prefix: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
     lat: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
     lng: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
     district_id: {
       type: DataTypes.INTEGER,

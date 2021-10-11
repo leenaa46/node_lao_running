@@ -71,6 +71,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     hal_branche_id: {
       type: DataTypes.INTEGER,
+      allowNull: true,
       references: {
         model: 'hal_branches',
         key: 'id'
