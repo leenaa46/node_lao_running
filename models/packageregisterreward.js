@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
-    value: DataTypes.STRING
+    value_la: DataTypes.STRING,
+    value_en: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'PackageRegisterReward',

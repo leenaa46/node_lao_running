@@ -15,6 +15,16 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'cascade',
         foreignKey: 'package_id'
       })
+      Package.hasMany(models.PackageCompleteReward, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+        foreignKey: 'package_id'
+      })
+      Package.hasMany(models.PackageRegisterReward, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+        foreignKey: 'package_id'
+      })
     }
   };
 

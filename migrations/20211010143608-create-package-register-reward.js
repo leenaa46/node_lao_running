@@ -16,7 +16,10 @@ module.exports = {
           key: 'id'
         },
       },
-      value: {
+      value_la: {
+        type: Sequelize.STRING
+      },
+      value_en: {
         type: Sequelize.STRING
       },
       createdAt: {
