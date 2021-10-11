@@ -25,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'cascade',
         foreignKey: 'package_id'
       })
+      Package.hasMany(models.PackageImage, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+        foreignKey: 'package_id'
+      })
     }
   };
 
@@ -48,6 +53,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     description: {
+      type: DataTypes.STRING,
+    },
+    body: {
       type: DataTypes.STRING,
     },
   }, {

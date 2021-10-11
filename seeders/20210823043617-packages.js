@@ -7,24 +7,28 @@ module.exports = {
       name: 'Starter',
       range: 15,
       price: 2,
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.'
+      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.',
+      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮີບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ, ໂດຍສະເພາະ ແມ່ນບັນດາແຂວງພາກໃຕ້ ທີ່ມີຜູ້ຕິດເຊື້ອໂຄວິດ-19, ເປັນຈຳນວນຫລາຍ ແລະມີຄວາມຈໍາເປັນທີ່ສຸດ ໃນການນໍາສົ່ງຄົນເຈັບຕິດເຊື້ອ ໄປສະຖານກັກກັນ ແລະ ປິ່ນປົວຕາມຄວາມເໝາະສົມ."
     },
     {
       name: 'Pro',
       range: 42,
       price: 3,
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.'
+      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.',
+      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮີບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ, ໂດຍສະເພາະ ແມ່ນບັນດາແຂວງພາກໃຕ້ ທີ່ມີຜູ້ຕິດເຊື້ອໂຄວິດ-19, ເປັນຈຳນວນຫລາຍ ແລະມີຄວາມຈໍາເປັນທີ່ສຸດ ໃນການນໍາສົ່ງຄົນເຈັບຕິດເຊື້ອ ໄປສະຖານກັກກັນ ແລະ ປິ່ນປົວຕາມຄວາມເໝາະສົມ."
     },
     {
       name: 'Premium',
       range: 100,
       price: 4,
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.'
+      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.',
+      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮີບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ, ໂດຍສະເພາະ ແມ່ນບັນດາແຂວງພາກໃຕ້ ທີ່ມີຜູ້ຕິດເຊື້ອໂຄວິດ-19, ເປັນຈຳນວນຫລາຍ ແລະມີຄວາມຈໍາເປັນທີ່ສຸດ ໃນການນໍາສົ່ງຄົນເຈັບຕິດເຊື້ອ ໄປສະຖານກັກກັນ ແລະ ປິ່ນປົວຕາມຄວາມເໝາະສົມ."
     }, {
       name: 'Ultimate',
       range: 200,
       price: 5,
-      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.'
+      description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.',
+      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮີບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ, ໂດຍສະເພາະ ແມ່ນບັນດາແຂວງພາກໃຕ້ ທີ່ມີຜູ້ຕິດເຊື້ອໂຄວິດ-19, ເປັນຈຳນວນຫລາຍ ແລະມີຄວາມຈໍາເປັນທີ່ສຸດ ໃນການນໍາສົ່ງຄົນເຈັບຕິດເຊື້ອ ໄປສະຖານກັກກັນ ແລະ ປິ່ນປົວຕາມຄວາມເໝາະສົມ."
     }
     ], {})
 
@@ -224,6 +228,41 @@ module.exports = {
         prize_en: 'eco water bottle, small heaphone, watch, trophy'
       },
 
+    ], {});
+
+    await queryInterface.bulkInsert('package_images', [
+      {
+        package_id: 1,
+        value: 'https://unsplash.com/photos/CVU_BwsEoJg',
+      },
+      {
+        package_id: 1,
+        value: 'https://images.unsplash.com/photo-1541983663620-7571a820610c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzh8fHNwb3J0c3dlYXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      },
+      {
+        package_id: 2,
+        value: 'https://unsplash.com/photos/CVU_BwsEoJg',
+      },
+      {
+        package_id: 2,
+        value: 'https://images.unsplash.com/photo-1541983663620-7571a820610c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzh8fHNwb3J0c3dlYXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      },
+      {
+        package_id: 3,
+        value: 'https://unsplash.com/photos/CVU_BwsEoJg',
+      },
+      {
+        package_id: 3,
+        value: 'https://images.unsplash.com/photo-1541983663620-7571a820610c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzh8fHNwb3J0c3dlYXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      },
+      {
+        package_id: 4,
+        value: 'https://unsplash.com/photos/CVU_BwsEoJg',
+      },
+      {
+        package_id: 4,
+        value: 'https://images.unsplash.com/photo-1541983663620-7571a820610c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzh8fHNwb3J0c3dlYXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      },
     ], {});
   },
 
