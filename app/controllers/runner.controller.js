@@ -36,7 +36,6 @@ exports.updateProfile = async (req, res, next) => {
       gender,
       dob,
       national_id,
-      hal_branche_id,
     } = req.body
 
     let profile_image = userProfile.profile_image ? userProfile.profile_image : null
@@ -56,11 +55,53 @@ exports.updateProfile = async (req, res, next) => {
       surname,
       gender,
       dob,
-      hal_branche_id,
       national_id,
       profile_image_id,
       profile_image_id,
       profile_image: profile_image
+    }, {
+      transaction: transaction,
+    })
+
+
+    await transaction.commit()
+    return Response.success(res, Message.success._success, updateData);
+
+  } catch (error) {
+    await transaction.rollback()
+    next(error)
+  }
+}
+
+/**
+ * Update User Location.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.updateUserLocation = async (req, res, next) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+
+    const userProfile = await req.auth.getUserProfile()
+
+    if (!userProfile)
+      next(createError(Status.code.NotFound, Message.fail._notFound('user_profile')))
+
+    let hal_branche_id = req.body.hal_branche_id
+
+    if (!hal_branche_id) {
+      const Evo = await db.HalBranche.findOne({ where: { name: "EVO Store" } })
+      if (!Evo)
+        next(createError(Status.code.NotFound, Message.fail._notFound('evo_store')))
+
+      hal_branche_id = Evo.id
+    }
+
+    const updateData = await userProfile.update({
+      hal_branche_id,
     }, {
       transaction: transaction,
     })
@@ -89,6 +130,9 @@ exports.getProfile = async (req, res, next) => {
       where: {
         user_id: req.user.user_id
       },
+      include: {
+        model: db.HalBranche
+      }
     })
     if (!userProfile)
       next(createError(Status.code.NotFound, Message.fail._notFound('user_profile')))

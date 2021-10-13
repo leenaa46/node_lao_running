@@ -41,7 +41,17 @@ module.exports = {
         district_id: branche.district.id,
       })
     })
+
     await queryInterface.bulkInsert('hal_branches', brancheLists, {});
+    await queryInterface.bulkInsert('hal_branches', [{
+      name: "EVO Store",
+      tel: '',
+      email: '',
+      prefix: '',
+      lat: '',
+      lng: '',
+      district_id: 88,
+    }], {});
 
   },
 
