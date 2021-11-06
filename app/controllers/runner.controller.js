@@ -271,7 +271,8 @@ exports.getBcelQr = async (req, res, next) => {
 exports.payBcelQr = async (req, res, next) => {
   const transaction = await db.sequelize.transaction()
   try {
-    const transaction_id = req.body.transaction_id
+    const transaction_id = req.body.transaction_id || req.query.transaction_id
+
     const bcelTransaction = await axios.get('https://bcel.la:8083/onepay/gettransaction.php', {
       params: {
         mcid: process.env.BCEL_MCID_V2,
