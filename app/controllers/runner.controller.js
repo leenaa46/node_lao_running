@@ -57,7 +57,6 @@ exports.updateProfile = async (req, res, next) => {
             dob,
             national_id,
             profile_image_id,
-            profile_image_id,
             profile_image: profile_image
         }, {
             transaction: transaction,
@@ -269,44 +268,47 @@ exports.getBcelQr = async (req, res, next) => {
  * @returns \app\helpers\response.helper
  */
 exports.payBcelQr = async (req, res, next) => {
-    const transaction = await db.sequelize.transaction()
-    try {
-        const transaction_id = req.body.transaction_id;
-        const bcelTransaction = await axios.get('https://bcel.la:8083/onepay/gettransaction.php', {
-            params: {
-                mcid: process.env.BCEL_MCID_V2,
-                uuid: transaction_id,
-            }
-        })
-        if (!bcelTransaction) next(createError(Status.code.NotFound, Message.fail._notFound('transaction')))
-        console.log('\x1b[31m', bcelTransaction.data, bcelTransaction.data.ticket);
-        const payment = await db.UserPackage.findOne({
-            where: {
-                user_id: req.user.user_id
-            }
-        })
-        if (!payment) next(createError(Status.code.NotFound, Message.fail._notFound('payment')))
-        if (payment.status == 'success') next(createError(Status.code.BadRequest, payment))
 
-        const runnerPackage = await db.Package.findByPk(req.params.packageId)
-        if (!runnerPackage) next(createError(Status.code.NotFound, Message.fail._notFound('package')))
+  const transaction = await db.sequelize.transaction()
+  try {
+    const transaction_id = req.body.transaction_id || req.query.transaction_id
 
-        const paid = await payment.update({
-            ticket_id: bcelTransaction.data.ticket,
-            package_id: runnerPackage.id,
-            total: runnerPackage.price,
-            status: 'success',
-        }, {
-            transaction: transaction
-        })
+    const bcelTransaction = await axios.get('https://bcel.la:8083/onepay/gettransaction.php', {
+      params: {
+        mcid: process.env.BCEL_MCID_V2,
+        uuid: transaction_id,
+      }
+    })
+    if (!bcelTransaction) next(createError(Status.code.NotFound, Message.fail._notFound('transaction')))
+    console.log('\x1b[31m', bcelTransaction.data, bcelTransaction.data.ticket);
+    const payment = await db.UserPackage.findOne({
+      where: {
+        user_id: req.user.user_id
+      }
+    })
+    if (!payment) next(createError(Status.code.NotFound, Message.fail._notFound('payment')))
+    if (payment.status == 'success') next(createError(Status.code.BadRequest, payment))
 
-        await transaction.commit()
+    const runnerPackage = await db.Package.findByPk(req.params.packageId)
+    if (!runnerPackage) next(createError(Status.code.NotFound, Message.fail._notFound('package')))
+
+    const paid = await payment.update({
+      ticket_id: bcelTransaction.data.ticket,
+      package_id: runnerPackage.id,
+      total: runnerPackage.price,
+      status: 'success',
+    }, {
+      transaction: transaction
+    })
+
+    await transaction.commit()
 
 
-        return Response.success(res, Message.success._success, paid);
 
-    } catch (error) {
-        await transaction.rollback()
-        next(error)
-    }
+    return Response.success(res, Message.success._success, paid);
+
+  } catch (error) {
+    await transaction.rollback()
+    next(error)
+  }
 }
