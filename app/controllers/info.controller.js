@@ -265,7 +265,12 @@ exports.findAllRanking = async (req, res, next) => {
         offset: (page - 1) * per_page,
         subQuery: false,
         attributes: [[db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'],
-        include: includeUser
+        include: {
+          model: db.User,
+          required: true,
+          attributes: ['id', 'name', 'email', 'phone'],
+          include: includeUser
+        }
       })
 
       rannkingData.data = ranking.rows
