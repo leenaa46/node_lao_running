@@ -62,7 +62,7 @@ function createPackageResult(count, pack, encryptedPassword) {
       runnerResultFakers.push(
         user.createRunResult({
           time: faker.datatype.number({ min: 1000, max: 6200 }),
-          range: faker.datatype.float({ min: 0.5, max: 5 }),
+          range: (Math.random() * (5 - 0.02) + 0.0200).toFixed(2),
           image: faker.image.imageUrl(),
           image_id: 'AAAAAAAA'
         })
