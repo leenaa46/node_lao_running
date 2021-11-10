@@ -141,8 +141,18 @@ exports.getProfile = async (req, res, next) => {
       attributes: ['total_range', 'total_time']
     })
 
+    const userPackage = await req.auth.getUserPackage({
+      where: { status: "success" },
+      attributes: ['package_id', 'status'],
+      include: {
+        model: db.Package,
+        attributes: ['name', 'range']
+      }
+    })
+
     let resData = userProfile.dataValues
     resData.ranking = ranking
+    resData.package = userPackage
 
     return Response.success(res, Message.success._success, resData);
 
