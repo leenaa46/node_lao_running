@@ -17,6 +17,16 @@ module.exports = (sequelize, DataTypes) => {
   };
   Province.init({
     name: DataTypes.STRING
+  createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      default: DataTypes.CURRENT_TIMESTAMP
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      default: DataTypes.CURRENT_TIMESTAMP
+    },
   }, {
     sequelize,
     modelName: 'Province',

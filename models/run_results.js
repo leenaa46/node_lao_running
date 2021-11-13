@@ -48,6 +48,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      default: DataTypes.CURRENT_TIMESTAMP
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      default: DataTypes.CURRENT_TIMESTAMP
+    },
   }, {
     sequelize,
     modelName: 'RunResult',
