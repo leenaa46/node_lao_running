@@ -26,8 +26,8 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
-    value: DataTypes.STRING
-  createdAt: {
+    value: DataTypes.STRING,
+    createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
       default: DataTypes.CURRENT_TIMESTAMP
