@@ -69,10 +69,9 @@ function createPackageResult(count, pack, encryptedPassword) {
       );
     });
 
-
     Promise.all(runnerResultFakers).then((runnerResults) => {
       const summary = runnerResults.reduce((pre, curr) => {
-        let total_range = parseFloat(pre.total_range) + parseFloat(curr.dataValues.range);
+        let total_range = pre.total_range + curr.dataValues.range;
         let total_time = pre.total_time + curr.dataValues.time;
         return {
           total_range,
@@ -82,7 +81,6 @@ function createPackageResult(count, pack, encryptedPassword) {
         total_range: 0,
         total_time: 0,
       });
-      console.log(summary);
       user.createRanking({
         total_range: summary.total_range,
         total_time: summary.total_time

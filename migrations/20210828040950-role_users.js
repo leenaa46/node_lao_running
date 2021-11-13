@@ -3,12 +3,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('role_users', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -24,14 +18,6 @@ module.exports = {
           model: 'roles',
           key: 'id'
         },
-      },
-      createdAt: {
-        type: Sequelize.DATE,
-        default: Sequelize.CURRENT_TIMESTAMP
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        default: Sequelize.CURRENT_TIMESTAMP
       },
     });
   },

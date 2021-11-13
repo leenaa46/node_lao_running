@@ -22,12 +22,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   RoleUser.init({
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER
-    },
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -44,20 +38,11 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      default: DataTypes.CURRENT_TIMESTAMP
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      default: DataTypes.CURRENT_TIMESTAMP
-    },
   }, {
     sequelize,
     modelName: 'RoleUser',
     tableName: 'role_users',
+    timestamps: false
   });
   return RoleUser;
 };
