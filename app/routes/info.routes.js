@@ -26,5 +26,9 @@ module.exports = app => {
   // Get all Ranking.
   router.get("/ranking/", info.findAllRanking);
 
+
+  // Get all Images.
+  router.get("/image/", info.findAllImage);
+
   app.use('/api/info', router);
 }
