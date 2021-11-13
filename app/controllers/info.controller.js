@@ -347,3 +347,19 @@ exports.findAllImage = async (req, res, next) => {
     next(error)
   }
 }
+
+/**
+ * Get all sumary.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.getSumary = async (req, res, next) => {
+  try {
+
+  } catch (error) {
+
+  }
+}
