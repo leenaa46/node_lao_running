@@ -44,7 +44,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('hal_branches', brancheLists, {});
     await queryInterface.bulkInsert('hal_branches', [{
-      id: 253,
+      id: 1000,
       name: "EVO Store",
       tel: '',
       email: '',
