@@ -124,32 +124,6 @@ exports.updateUserLocation = async (req, res, next) => {
  * @returns \app\helpers\response.helper
  */
 exports.getProfile = async (req, res, next) => {
-<<<<<<< HEAD
-    try {
-        const userProfile = await db.UserProfile.findOne({
-            where: {
-                user_id: req.user.user_id
-            },
-            include: {
-                model: db.HalBranche
-            }
-        })
-        if (!userProfile)
-            next(createError(Status.code.NotFound, Message.fail._notFound('user_profile')))
-
-        const ranking = await req.auth.getRanking({
-            attributes: ['total_range', 'total_time']
-        })
-
-        let resData = userProfile.dataValues
-        resData.ranking = ranking
-
-        return Response.success(res, Message.success._success, resData);
-
-    } catch (error) {
-        next(error)
-    }
-=======
   try {
     const userProfile = await db.UserProfile.findOne({
       where: {
@@ -184,7 +158,6 @@ exports.getProfile = async (req, res, next) => {
   } catch (error) {
     next(error)
   }
->>>>>>> 314c001f2ae4d8b2d36e118ac0336dd64ebd7b36
 }
 
 /**
