@@ -249,13 +249,25 @@ exports.findAllRanking = async (req, res, next) => {
         { model: db.UserProfile }
         , {
           model: db.UserPackage,
-          attributes: [],
           where: {
             package_id: packageId,
             status: 'success'
-          }
+          },
+          include: {
+            model: db.Package,
+            attributes: ['range']
+          },
         }]
-      : { model: db.UserProfile }
+      : [
+        { model: db.UserProfile },
+        {
+          model: db.UserPackage,
+          include: {
+            model: db.Package,
+            attributes: ['range']
+          },
+        }
+      ]
     if (per_page) {
       let rannkingData = {}
       page = page && page > 0 ? page : 1
