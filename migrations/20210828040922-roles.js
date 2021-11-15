@@ -14,13 +14,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        default: Sequelize.CURRENT_TIMESTAMP
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+        default: Sequelize.CURRENT_TIMESTAMP
+      },
     });
   },
 

@@ -71,7 +71,7 @@ function createPackageResult(count, pack, encryptedPassword) {
 
     Promise.all(runnerResultFakers).then((runnerResults) => {
       const summary = runnerResults.reduce((pre, curr) => {
-        let total_range = pre.total_range + curr.dataValues.range;
+        let total_range = parseFloat(pre.total_range) + parseFloat(curr.dataValues.range);
         let total_time = pre.total_time + curr.dataValues.time;
         return {
           total_range,

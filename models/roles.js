@@ -2,7 +2,7 @@
 import {
   Model
 }
-from 'sequelize';
+  from 'sequelize';
 import Message from '../app/helpers/message.helper'
 
 module.exports = (sequelize, DataTypes) => {
@@ -31,6 +31,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
 
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      default: DataTypes.CURRENT_TIMESTAMP
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      default: DataTypes.CURRENT_TIMESTAMP
+    },
   }, {
     sequelize,
     modelName: 'Role',

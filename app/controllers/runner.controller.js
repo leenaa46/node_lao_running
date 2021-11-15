@@ -141,8 +141,7 @@ exports.getProfile = async (req, res, next) => {
     })
 
     const userPackage = await req.auth.getUserPackage({
-      where: { status: "success" },
-      attributes: ['package_id', 'status'],
+      attributes: ['package_id', 'status', 'transaction_id'],
       include: {
         model: db.Package,
         attributes: ['name', 'range']
@@ -283,14 +282,18 @@ exports.payBcelQr = async (req, res, next) => {
   try {
     const transaction_id = req.body.transaction_id || req.query.transaction_id
 
-    const bcelTransaction = await axios.get('https://bcel.la:8083/onepay/gettransaction.php', {
-      params: {
-        mcid: process.env.BCEL_MCID_V2,
-        uuid: transaction_id,
-      }
-    })
-    if (!bcelTransaction) next(createError(Status.code.NotFound, Message.fail._notFound('transaction')))
-    console.log('\x1b[31m', bcelTransaction.data, bcelTransaction.data.ticket);
+    let bcelTransaction;
+    try {
+      bcelTransaction = await axios.get('https://bcel.la:8083/onepay/gettransaction.php', {
+        params: {
+          mcid: process.env.BCEL_MCID_V2,
+          uuid: transaction_id,
+        }
+      })
+    } catch (error) {
+      next(createError(Status.code.NotFound, Message.fail._notFound('transaction')))
+    }
+
     const payment = await db.UserPackage.findOne({
       where: {
         user_id: req.user.user_id

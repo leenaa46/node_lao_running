@@ -8,27 +8,35 @@ module.exports = {
       range: 15,
       price: 2,
       description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.',
-      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮີບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ, ໂດຍສະເພາະ ແມ່ນບັນດາແຂວງພາກໃຕ້ ທີ່ມີຜູ້ຕິດເຊື້ອໂຄວິດ-19, ເປັນຈຳນວນຫລາຍ ແລະມີຄວາມຈໍາເປັນທີ່ສຸດ ໃນການນໍາສົ່ງຄົນເຈັບຕິດເຊື້ອ ໄປສະຖານກັກກັນ ແລະ ປິ່ນປົວຕາມຄວາມເໝາະສົມ."
+      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ.",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       name: 'Pro',
       range: 42,
       price: 3,
       description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.',
-      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮີບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ, ໂດຍສະເພາະ ແມ່ນບັນດາແຂວງພາກໃຕ້ ທີ່ມີຜູ້ຕິດເຊື້ອໂຄວິດ-19, ເປັນຈຳນວນຫລາຍ ແລະມີຄວາມຈໍາເປັນທີ່ສຸດ ໃນການນໍາສົ່ງຄົນເຈັບຕິດເຊື້ອ ໄປສະຖານກັກກັນ ແລະ ປິ່ນປົວຕາມຄວາມເໝາະສົມ."
+      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ.",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       name: 'Premium',
       range: 100,
       price: 4,
       description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.',
-      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮີບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ, ໂດຍສະເພາະ ແມ່ນບັນດາແຂວງພາກໃຕ້ ທີ່ມີຜູ້ຕິດເຊື້ອໂຄວິດ-19, ເປັນຈຳນວນຫລາຍ ແລະມີຄວາມຈໍາເປັນທີ່ສຸດ ໃນການນໍາສົ່ງຄົນເຈັບຕິດເຊື້ອ ໄປສະຖານກັກກັນ ແລະ ປິ່ນປົວຕາມຄວາມເໝາະສົມ."
+      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ.",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }, {
       name: 'Ultimate',
       range: 200,
       price: 5,
       description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae labore ducimus minima ea recusandae fugit aspernatur quaerat commodi nobis atque.',
-      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮີບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ, ໂດຍສະເພາະ ແມ່ນບັນດາແຂວງພາກໃຕ້ ທີ່ມີຜູ້ຕິດເຊື້ອໂຄວິດ-19, ເປັນຈຳນວນຫລາຍ ແລະມີຄວາມຈໍາເປັນທີ່ສຸດ ໃນການນໍາສົ່ງຄົນເຈັບຕິດເຊື້ອ ໄປສະຖານກັກກັນ ແລະ ປິ່ນປົວຕາມຄວາມເໝາະສົມ."
+      body: "ການຊ່ວຍເຫຼືອ ພາຫະນະນໍາສົ່ງຄົນເຈັບ ຈໍານວນ 7 ຄັນ ລວມເປັນມູນຄ່າ 31 ລ້ານ 5 ແສນ ເຢັນ (ຫລືປະມານ 3 ແສນ ໂດລາ) ແມ່ນ ຈະໄດ້ ຮບດ່ວນ ແຈກຢາຍ ໃຫ້ບັນດາແຂວງທີ່ມີຄວາມຕ້ອງການ ຢ່າງຮີບດ່ວນ ເພື່ອໃຫ້ທັນຕໍ່ສະພາບການ ທີ່ພະຍາດ COVID-19 ກໍາລັງລະບາດ.",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }
     ], {})
 
@@ -36,37 +44,51 @@ module.exports = {
       {
         package_id: 1,
         value_la: 'ເສື້ອ​ແລ່ນ',
-        value_en: 'Runner’s T-Shirt'
+        value_en: 'Runner’s T-Shirt',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 1,
         value_la: 'e-BIB',
-        value_en: 'e-BIB'
+        value_en: 'e-BIB',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 2,
         value_la: 'ເສື້ອ​ແລ່ນ',
-        value_en: 'Runner’s T-Shirt'
+        value_en: 'Runner’s T-Shirt',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 2,
         value_la: 'e-BIB',
-        value_en: 'e-BIB'
+        value_en: 'e-BIB',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 3,
         value_la: 'ເສື້ອ​ແລ່ນ',
-        value_en: 'Runner’s T-Shirt'
+        value_en: 'Runner’s T-Shirt',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 3,
         value_la: 'e-BIB',
-        value_en: 'e-BIB'
+        value_en: 'e-BIB',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 4,
         value_la: 'ເສື້ອ​ແລ່ນ',
-        value_en: 'Runner’s T-Shirt'
+        value_en: 'Runner’s T-Shirt',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 4,
@@ -84,7 +106,9 @@ module.exports = {
         ranking_la: 'ບໍ່ຈັດອັນດັບ',
         ranking_en: 'none',
         prize_la: 'E-certificate',
-        prize_en: 'E-certificate'
+        prize_en: 'E-certificate',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 1,
@@ -93,7 +117,9 @@ module.exports = {
         ranking_la: 'ທີ 1',
         ranking_en: '1st',
         prize_la: 'ຕຸກ​ນ້ຳ, ກະ​ເປົາ​ຄາດ​ແອວ',
-        prize_en: 'Eco water bottle, waist bag'
+        prize_en: 'Eco water bottle, waist bag',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 1,
@@ -102,7 +128,9 @@ module.exports = {
         ranking_la: 'ທີ 2',
         ranking_en: '2nd',
         prize_la: 'ຕຸກ​ນ້ຳ, ກະ​ເປົາ​ຄາດ​ແອວ',
-        prize_en: 'Eco water bottle, waist bag'
+        prize_en: 'Eco water bottle, waist bag',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 1,
@@ -122,7 +150,9 @@ module.exports = {
         ranking_la: 'ບໍ່ຈັດອັນດັບ',
         ranking_en: 'none',
         prize_la: 'E-certificate',
-        prize_en: 'E-certificate'
+        prize_en: 'E-certificate',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 2,
@@ -131,7 +161,9 @@ module.exports = {
         ranking_la: 'ທີ 1',
         ranking_en: '1st',
         prize_la: 'ຕຸກ​ນ້ຳ, ກະ​ເປົາ​ພາຍ, ຫູ​ຟັງ​ນ້ອຍ, ຂັນ',
-        prize_en: 'Eco water bottle, bag, small headphone, trophy'
+        prize_en: 'Eco water bottle, bag, small headphone, trophy',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 2,
@@ -140,7 +172,9 @@ module.exports = {
         ranking_la: 'ທີ 2',
         ranking_en: '2nd',
         prize_la: 'ຕຸກ​ນ້ຳ, ກະ​ເປົາ​ພາຍ, ຫູ​ຟັງ​ນ້ອຍ',
-        prize_en: 'Eco water bottle, bag, small headphone'
+        prize_en: 'Eco water bottle, bag, small headphone',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 2,
@@ -160,7 +194,9 @@ module.exports = {
         ranking_la: 'ບໍ່ຈັດອັນດັບ',
         ranking_en: 'none',
         prize_la: 'E-certificate',
-        prize_en: 'E-certificate'
+        prize_en: 'E-certificate',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 3,
@@ -169,7 +205,9 @@ module.exports = {
         ranking_la: 'ທີ 1',
         ranking_en: '1st',
         prize_la: 'ຕຸກ​ນ້ຳ, ກະ​ເປົາ​ພາຍ, ຫູ​ຟັງ​ໃຫຍ່່, ​ໂມງ, ຂັນ',
-        prize_en: 'Eco water bottle, bag, headphone, watch, trophy'
+        prize_en: 'Eco water bottle, bag, headphone, watch, trophy',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 3,
@@ -178,7 +216,9 @@ module.exports = {
         ranking_la: 'ທີ 2',
         ranking_en: '2nd',
         prize_la: 'ຕຸກ​ນ້ຳ, ກະ​ເປົາ​ພາຍ, ຫູ​ຟັງ​ໃຫຍ່່, ​ໂມງ',
-        prize_en: 'Eco water bottle, bag, headphone, watch'
+        prize_en: 'Eco water bottle, bag, headphone, watch',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 3,
@@ -198,7 +238,9 @@ module.exports = {
         ranking_la: 'ບໍ່ຈັດອັນດັບ',
         ranking_en: 'none',
         prize_la: 'E-certificate',
-        prize_en: 'E-certificate'
+        prize_en: 'E-certificate',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 4,
@@ -207,7 +249,9 @@ module.exports = {
         ranking_la: 'ທີ 1',
         ranking_en: '1st',
         prize_la: 'ຕຸກ​ນ້ຳ, smartwatch, ​ເກີບ​ແລ່ນ, ຂັນ',
-        prize_en: 'Eco water bottle, smartwatch, trainers, trophy'
+        prize_en: 'Eco water bottle, smartwatch, trainers, trophy',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 4,
@@ -216,7 +260,9 @@ module.exports = {
         ranking_la: 'ທີ 2',
         ranking_en: '2nd',
         prize_la: 'ຕຸກ​ນ້ຳ, ຫູ​ຟັງ​ໃຫຍ່, smartwatch, ​​ເສື້ອ​ແຈັກ​ເກັດ, ຂັນ',
-        prize_en: 'Eco water bottle, headphone, smartwatch, jacket, trophy'
+        prize_en: 'Eco water bottle, headphone, smartwatch, jacket, trophy',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 4,
@@ -234,30 +280,51 @@ module.exports = {
       {
         package_id: 1,
         value: 'https://unsplash.com/photos/CVU_BwsEoJg',
+
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 1,
         value: 'https://images.unsplash.com/photo-1541983663620-7571a820610c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzh8fHNwb3J0c3dlYXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 2,
         value: 'https://unsplash.com/photos/CVU_BwsEoJg',
+
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 2,
         value: 'https://images.unsplash.com/photo-1541983663620-7571a820610c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzh8fHNwb3J0c3dlYXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 3,
         value: 'https://unsplash.com/photos/CVU_BwsEoJg',
+
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 3,
         value: 'https://images.unsplash.com/photo-1541983663620-7571a820610c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzh8fHNwb3J0c3dlYXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 4,
         value: 'https://unsplash.com/photos/CVU_BwsEoJg',
+
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         package_id: 4,

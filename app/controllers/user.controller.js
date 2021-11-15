@@ -45,6 +45,16 @@ exports.register = async (req, res, next) => {
       transaction: transaction
     });
 
+    const roleUser = await db.Role.findOne({
+      where: {
+        name: 'User'
+      }
+    })
+
+    await user.addRole(roleUser, {
+      transaction: transaction
+    })
+
     let profile_image = req.file ? await Image.upload(req.file) : null
 
     await user.createUserProfile({
@@ -59,23 +69,16 @@ exports.register = async (req, res, next) => {
       transaction: transaction
     })
 
-    const roleUser = await db.Role.findOne({
-      where: {
-        name: 'User'
-      }
-    })
 
-    user.addRoles([roleUser])
 
     const token = jwt.sign({
-        user_id: user.id,
-        email,
-      },
+      user_id: user.id,
+      email,
+    },
       process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      }
+      expiresIn: "30d",
+    }
     );
-
 
     await transaction.commit()
 
@@ -88,6 +91,8 @@ exports.register = async (req, res, next) => {
       role: await user.getRoles(),
       token: token,
     }
+
+
     return Response.success(res, Message.success._success, userData);
 
   } catch (error) {
@@ -118,12 +123,12 @@ exports.login = async (req, res, next) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       const role = await user.getRoles()
       const token = jwt.sign({
-          user_id: user.id,
-          email,
-        },
+        user_id: user.id,
+        email,
+      },
         process.env.JWT_SECRET, {
-          expiresIn: "30d",
-        }
+        expiresIn: "30d",
+      }
       );
 
       const userData = {

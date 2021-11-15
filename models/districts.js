@@ -34,6 +34,16 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      default: DataTypes.CURRENT_TIMESTAMP
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      default: DataTypes.CURRENT_TIMESTAMP
+    },
   }, {
     sequelize,
     modelName: 'District',

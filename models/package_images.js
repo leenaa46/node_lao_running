@@ -26,7 +26,17 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
-    value: DataTypes.STRING
+    value: DataTypes.STRING,
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      default: DataTypes.CURRENT_TIMESTAMP
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      default: DataTypes.CURRENT_TIMESTAMP
+    },
   }, {
     sequelize,
     modelName: 'PackageImage',

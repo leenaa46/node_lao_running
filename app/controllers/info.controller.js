@@ -300,3 +300,66 @@ exports.findAllRanking = async (req, res, next) => {
     next(error)
   }
 }
+
+/**
+ * Get all Image.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.findAllImage = async (req, res, next) => {
+  try {
+    const per_page = Number.parseInt(req.query.per_page)
+    let page = Number.parseInt(req.query.page)
+
+    let runResultData = {};
+    if (per_page) {
+      page = page && page > 0 ? page : 1
+
+      const runResults = await db.RunResult.findAndCountAll({
+        limit: per_page,
+        offset: (page - 1) * per_page,
+        subQuery: false,
+        order: [['id', 'DESC']],
+        group: ['user_id'],
+      })
+
+      runResultData.data = runResults.rows
+      runResultData.pagination = {
+        total: runResults.count,
+        per_page: per_page,
+        total_pages: Math.ceil(runResults.count / per_page),
+        current_page: page,
+
+      }
+
+      return Response.success(res, Message.success._success, runResultData);
+    }
+
+    runResultData = await db.RunResult.findAll({
+      order: [['id', 'DESC']],
+      group: ['user_id'],
+    })
+    return Response.success(res, Message.success._success, runResultData);
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
+ * Get all sumary.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.getSumary = async (req, res, next) => {
+  try {
+
+  } catch (error) {
+
+  }
+}

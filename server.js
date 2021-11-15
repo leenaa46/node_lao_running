@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 })
 
 app.use((error, req, res, next) => {
-  console.log('\x1b[31m', error);
+  console.log(error);
   Response.error(res, error)
 })
 
