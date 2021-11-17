@@ -245,7 +245,8 @@ exports.getBcelQr = async (req, res, next) => {
         amount: runnerPackage.price,
       }
 
-      const qr = await QRCode.toDataURL(Onepay.getCode(data))
+      const qr_number = Onepay.getCode(data)
+      const qr = await QRCode.toDataURL(qr_number)
 
       const paymentData = {
         id: userPackage.id,
@@ -255,6 +256,7 @@ exports.getBcelQr = async (req, res, next) => {
         transaction_id: userPackage.transaction_id,
         invoice_id: userPackage.invoice_id,
         terminal_id: userPackage.terminal_id,
+        qr_number: qr_number,
         payment_qr: qr
       }
 
