@@ -8,7 +8,7 @@ import Message from './app/helpers/message.helper'
 const app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:8080", "46.101.29.162"]
+  origin: ["http://localhost:8080", "http://46.101.29.162"]
 };
 
 app.use(cors(corsOptions));
