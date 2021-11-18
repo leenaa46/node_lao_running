@@ -202,6 +202,7 @@ exports.isUnique = async (req, res, next) => {
  * @returns \app\helpers\response.helper
  */
 exports.getBcelQr = async (req, res, next) => {
+<<<<<<< HEAD
     const transaction = await db.sequelize.transaction()
     try {
         const runnerPackage = await db.Package.findByPk(req.params.packageId)
@@ -227,6 +228,64 @@ exports.getBcelQr = async (req, res, next) => {
                 transaction: transaction
             })
         }
+=======
+  const transaction = await db.sequelize.transaction()
+  try {
+    const runnerPackage = await db.Package.findByPk(req.params.packageId)
+    if (!runnerPackage) next(createError(Status.code.NotFound, Message.fail._notFound('runner_package')))
+
+    let userPackage = await db.UserPackage.findOne({
+      where: {
+        user_id: req.user.user_id
+      },
+    })
+
+    /**
+     * @overide  userPackage
+     */
+    if (!userPackage) {
+      userPackage = await runnerPackage.createUserPackage({
+        total: runnerPackage.price,
+        user_id: req.user.user_id,
+        transaction_id: await UniqueId.generateRandomTransactionId(),
+        invoice_id: await UniqueId.generateRandomInvoiceId(),
+        terminal_id: await UniqueId.generateRandomTerminalId(),
+      }, {
+        transaction: transaction
+      })
+    }
+
+    if (userPackage.status == 'pending') {
+      await userPackage.update({
+        package_id: runnerPackage.id,
+        total: runnerPackage.price,
+      }, {
+        transaction: transaction
+      })
+
+      const data = {
+        transactionid: userPackage.transaction_id,
+        invoiceid: userPackage.invoice_id,
+        terminalid: userPackage.terminal_id,
+        description: Message.description._paymentDescription(runnerPackage.name),
+        amount: runnerPackage.price,
+      }
+
+      const qr_number = Onepay.getCode(data)
+      const qr = await QRCode.toDataURL(qr_number)
+
+      const paymentData = {
+        id: userPackage.id,
+        package_id: userPackage.package_id,
+        total: userPackage.total,
+        status: userPackage.status,
+        transaction_id: userPackage.transaction_id,
+        invoice_id: userPackage.invoice_id,
+        terminal_id: userPackage.terminal_id,
+        qr_number: qr_number,
+        payment_qr: qr
+      }
+>>>>>>> 071c165d78f961004a8699137aa8c5d3789bae97
 
         if (userPackage.status == 'pending') {
             await userPackage.update({
