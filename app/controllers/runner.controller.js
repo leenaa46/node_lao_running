@@ -202,7 +202,6 @@ exports.isUnique = async (req, res, next) => {
  * @returns \app\helpers\response.helper
  */
 exports.getBcelQr = async (req, res, next) => {
-<<<<<<< HEAD
     const transaction = await db.sequelize.transaction()
     try {
         const runnerPackage = await db.Package.findByPk(req.params.packageId)
@@ -228,64 +227,6 @@ exports.getBcelQr = async (req, res, next) => {
                 transaction: transaction
             })
         }
-=======
-  const transaction = await db.sequelize.transaction()
-  try {
-    const runnerPackage = await db.Package.findByPk(req.params.packageId)
-    if (!runnerPackage) next(createError(Status.code.NotFound, Message.fail._notFound('runner_package')))
-
-    let userPackage = await db.UserPackage.findOne({
-      where: {
-        user_id: req.user.user_id
-      },
-    })
-
-    /**
-     * @overide  userPackage
-     */
-    if (!userPackage) {
-      userPackage = await runnerPackage.createUserPackage({
-        total: runnerPackage.price,
-        user_id: req.user.user_id,
-        transaction_id: await UniqueId.generateRandomTransactionId(),
-        invoice_id: await UniqueId.generateRandomInvoiceId(),
-        terminal_id: await UniqueId.generateRandomTerminalId(),
-      }, {
-        transaction: transaction
-      })
-    }
-
-    if (userPackage.status == 'pending') {
-      await userPackage.update({
-        package_id: runnerPackage.id,
-        total: runnerPackage.price,
-      }, {
-        transaction: transaction
-      })
-
-      const data = {
-        transactionid: userPackage.transaction_id,
-        invoiceid: userPackage.invoice_id,
-        terminalid: userPackage.terminal_id,
-        description: Message.description._paymentDescription(runnerPackage.name),
-        amount: runnerPackage.price,
-      }
-
-      const qr_number = Onepay.getCode(data)
-      const qr = await QRCode.toDataURL(qr_number)
-
-      const paymentData = {
-        id: userPackage.id,
-        package_id: userPackage.package_id,
-        total: userPackage.total,
-        status: userPackage.status,
-        transaction_id: userPackage.transaction_id,
-        invoice_id: userPackage.invoice_id,
-        terminal_id: userPackage.terminal_id,
-        qr_number: qr_number,
-        payment_qr: qr
-      }
->>>>>>> 071c165d78f961004a8699137aa8c5d3789bae97
 
         if (userPackage.status == 'pending') {
             await userPackage.update({
@@ -303,7 +244,8 @@ exports.getBcelQr = async (req, res, next) => {
                 amount: runnerPackage.price,
             }
 
-            const qr = await QRCode.toDataURL(Onepay.getCode(data))
+            const qr_number = Onepay.getCode(data)
+            const qr = await QRCode.toDataURL(qr_number)
 
             const paymentData = {
                 id: userPackage.id,
@@ -313,6 +255,7 @@ exports.getBcelQr = async (req, res, next) => {
                 transaction_id: userPackage.transaction_id,
                 invoice_id: userPackage.invoice_id,
                 terminal_id: userPackage.terminal_id,
+                qr_number: qr_number,
                 payment_qr: qr
             }
 
@@ -325,62 +268,4 @@ exports.getBcelQr = async (req, res, next) => {
         await transaction.rollback()
         next(error)
     }
-}
-
-/**
- * Pay Bcel Qr.
- *
- * @param {*} req
- * @param {*} res
- *
- * @returns \app\helpers\response.helper
- */
-exports.payBcelQr = async (req, res, next) => {
-
-  const transaction = await db.sequelize.transaction()
-  try {
-    const transaction_id = req.body.transaction_id || req.query.transaction_id
-
-    let bcelTransaction;
-    try {
-      bcelTransaction = await axios.get('https://bcel.la:8083/onepay/gettransaction.php', {
-        params: {
-          mcid: process.env.BCEL_MCID_V2,
-          uuid: transaction_id,
-        }
-      })
-    } catch (error) {
-      next(createError(Status.code.NotFound, Message.fail._notFound('transaction')))
-    }
-
-    const payment = await db.UserPackage.findOne({
-      where: {
-        user_id: req.user.user_id
-      }
-    })
-    if (!payment) next(createError(Status.code.NotFound, Message.fail._notFound('payment')))
-    if (payment.status == 'success') next(createError(Status.code.BadRequest, payment))
-
-    const runnerPackage = await db.Package.findByPk(req.params.packageId)
-    if (!runnerPackage) next(createError(Status.code.NotFound, Message.fail._notFound('package')))
-
-    const paid = await payment.update({
-      ticket_id: bcelTransaction.data.ticket,
-      package_id: runnerPackage.id,
-      total: runnerPackage.price,
-      status: 'success',
-    }, {
-      transaction: transaction
-    })
-
-    await transaction.commit()
-
-
-
-    return Response.success(res, Message.success._success, paid);
-
-  } catch (error) {
-    await transaction.rollback()
-    next(error)
-  }
 }
