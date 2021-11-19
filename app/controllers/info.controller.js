@@ -326,28 +326,35 @@ exports.findAllImage = async (req, res, next) => {
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
 
-    let runResultData = {};
+    const runImageData = {};
+
+    let runImages = await db.RunResult.findAll({
+      order: [['id', 'DESC']],
+      group: ['user_id'],
+    })
     if (per_page) {
       page = page && page > 0 ? page : 1
 
-      const runResults = await db.RunResult.findAndCountAll({
+      const totalCount = Object.keys(runImages).length
+
+
+      runImages = await db.RunResult.findAll({
         limit: per_page,
         offset: (page - 1) * per_page,
         subQuery: false,
         order: [['id', 'DESC']],
         group: ['user_id'],
       })
-
-      runResultData.data = runResults.rows
-      runResultData.pagination = {
-        total: runResults.count,
+      runImageData.data = runImages
+      runImageData.pagination = {
+        total: totalCount,
         per_page: per_page,
-        total_pages: Math.ceil(runResults.count / per_page),
+        total_pages: Math.ceil(totalCount / per_page),
         current_page: page,
 
       }
 
-      return Response.success(res, Message.success._success, runResultData);
+      return Response.success(res, Message.success._success, runImageData);
     }
 
     runResultData = await db.RunResult.findAll({
