@@ -93,7 +93,11 @@ exports.updateUserLocation = async (req, res, next) => {
     let hal_branche_id = req.body.hal_branche_id
 
     if (!hal_branche_id) {
-      const Evo = await db.HalBranche.findOne({ where: { name: "EVO Store" } })
+      const Evo = await db.HalBranche.findOne({
+        where: {
+          name: "EVO Store"
+        }
+      })
       if (!Evo)
         next(createError(Status.code.NotFound, Message.fail._notFound('evo_store')))
 
@@ -324,6 +328,54 @@ exports.payBcelQr = async (req, res, next) => {
 
   } catch (error) {
     await transaction.rollback()
+    next(error)
+  }
+}
+
+/**
+ * Get all runner.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.getAllRunner = async (req, res, next) => {
+  try {
+    const bib = req.query.bib || req.body.bib
+    const condition = bib ? {
+      bib: bib
+    } : null;
+
+    const userProfile = await db.UserProfile.findAll({
+      where: condition,
+      include: [{
+          model: db.HalBranche
+        },
+        {
+          model: db.User,
+          attributes: ['id', 'name', 'email', 'phone'],
+          include: [{
+            model: db.Ranking,
+            attributes: ['total_range', 'total_time']
+          }, {
+            model: db.UserPackage,
+            attributes: ['package_id', 'status', 'transaction_id'],
+            include: {
+              model: db.Package,
+              attributes: ['name', 'range']
+            }
+          }]
+        },
+      ],
+      order: [
+        ['id', 'DESC']
+      ]
+    })
+
+    return Response.success(res, Message.success._success, userProfile);
+
+  } catch (error) {
     next(error)
   }
 }

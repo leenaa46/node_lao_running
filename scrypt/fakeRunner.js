@@ -43,7 +43,7 @@ function createPackageResult(count, pack, encryptedPassword) {
       surname: faker.name.lastName(),
       gender: faker.random.arrayElement(['male', 'female']),
       dob: faker.date.past(20),
-      bib: "BIB: " + (user.id.toString().padStart(5, '0')),
+      bib: user.id.toString().padStart(5, '0'),
       national_id: 126,
       profile_image: faker.image.imageUrl(),
       profile_image_id: 'AAAAAAAA'

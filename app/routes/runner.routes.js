@@ -29,5 +29,8 @@ module.exports = app => {
       // Update User Profile
       router.post("/reward-location", auth, role.hasRole('User'), runner.updateUserLocation);
 
+      // Get All User Profile
+      router.get("/all", auth, role.hasRole('Admin'), runner.getAllRunner);
+
       app.use('/api/runner', router);
 }

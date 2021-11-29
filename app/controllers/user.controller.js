@@ -63,7 +63,7 @@ exports.register = async (req, res, next) => {
       gender: gender,
       national_id: national_id,
       dob: dob,
-      bib: "BIB: " + (user.id.toString().padStart(5, '0')),
+      bib: user.id.toString().padStart(5, '0'),
       profile_image: profile_image ? profile_image.secure_url : null,
       profile_image_id: profile_image ? profile_image.public_id : null,
     }, {
