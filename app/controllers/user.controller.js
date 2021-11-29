@@ -63,6 +63,7 @@ exports.register = async (req, res, next) => {
       gender: gender,
       national_id: national_id,
       dob: dob,
+      bib: "BIB: " + (user.id.toString().padStart(5, '0')),
       profile_image: profile_image ? profile_image.secure_url : null,
       profile_image_id: profile_image ? profile_image.public_id : null,
     }, {
@@ -72,12 +73,12 @@ exports.register = async (req, res, next) => {
 
 
     const token = jwt.sign({
-      user_id: user.id,
-      email,
-    },
+        user_id: user.id,
+        email,
+      },
       process.env.JWT_SECRET, {
-      expiresIn: "30d",
-    }
+        expiresIn: "30d",
+      }
     );
 
     await transaction.commit()
@@ -123,12 +124,12 @@ exports.login = async (req, res, next) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       const role = await user.getRoles()
       const token = jwt.sign({
-        user_id: user.id,
-        email,
-      },
+          user_id: user.id,
+          email,
+        },
         process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      }
+          expiresIn: "30d",
+        }
       );
 
       const userData = {

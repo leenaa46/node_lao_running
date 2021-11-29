@@ -1,7 +1,9 @@
 import db from '../models'
 import faker from 'faker'
 import bcrypt from 'bcryptjs'
-import { create } from 'qrcode'
+import {
+  create
+} from 'qrcode'
 
 db.Package.findAll()
   .then(packages => {
@@ -11,8 +13,7 @@ db.Package.findAll()
       console.log("bcrypt.hash: ", error);
     })
     return true
-  }
-  ).catch(error => {
+  }).catch(error => {
     console.log("Package.findAll: ", error);
   });
 
@@ -26,7 +27,10 @@ function createPackageResult(count, pack, encryptedPassword) {
     userFakers.push(db.User.create({
       name: faker.name.firstName(),
       email: faker.internet.email(),
-      phone: faker.datatype.number({ min: 20000000, max: 99999999 }),
+      phone: faker.datatype.number({
+        min: 20000000,
+        max: 99999999
+      }),
       is_active: 1,
       password: encryptedPassword
     }));
@@ -39,6 +43,7 @@ function createPackageResult(count, pack, encryptedPassword) {
       surname: faker.name.lastName(),
       gender: faker.random.arrayElement(['male', 'female']),
       dob: faker.date.past(20),
+      bib: "BIB: " + (user.id.toString().padStart(5, '0')),
       national_id: 126,
       profile_image: faker.image.imageUrl(),
       profile_image_id: 'AAAAAAAA'
@@ -61,7 +66,10 @@ function createPackageResult(count, pack, encryptedPassword) {
     fakerBuilder.forEach(() => {
       runnerResultFakers.push(
         user.createRunResult({
-          time: faker.datatype.number({ min: 1000, max: 6200 }),
+          time: faker.datatype.number({
+            min: 1000,
+            max: 6200
+          }),
           range: (Math.random() * (5 - 0.02) + 0.0200).toFixed(2),
           image: faker.image.imageUrl(),
           image_id: 'AAAAAAAA'
@@ -90,5 +98,3 @@ function createPackageResult(count, pack, encryptedPassword) {
 
   Promise.all(userFakers).then((users) => users.forEach((user) => userCreatedState(user)));
 }
-
-
