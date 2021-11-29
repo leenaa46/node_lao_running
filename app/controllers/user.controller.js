@@ -170,3 +170,100 @@ exports.me = async (req, res, next) => {
     next(error)
   }
 }
+
+/**
+ * Create Admin.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.createAdmin = async (req, res, next) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    const {
+      name,
+      phone,
+      email,
+      password,
+    } = req.body
+
+    const encryptedPassword = password ? await bcrypt.hash(password, 10) : null;
+
+    const user = await db.User.create({
+      name: name,
+      phone: phone,
+      email: email,
+      password: encryptedPassword,
+      is_active: true
+    }, {
+      transaction: transaction
+    });
+
+    const roleUser = await db.Role.findOne({
+      where: {
+        name: 'Admin'
+      }
+    })
+
+    await user.addRole(roleUser, {
+      transaction: transaction
+    })
+
+    const token = jwt.sign({
+        user_id: user.id,
+        email,
+      },
+      process.env.JWT_SECRET, {
+        expiresIn: "30d",
+      }
+    );
+
+    await transaction.commit()
+
+    const userData = {
+      id: user.id,
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+      phone: user.phone,
+      role: await user.getRoles(),
+      token: token,
+    }
+
+
+    return Response.success(res, Message.success._success, userData);
+
+  } catch (error) {
+    await transaction.rollback()
+    next(error)
+  }
+}
+
+/**
+ * Get Admin.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.getAllAdmin = async (req, res, next) => {
+  try {
+    const roleUser = await db.Role.findOne({
+      where: {
+        name: 'Admin'
+      },
+    })
+
+    const userData = await roleUser.getUsers({
+      attributes: ['id', 'name', 'email', 'phone']
+    })
+
+    return Response.success(res, Message.success._success, userData);
+
+  } catch (error) {
+    next(error)
+  }
+}
