@@ -16,6 +16,24 @@ module.exports = {
           key: 'id'
         },
       },
+      approved_by: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'users',
+          key: 'id'
+        },
+      },
+      status: {
+        type: Sequelize.ENUM('pending', 'approve', 'reject'),
+        allowNull: false,
+        defaultValue: 'pending'
+      },
+      reject_description: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+
       range: {
         type: Sequelize.DOUBLE,
         allowNull: false

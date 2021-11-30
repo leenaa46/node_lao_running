@@ -11,10 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       RunResult.belongsTo(models.User, {
-        onDelete: 'cascade',
-        onUpdate: 'cascade',
-        foreignKey: 'user_id'
-      })
+          onDelete: 'cascade',
+          onUpdate: 'cascade',
+          foreignKey: 'user_id'
+        }),
+        RunResult.belongsTo(models.User, {
+          onDelete: 'cascade',
+          onUpdate: 'cascade',
+          foreignKey: 'approved_by',
+          as: "ApproveBy"
+        })
     }
   };
   RunResult.init({
@@ -32,6 +38,14 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
+    approved_by: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'users',
+        key: 'id'
+      },
+    },
     range: {
       type: DataTypes.DOUBLE,
       allowNull: false
@@ -39,6 +53,15 @@ module.exports = (sequelize, DataTypes) => {
     time: {
       type: DataTypes.DOUBLE,
       allowNull: false
+    },
+    status: {
+      type: DataTypes.ENUM('pending', 'approve', 'reject'),
+      allowNull: false,
+      defaultValue: 'pending'
+    },
+    reject_description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
     image: {
       type: DataTypes.STRING,

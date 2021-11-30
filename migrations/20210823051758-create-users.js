@@ -8,6 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      package_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'packages',
+          key: 'id'
+        },
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false

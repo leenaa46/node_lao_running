@@ -75,6 +75,10 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       }
     },
+    size_shirt: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     hal_branche_id: {
       type: DataTypes.INTEGER,
       allowNull: true,

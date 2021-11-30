@@ -91,6 +91,7 @@ exports.updateUserLocation = async (req, res, next) => {
       next(createError(Status.code.NotFound, Message.fail._notFound('user_profile')))
 
     let hal_branche_id = req.body.hal_branche_id
+    const size = req.body.size
 
     if (!hal_branche_id) {
       const Evo = await db.HalBranche.findOne({
@@ -106,6 +107,7 @@ exports.updateUserLocation = async (req, res, next) => {
 
     const updateData = await userProfile.update({
       hal_branche_id,
+      size_shirt: size
     }, {
       transaction: transaction,
     })
@@ -320,6 +322,12 @@ exports.payBcelQr = async (req, res, next) => {
       transaction: transaction
     })
 
+    await req.auth.update({
+      package_id: runnerPackage.id,
+    }, {
+      transaction: transaction
+    })
+
     await transaction.commit()
 
 
@@ -342,18 +350,32 @@ exports.payBcelQr = async (req, res, next) => {
  */
 exports.getAllRunner = async (req, res, next) => {
   try {
-    const bib = req.query.bib || req.body.bib
+    const bib = req.query.bib
+    const package_runner = req.query.package_runner
+
     const condition = bib ? {
       bib: bib
     } : null;
 
+    let package_runnerCondition = null;
+
+    if (package_runner) {
+      package_runnerCondition = package_runner == "free" ? {
+        package_id: null
+      } : {
+        package_id: package_runner
+      }
+    }
+
     const userProfile = await db.UserProfile.findAll({
       where: condition,
       include: [{
-          model: db.HalBranche
+          model: db.HalBranche,
         },
         {
           model: db.User,
+          where: package_runnerCondition,
+          required: true,
           attributes: ['id', 'name', 'email', 'phone'],
           include: [{
             model: db.Ranking,

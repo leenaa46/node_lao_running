@@ -39,7 +39,13 @@ exports.findAllPackage = async (req, res, next) => {
         limit: per_page,
         offset: (page - 1) * per_page,
         subQuery: false,
-        include: [{ model: db.PackageRegisterReward }, { model: db.PackageCompleteReward }, { model: db.PackageImage }]
+        include: [{
+          model: db.PackageRegisterReward
+        }, {
+          model: db.PackageCompleteReward
+        }, {
+          model: db.PackageImage
+        }]
       })
 
       packageData.myPackage = myPackage
@@ -55,7 +61,13 @@ exports.findAllPackage = async (req, res, next) => {
     }
 
     const packages = await db.Package.findAll({
-      include: [{ model: db.PackageRegisterReward }, { model: db.PackageCompleteReward }, { model: db.PackageImage }]
+      include: [{
+        model: db.PackageRegisterReward
+      }, {
+        model: db.PackageCompleteReward
+      }, {
+        model: db.PackageImage
+      }]
     })
     const data = {
       myPackage,
@@ -81,7 +93,13 @@ exports.findOnePackage = async (req, res, next) => {
   try {
     const id = req.params.id
     const packages = await db.Package.findByPk(id, {
-      include: [{ model: db.PackageRegisterReward }, { model: db.PackageCompleteReward }, { model: db.PackageImage }]
+      include: [{
+        model: db.PackageRegisterReward
+      }, {
+        model: db.PackageCompleteReward
+      }, {
+        model: db.PackageImage
+      }]
     })
 
     return Response.success(res, Message.success._success, packages);
@@ -244,22 +262,23 @@ exports.findAllRanking = async (req, res, next) => {
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
     const packageId = Number.parseInt(req.query.package)
-    const includeUser = packageId
-      ? [
-        { model: db.UserProfile }
-        , {
-          model: db.UserPackage,
-          where: {
-            package_id: packageId,
-            status: 'success'
-          },
-          include: {
-            model: db.Package,
-            attributes: ['range']
-          },
-        }]
-      : [
-        { model: db.UserProfile },
+    const includeUser = packageId ?
+      [{
+        model: db.UserProfile
+      }, {
+        model: db.UserPackage,
+        where: {
+          package_id: packageId,
+          status: 'success'
+        },
+        include: {
+          model: db.Package,
+          attributes: ['range']
+        },
+      }] :
+      [{
+          model: db.UserProfile
+        },
         {
           model: db.UserPackage,
           include: {
@@ -276,7 +295,9 @@ exports.findAllRanking = async (req, res, next) => {
         limit: per_page,
         offset: (page - 1) * per_page,
         subQuery: false,
-        attributes: [[db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'],
+        attributes: [
+          [db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'
+        ],
         include: {
           model: db.User,
           required: true,
@@ -298,7 +319,9 @@ exports.findAllRanking = async (req, res, next) => {
     }
 
     const ranking = await db.Ranking.findAll({
-      attributes: [[db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'],
+      attributes: [
+        [db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'
+      ],
       include: {
         model: db.User,
         required: true,
@@ -329,7 +352,12 @@ exports.findAllImage = async (req, res, next) => {
     const runImageData = {};
 
     let runImages = await db.RunResult.findAll({
-      order: [['id', 'DESC']],
+      where: {
+        status: 'approve'
+      },
+      order: [
+        ['id', 'DESC']
+      ],
       group: ['user_id'],
     })
     if (per_page) {
@@ -342,7 +370,9 @@ exports.findAllImage = async (req, res, next) => {
         limit: per_page,
         offset: (page - 1) * per_page,
         subQuery: false,
-        order: [['id', 'DESC']],
+        order: [
+          ['id', 'DESC']
+        ],
         group: ['user_id'],
       })
       runImageData.data = runImages
@@ -358,7 +388,9 @@ exports.findAllImage = async (req, res, next) => {
     }
 
     runResultData = await db.RunResult.findAll({
-      order: [['id', 'DESC']],
+      order: [
+        ['id', 'DESC']
+      ],
       group: ['user_id'],
     })
     return Response.success(res, Message.success._success, runResultData);

@@ -2,7 +2,7 @@
 import {
   Model
 }
-  from 'sequelize';
+from 'sequelize';
 import Message from '../app/helpers/message.helper'
 
 module.exports = (sequelize, DataTypes) => {
@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.Ranking, {
         foreignKey: 'user_id'
       })
+
+      User.belongsTo(models.Package, {
+        foreignKey: 'package_id'
+      })
     }
   };
   User.init({
@@ -41,6 +45,14 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
+    },
+    package_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'packages',
+        key: 'id'
+      },
     },
     name: {
       type: DataTypes.STRING,

@@ -36,6 +36,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
+      size_shirt: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       national_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

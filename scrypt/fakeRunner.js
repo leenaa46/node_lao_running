@@ -61,6 +61,10 @@ function createPackageResult(count, pack, encryptedPassword) {
 
     user.addRoles([2])
 
+    user.update({
+      package_id: pack.id
+    })
+
 
     let runnerResultFakers = [];
     fakerBuilder.forEach(() => {
@@ -72,7 +76,9 @@ function createPackageResult(count, pack, encryptedPassword) {
           }),
           range: (Math.random() * (5 - 0.02) + 0.0200).toFixed(2),
           image: faker.image.imageUrl(),
-          image_id: 'AAAAAAAA'
+          image_id: 'AAAAAAAA',
+          status: "approve",
+          approved_by: 1
         })
       );
     });
