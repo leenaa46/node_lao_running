@@ -261,32 +261,28 @@ exports.findAllRanking = async (req, res, next) => {
   try {
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
-    const packageId = Number.parseInt(req.query.package)
-    const includeUser = packageId ?
-      [{
-        model: db.UserProfile
-      }, {
-        model: db.UserPackage,
-        where: {
-          package_id: packageId,
-          status: 'success'
-        },
-        include: {
-          model: db.Package,
-          attributes: ['range']
-        },
-      }] :
-      [{
-          model: db.UserProfile
-        },
-        {
-          model: db.UserPackage,
-          include: {
-            model: db.Package,
-            attributes: ['range']
-          },
-        }
-      ]
+    const packageId = req.query.package
+    const includeUser = [{
+      model: db.UserProfile
+    }, {
+      model: db.UserPackage,
+      include: {
+        model: db.Package,
+        attributes: ['range']
+      },
+    }]
+
+    let package_runnerCondition = null;
+
+    if (packageId) {
+      package_runnerCondition = packageId == "free" ? {
+        package_id: null
+      } : {
+        package_id: packageId
+      }
+    }
+    console.log(packageId,package_runnerCondition);
+
     if (per_page) {
       let rannkingData = {}
       page = page && page > 0 ? page : 1
@@ -300,6 +296,7 @@ exports.findAllRanking = async (req, res, next) => {
         ],
         include: {
           model: db.User,
+          where: package_runnerCondition,
           required: true,
           attributes: ['id', 'name', 'email', 'phone'],
           include: includeUser
@@ -324,6 +321,7 @@ exports.findAllRanking = async (req, res, next) => {
       ],
       include: {
         model: db.User,
+        where: package_runnerCondition,
         required: true,
         attributes: ['id', 'name', 'email', 'phone'],
         include: includeUser
