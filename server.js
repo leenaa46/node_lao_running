@@ -34,6 +34,9 @@ runner(app);
 import info from "./app/routes/info.routes";
 info(app);
 
+import summary from "./app/routes/summary.routes";
+summary(app);
+
 import error from "./app/routes/error.routes";
 error(app);
 
