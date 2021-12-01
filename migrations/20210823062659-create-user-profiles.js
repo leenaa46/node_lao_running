@@ -16,6 +16,10 @@ module.exports = {
           key: 'id'
         },
       },
+      bib: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -31,6 +35,10 @@ module.exports = {
       dob: {
         type: Sequelize.DATE,
         allowNull: false
+      },
+      size_shirt: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
       national_id: {
         type: Sequelize.INTEGER,

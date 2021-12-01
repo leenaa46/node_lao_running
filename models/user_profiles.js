@@ -30,6 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   };
+
+
   UserProfile.init({
     id: {
       allowNull: false,
@@ -44,6 +46,10 @@ module.exports = (sequelize, DataTypes) => {
         model: 'users',
         key: 'id'
       },
+    },
+    bib: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -68,6 +74,10 @@ module.exports = (sequelize, DataTypes) => {
         model: 'nationals',
         key: 'id'
       }
+    },
+    size_shirt: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     hal_branche_id: {
       type: DataTypes.INTEGER,

@@ -38,21 +38,32 @@ exports.create = async (req, res, next) => {
       transaction: transaction
     })
 
-    let ranking = await db.Ranking.findOne({ where: { user_id: req.user.user_id } })
+    let ranking = await db.Ranking.findOne({
+      where: {
+        user_id: req.user.user_id
+      }
+    })
     if (!ranking) {
       ranking = await db.Ranking.create({
         user_id: req.user.user_id
-      },
-        {
-          transaction: transaction
-        })
+      }, {
+        transaction: transaction
+      })
     }
 
-    await ranking.increment({ total_range: range, total_time: time }, { transaction: transaction })
+    await ranking.increment({
+      total_range: range,
+      total_time: time
+    }, {
+      transaction: transaction
+    })
 
     await transaction.commit()
 
-    return Response.success(res, Message.success._success, { runResult, ranking: ranking })
+    return Response.success(res, Message.success._success, {
+      runResult,
+      ranking: ranking
+    })
   } catch (error) {
     await transaction.rollback()
     next(error)
@@ -72,13 +83,22 @@ exports.findAll = async (req, res, next) => {
 
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
+    const status = req.query.status
+    const condition = status ? {
+      user_id: req.user.user_id,
+      status: status
+    } : {
+      user_id: req.user.user_id
+    }
+    const attribute = ['id', 'user_id', 'range', 'time', 'image', 'image_id', 'status', 'reject_description', 'createdAt', 'updatedAt']
 
     if (per_page) {
       let runResultData = {}
       page = page && page > 0 ? page : 1
 
       const runResult = await db.RunResult.findAndCountAll({
-        where: { user_id: req.user.user_id },
+        where: condition,
+        attributes: attribute,
         limit: per_page,
         offset: (page - 1) * per_page,
         subQuery: false
@@ -94,7 +114,10 @@ exports.findAll = async (req, res, next) => {
       return Response.success(res, Message.success._success, runResultData);
     }
 
-    const runResult = await req.auth.getRunResults()
+    const runResult = await req.auth.getRunResults({
+      where: condition,
+      attributes: attribute
+    })
     return Response.success(res, Message.success._success, runResult)
   } catch (error) {
     next(error)

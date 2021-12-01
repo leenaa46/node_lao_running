@@ -89,21 +89,44 @@ exports.updateUserLocation = async (req, res, next) => {
         if (!userProfile)
             next(createError(Status.code.NotFound, Message.fail._notFound('user_profile')))
 
+<<<<<<< HEAD
         let hal_branche_id = req.body.hal_branche_id
 
         if (!hal_branche_id) {
             const Evo = await db.HalBranche.findOne({where: {name: "EVO Store"}})
             if (!Evo)
                 next(createError(Status.code.NotFound, Message.fail._notFound('evo_store')))
+=======
+    let hal_branche_id = req.body.hal_branche_id
+    const size = req.body.size
+
+    if (!hal_branche_id) {
+      const Evo = await db.HalBranche.findOne({
+        where: {
+          name: "EVO Store"
+        }
+      })
+      if (!Evo)
+        next(createError(Status.code.NotFound, Message.fail._notFound('evo_store')))
+>>>>>>> 7a806e1e280b540260781b74a1009f641bae153b
 
             hal_branche_id = Evo.id
         }
 
+<<<<<<< HEAD
         const updateData = await userProfile.update({
             hal_branche_id,
         }, {
             transaction: transaction,
         })
+=======
+    const updateData = await userProfile.update({
+      hal_branche_id,
+      size_shirt: size
+    }, {
+      transaction: transaction,
+    })
+>>>>>>> 7a806e1e280b540260781b74a1009f641bae153b
 
 
         await transaction.commit()
@@ -316,13 +339,95 @@ exports.payBcelQr = async (req, res, next) => {
             transaction: transaction
         })
 
+<<<<<<< HEAD
         await transaction.commit()
+=======
+    await req.auth.update({
+      package_id: runnerPackage.id,
+    }, {
+      transaction: transaction
+    })
+
+    await transaction.commit()
+>>>>>>> 7a806e1e280b540260781b74a1009f641bae153b
 
 
         return Response.success(res, Message.success._success, paid);
 
+<<<<<<< HEAD
     } catch (error) {
         await transaction.rollback()
         next(error)
     }
 }
+=======
+    return Response.success(res, Message.success._success, paid);
+
+  } catch (error) {
+    await transaction.rollback()
+    next(error)
+  }
+}
+
+/**
+ * Get all runner.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.getAllRunner = async (req, res, next) => {
+  try {
+    const bib = req.query.bib
+    const package_runner = req.query.package_runner
+
+    const condition = bib ? {
+      bib: bib
+    } : null;
+
+    let package_runnerCondition = null;
+
+    if (package_runner) {
+      package_runnerCondition = package_runner == "free" ? {
+        package_id: null
+      } : {
+        package_id: package_runner
+      }
+    }
+
+    const userProfile = await db.UserProfile.findAll({
+      where: condition,
+      include: [{
+          model: db.HalBranche,
+        },
+        {
+          model: db.User,
+          where: package_runnerCondition,
+          required: true,
+          attributes: ['id', 'name', 'email', 'phone'],
+          include: [{
+            model: db.Ranking,
+            attributes: ['total_range', 'total_time']
+          }, {
+            model: db.UserPackage,
+            attributes: ['package_id', 'status', 'transaction_id'],
+            include: {
+              model: db.Package,
+              attributes: ['name', 'range']
+            }
+          }]
+        },
+      ],
+      order: [
+        ['id', 'DESC']
+      ]
+    })
+
+    return Response.success(res, Message.success._success, userProfile);
+
+  } catch (error) {
+    next(error)
+  }
+}
+>>>>>>> 7a806e1e280b540260781b74a1009f641bae153b

@@ -30,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'cascade',
         foreignKey: 'package_id'
       })
+      Package.hasMany(models.User, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+        foreignKey: 'package_id'
+      })
     }
   };
 
