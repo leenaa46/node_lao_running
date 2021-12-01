@@ -367,32 +367,63 @@ exports.getAllRunner = async (req, res, next) => {
       }
     }
 
+    const include = [{
+      model: db.HalBranche,
+    },
+    {
+      model: db.User,
+      where: package_runnerCondition,
+      required: true,
+      attributes: ['id', 'name', 'email', 'phone'],
+      include: [{
+        model: db.Ranking,
+        attributes: ['total_range', 'total_time']
+      }, {
+        model: db.UserPackage,
+        attributes: ['package_id', 'status', 'transaction_id'],
+        include: {
+          model: db.Package,
+          attributes: ['name', 'range']
+        }
+      }]
+    },
+    ]
+
+    const orderCondition = [
+      ['id', 'DESC']
+    ];
+
+    // Pagiate
+    const per_page = Number.parseInt(req.query.per_page)
+    let page = Number.parseInt(req.query.page)
+
+    if (per_page) {
+      let userProfileData = {}
+      page = page && page > 0 ? page : 1
+
+      const userProfile = await db.UserProfile.findAndCountAll({
+        where: condition,
+        include: include,
+        order: orderCondition,
+        limit: per_page,
+        offset: (page - 1) * per_page,
+        subQuery: false
+      })
+
+      userProfileData.data = userProfile.rows
+      userProfileData.pagination = {
+        total: userProfile.count,
+        per_page: per_page,
+        total_pages: Math.ceil(userProfile.count / per_page),
+        current_page: page
+      }
+      return Response.success(res, Message.success._success, userProfileData);
+    }
+
     const userProfile = await db.UserProfile.findAll({
       where: condition,
-      include: [{
-          model: db.HalBranche,
-        },
-        {
-          model: db.User,
-          where: package_runnerCondition,
-          required: true,
-          attributes: ['id', 'name', 'email', 'phone'],
-          include: [{
-            model: db.Ranking,
-            attributes: ['total_range', 'total_time']
-          }, {
-            model: db.UserPackage,
-            attributes: ['package_id', 'status', 'transaction_id'],
-            include: {
-              model: db.Package,
-              attributes: ['name', 'range']
-            }
-          }]
-        },
-      ],
-      order: [
-        ['id', 'DESC']
-      ]
+      include: include,
+      order: orderCondition
     })
 
     return Response.success(res, Message.success._success, userProfile);
