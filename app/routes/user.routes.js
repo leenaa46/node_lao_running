@@ -11,7 +11,6 @@
 
       // Get User by token
       router.post("/me", auth, user.me);
-
       // Create Admin
       router.post("/admin", auth, role.hasRole('Admin'), user.createAdmin);
 
