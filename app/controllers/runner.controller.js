@@ -57,6 +57,7 @@ exports.updateProfile = async (req, res, next) => {
             dob,
             national_id,
             profile_image_id,
+            profile_image_id,
             profile_image: profile_image
         }, {
             transaction: transaction,
@@ -89,44 +90,27 @@ exports.updateUserLocation = async (req, res, next) => {
         if (!userProfile)
             next(createError(Status.code.NotFound, Message.fail._notFound('user_profile')))
 
-<<<<<<< HEAD
         let hal_branche_id = req.body.hal_branche_id
+        const size = req.body.size
 
         if (!hal_branche_id) {
-            const Evo = await db.HalBranche.findOne({where: {name: "EVO Store"}})
+            const Evo = await db.HalBranche.findOne({
+                where: {
+                    name: "EVO Store"
+                }
+            })
             if (!Evo)
                 next(createError(Status.code.NotFound, Message.fail._notFound('evo_store')))
-=======
-    let hal_branche_id = req.body.hal_branche_id
-    const size = req.body.size
-
-    if (!hal_branche_id) {
-      const Evo = await db.HalBranche.findOne({
-        where: {
-          name: "EVO Store"
-        }
-      })
-      if (!Evo)
-        next(createError(Status.code.NotFound, Message.fail._notFound('evo_store')))
->>>>>>> 7a806e1e280b540260781b74a1009f641bae153b
 
             hal_branche_id = Evo.id
         }
 
-<<<<<<< HEAD
         const updateData = await userProfile.update({
             hal_branche_id,
+            size_shirt: size
         }, {
             transaction: transaction,
         })
-=======
-    const updateData = await userProfile.update({
-      hal_branche_id,
-      size_shirt: size
-    }, {
-      transaction: transaction,
-    })
->>>>>>> 7a806e1e280b540260781b74a1009f641bae153b
 
 
         await transaction.commit()
@@ -194,10 +178,10 @@ exports.isUnique = async (req, res, next) => {
     try {
         const phone = req.query.phone ? req.query.phone : null
 
-        if (phone < 8)
-            next(createError(Status.code.Validation, {
-                phone: Message.validation('min', 'phone', 8)
-            }))
+        if (phone < 😎
+        next(createError(Status.code.Validation, {
+            phone: Message.validation('min', 'phone', 😎
+    }))
 
         const user = await db.User.findOne({
             where: {
@@ -302,7 +286,6 @@ exports.getBcelQr = async (req, res, next) => {
  * @returns \app\helpers\response.helper
  */
 exports.payBcelQr = async (req, res, next) => {
-
     const transaction = await db.sequelize.transaction()
     try {
         const transaction_id = req.body.transaction_id || req.query.transaction_id
@@ -339,126 +322,112 @@ exports.payBcelQr = async (req, res, next) => {
             transaction: transaction
         })
 
-<<<<<<< HEAD
-        await transaction.commit()
-=======
-    await req.auth.update({
-      package_id: runnerPackage.id,
-    }, {
-      transaction: transaction
-    })
+        await req.auth.update({
+            package_id: runnerPackage.id,
+        }, {
+            transaction: transaction
+        })
 
-    await transaction.commit()
->>>>>>> 7a806e1e280b540260781b74a1009f641bae153b
+        await transaction.commit()
 
 
         return Response.success(res, Message.success._success, paid);
 
-<<<<<<< HEAD
     } catch (error) {
         await transaction.rollback()
         next(error)
     }
 }
-=======
-    return Response.success(res, Message.success._success, paid);
-
-  } catch (error) {
-    await transaction.rollback()
-    next(error)
-  }
-}
 
 /**
  * Get all runner.
- * 
- * @param {*} req 
- * @param {*} res 
- * 
+ *
+ * @param {*} req
+ * @param {*} res
+ *
  * @returns \app\helpers\response.helper
  */
 exports.getAllRunner = async (req, res, next) => {
-  try {
-    const bib = req.query.bib
-    const package_runner = req.query.package_runner
+    try {
+        const bib = req.query.bib
+        const package_runner = req.query.package_runner
 
-    const condition = bib ? {
-      bib: bib
-    } : null;
+        const condition = bib ? {
+            bib: bib
+        } : null;
 
-    let package_runnerCondition = null;
+        let package_runnerCondition = null;
 
-    if (package_runner) {
-      package_runnerCondition = package_runner == "free" ? {
-        package_id: null
-      } : {
-        package_id: package_runner
-      }
-    }
-
-    const include = [{
-      model: db.HalBranche,
-    },
-    {
-      model: db.User,
-      where: package_runnerCondition,
-      required: true,
-      attributes: ['id', 'name', 'email', 'phone'],
-      include: [{
-        model: db.Ranking,
-        attributes: ['total_range', 'total_time']
-      }, {
-        model: db.UserPackage,
-        attributes: ['package_id', 'status', 'transaction_id'],
-        include: {
-          model: db.Package,
-          attributes: ['name', 'range']
+        if (package_runner) {
+            package_runnerCondition = package_runner == "free" ? {
+                package_id: null
+            } : {
+                package_id: package_runner
+            }
         }
-      }]
-    },
-    ]
 
-    const orderCondition = [
-      ['id', 'DESC']
-    ];
+        const include = [{
+            model: db.HalBranche,
+        },
+            {
+                model: db.User,
+                where: package_runnerCondition,
+                required: true,
+                attributes: ['id', 'name', 'email', 'phone'],
+                include: [{
+                    model: db.Ranking,
+                    attributes: ['total_range', 'total_time']
+                }, {
+                    model: db.UserPackage,
+                    attributes: ['package_id', 'status', 'transaction_id'],
+                    include: {
+                        model: db.Package,
+                        attributes: ['name', 'range']
+                    }
+                }]
+            },
+        ]
 
-    // Pagiate
-    const per_page = Number.parseInt(req.query.per_page)
-    let page = Number.parseInt(req.query.page)
+        const orderCondition = [
+            ['id', 'DESC']
+        ];
 
-    if (per_page) {
-      let userProfileData = {}
-      page = page && page > 0 ? page : 1
+        // Pagiate
+        const per_page = Number.parseInt(req.query.per_page)
+        let page = Number.parseInt(req.query.page)
 
-      const userProfile = await db.UserProfile.findAndCountAll({
-        where: condition,
-        include: include,
-        order: orderCondition,
-        limit: per_page,
-        offset: (page - 1) * per_page,
-        subQuery: false
-      })
+        if (per_page) {
+            let userProfileData = {}
+            page = page && page > 0 ? page : 1
 
-      userProfileData.data = userProfile.rows
-      userProfileData.pagination = {
-        total: userProfile.count,
-        per_page: per_page,
-        total_pages: Math.ceil(userProfile.count / per_page),
-        current_page: page
-      }
-      return Response.success(res, Message.success._success, userProfileData);
+            const userProfile = await db.UserProfile.findAndCountAll({
+                where: condition,
+                include: include,
+                order: orderCondition,
+                limit: per_page,
+                offset: (page - 1) * per_page,
+                subQuery: false
+            })
+
+            userProfileData.data = userProfile.rows
+            userProfileData.pagination = {
+                total: userProfile.count,
+                per_page: per_page,
+                total_pages: Math.ceil(userProfile.count / per_page),
+                current_page: page
+            }
+            return Response.success(res, Message.success._success, userProfileData);
+        }
+
+        const userProfile = await db.UserProfile.findAll({
+            where: condition,
+            include: include,
+            order: orderCondition
+        })
+
+        return Response.success(res, Message.success._success, userProfile);
+
+    } catch (error) {
+        next(error)
     }
-
-    const userProfile = await db.UserProfile.findAll({
-      where: condition,
-      include: include,
-      order: orderCondition
-    })
-
-    return Response.success(res, Message.success._success, userProfile);
-
-  } catch (error) {
-    next(error)
-  }
 }
->>>>>>> 7a806e1e280b540260781b74a1009f641bae153b
