@@ -57,7 +57,6 @@ exports.updateProfile = async (req, res, next) => {
             dob,
             national_id,
             profile_image_id,
-            profile_image_id,
             profile_image: profile_image
         }, {
             transaction: transaction,
@@ -178,10 +177,10 @@ exports.isUnique = async (req, res, next) => {
     try {
         const phone = req.query.phone ? req.query.phone : null
 
-        if (phone < 😎
-        next(createError(Status.code.Validation, {
-            phone: Message.validation('min', 'phone', 😎
-    }))
+        if (phone < 8)
+            next(createError(Status.code.Validation, {
+                phone: Message.validation('min', 'phone', 8)
+            }))
 
         const user = await db.User.findOne({
             where: {
