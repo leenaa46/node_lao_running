@@ -32,5 +32,8 @@ module.exports = app => {
       // Get All User Profile
       router.get("/all", auth, role.hasRole('Admin'), runner.getAllRunner);
 
+      // Get One User Profile
+      router.get("/:user_profile_id", auth, role.hasRole('Admin'), runner.getOneRunner);
+
       app.use('/api/runner', router);
 }

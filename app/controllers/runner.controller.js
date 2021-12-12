@@ -432,3 +432,47 @@ exports.getAllRunner = async (req, res, next) => {
     next(error)
   }
 }
+
+/**
+ * Get a runner.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.getOneRunner = async (req, res, next) => {
+  try {
+
+    const id = req.params.user_profile_id
+
+    const userProfile = await db.UserProfile.findOne({
+      where: { id: id },
+      include: [{
+        model: db.HalBranche,
+      },
+      {
+        model: db.User,
+        required: true,
+        attributes: ['id', 'name', 'email', 'phone'],
+        include: [{
+          model: db.Ranking,
+          attributes: ['total_range', 'total_time']
+        }, {
+          model: db.UserPackage,
+          attributes: ['package_id', 'status', 'transaction_id'],
+          include: {
+            model: db.Package,
+            attributes: ['name', 'range']
+          }
+        }]
+      },
+      ],
+    })
+
+    return Response.success(res, Message.success._success, userProfile);
+
+  } catch (error) {
+    next(error)
+  }
+}
