@@ -4,10 +4,15 @@ import express from "express";
 import upload from '../utils/multer'
 import auth from "../middleware/auth.middleware";
 import role from "../middleware/role.middleware";
+import userValidate from "../validations/user.validation"
 
 const router = express.Router();
 
 module.exports = app => {
+      // Validate Step
+      router.post("/first-step", userValidate.firstStep, user.validateFirst);
+      router.post("/second-step", userValidate.secondStep, user.validateSecond);
+
       // Register User
       router.post("/register", upload.single('profile_image'), user.register);
 

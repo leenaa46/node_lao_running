@@ -4,7 +4,7 @@ import 'dotenv/config';
 import createError from 'http-errors'
 import Response from './app/helpers/response.helper'
 import Message from './app/helpers/message.helper'
-
+const { ValidationError } = require('express-validation')
 const app = express();
 
 const corsOptions = {
@@ -51,6 +51,9 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
   console.log(error);
+  if (error instanceof ValidationError) {
+    return res.status(error.statusCode).json(error)
+  }
   Response.error(res, error)
 })
 

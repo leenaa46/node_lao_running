@@ -12,6 +12,92 @@ import {
 } from "qrcode";
 
 /**
+ * Validate Step 1.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.validateFirst = async (req, res, next) => {
+  let errors = {}
+
+  try {
+
+    const { name, surname } = req.body
+
+    const user = await db.UserProfile.findOne({
+      where: [{
+        name: name
+      },
+      {
+        surname: surname
+      }]
+    })
+
+    if (user) errors.name = Message.validation('exists', '\"name\"')
+
+
+    if (!Object.keys(errors).length)
+      return Response.success(res, Message.success._success, { message: "success" });
+
+    return res.status(422).json(
+      {
+        name: "ValidationError",
+        message: "Validation Failed",
+        statusCode: 422,
+        error: "Unprocessable Entity",
+        details: [
+          errors
+        ]
+      }
+    )
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
+ * Validate Step 1.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.validateSecond = async (req, res, next) => {
+  let errors = {}
+
+  try {
+    const email = req.body.email
+
+    if (await User.findOne({
+      where: {
+        email: email,
+      }
+    })) errors.email = Message.validation('exists', '\"email\"')
+
+
+    if (!Object.keys(errors).length)
+      return Response.success(res, Message.success._success, { message: "success" });
+
+    return res.status(422).json(
+      {
+        name: "ValidationError",
+        message: "Validation Failed",
+        statusCode: 422,
+        error: "Unprocessable Entity",
+        details: [
+          errors
+        ]
+      }
+    )
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
  * Register User.
  * 
  * @param {*} req 
@@ -73,12 +159,12 @@ exports.register = async (req, res, next) => {
 
 
     const token = jwt.sign({
-        user_id: user.id,
-        email,
-      },
+      user_id: user.id,
+      email,
+    },
       process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      }
+      expiresIn: "30d",
+    }
     );
 
     await transaction.commit()
@@ -124,12 +210,12 @@ exports.login = async (req, res, next) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       const role = await user.getRoles()
       const token = jwt.sign({
-          user_id: user.id,
-          email,
-        },
+        user_id: user.id,
+        email,
+      },
         process.env.JWT_SECRET, {
-          expiresIn: "30d",
-        }
+        expiresIn: "30d",
+      }
       );
 
       const userData = {
@@ -212,12 +298,12 @@ exports.createAdmin = async (req, res, next) => {
     })
 
     const token = jwt.sign({
-        user_id: user.id,
-        email,
-      },
+      user_id: user.id,
+      email,
+    },
       process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      }
+      expiresIn: "30d",
+    }
     );
 
     await transaction.commit()

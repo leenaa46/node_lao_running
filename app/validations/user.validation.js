@@ -4,8 +4,9 @@ import Message from '../helpers/message.helper'
 import db from "../../models"
 import createError from 'http-errors'
 import {
-  Joi
+  Joi, validate
 } from 'express-validation'
+import validator from '../utils/validator'
 
 const User = db.users;
 const Package = db.packages;
@@ -25,24 +26,24 @@ exports.register = async (req, res, next) => {
   if (password.length < passwordMin) Message.validation('min', 'password', passwordMin)
   if (!email) errors.email = Message.validation('required', 'email')
   if (await User.findOne({
-      where: {
-        email: email
-      }
-    })) errors.email = Message.validation('exists', 'email')
+    where: {
+      email: email
+    }
+  })) errors.email = Message.validation('exists', 'email')
 
   if (!phone) errors.phone = Message.validation('required', 'phone')
   if (await User.findOne({
-      where: {
-        phone: phone
-      }
-    })) errors.phone = Message.validation('exists', 'phone')
+    where: {
+      phone: phone
+    }
+  })) errors.phone = Message.validation('exists', 'phone')
 
   if (!package_id) errors.package_id = Message.validation('required', 'package_id')
   if (!await Package.findOne({
-      where: {
-        id: package_id
-      }
-    })) errors.package_id = [Message.validation('not_exists', 'package_id')]
+    where: {
+      id: package_id
+    }
+  })) errors.package_id = [Message.validation('not_exists', 'package_id')]
 
 
   if (!Object.keys(errors).length)
@@ -76,3 +77,32 @@ exports.JoiRegist = {
   })
 
 }
+
+exports.secondStep = validator.validateDefault(
+  {
+    body: Joi.object({
+      email: Joi.string()
+        .email()
+        .required(),
+      password: Joi.string()
+        .regex(/[a-zA-Z0-9]{3,30}/)
+        .required(),
+    }),
+  }
+)
+
+exports.firstStep = validator.validateDefault(
+  {
+    body: Joi.object({
+      name: Joi.string()
+        .required(),
+      surname: Joi.string()
+        .required(),
+      national_id: Joi.number().required(),
+      dob: Joi.date()
+        .required(),
+      gender: Joi.string()
+        .required(),
+    }),
+  }
+)
