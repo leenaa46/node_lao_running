@@ -337,14 +337,127 @@ exports.createAdmin = async (req, res, next) => {
  */
 exports.getAllAdmin = async (req, res, next) => {
   try {
-    const roleUser = await db.Role.findOne({
-      where: {
-        name: 'Admin'
-      },
+
+    const userData = await User.findAll({
+      attributes: ['id', 'name', 'email', 'phone'],
+      include: {
+        require: true,
+        model: db.Role,
+        where: {
+          name: "Admin"
+        }
+      }
+      ,
     })
 
-    const userData = await roleUser.getUsers({
-      attributes: ['id', 'name', 'email', 'phone']
+    return Response.success(res, Message.success._success, userData);
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
+ * Get a Admin.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.getOneAdmin = async (req, res, next) => {
+  try {
+    const id = req.params.id
+
+    const userData = await User.findOne({
+      attributes: ['id', 'name', 'email', 'phone'],
+      where: {
+        id: id
+      },
+      include: {
+        require: true,
+        model: db.Role,
+        where: {
+          name: "Admin"
+        }
+      }
+      ,
+    })
+    if (!userData) next(createError(Message.fail._notFound(`user: ${id}`)))
+
+    return Response.success(res, Message.success._success, userData);
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
+ * Delete a Admin.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.destroyAdmin = async (req, res, next) => {
+  try {
+    const id = req.params.id
+
+    const userData = await User.findOne({
+      where: {
+        id: id
+      },
+      include: {
+        require: true,
+        model: db.Role,
+        where: {
+          name: "Admin"
+        }
+      }
+      ,
+    })
+    if (!userData) next(createError(Message.fail._notFound(`user: ${id}`)))
+    await userData.destroy()
+
+    return Response.success(res, Message.success._success, null);
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
+ * Reset a Admin Password.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.resetPasswordAdmin = async (req, res, next) => {
+  try {
+    const id = req.params.id
+
+    const userData = await User.findOne({
+      where: {
+        id: id
+      },
+      include: {
+        require: true,
+        model: db.Role,
+        where: {
+          name: "Admin"
+        }
+      }
+      ,
+    })
+    if (!userData) next(createError(Message.fail._notFound(`user: ${id}`)))
+
+    const password = await bcrypt.hash(req.body.new_password, 10)
+
+    await userData.update({
+      password: password
     })
 
     return Response.success(res, Message.success._success, userData);

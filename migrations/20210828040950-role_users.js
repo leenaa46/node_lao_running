@@ -10,6 +10,7 @@ module.exports = {
           model: 'users',
           key: 'id'
         },
+        onDelete: 'cascade'
       },
       role_id: {
         type: Sequelize.INTEGER,
@@ -18,6 +19,7 @@ module.exports = {
           model: 'roles',
           key: 'id'
         },
+        onDelete: 'cascade'
       },
     });
   },

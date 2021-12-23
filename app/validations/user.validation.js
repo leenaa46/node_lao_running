@@ -85,6 +85,7 @@ exports.secondStep = validator.validateDefault(
         .email()
         .required(),
       password: Joi.string()
+        .min(8)
         .regex(/[a-zA-Z0-9]{3,30}/)
         .required(),
     }),
@@ -102,6 +103,17 @@ exports.firstStep = validator.validateDefault(
       dob: Joi.date()
         .required(),
       gender: Joi.string()
+        .required(),
+    }),
+  }
+)
+
+exports.resetPassword = validator.validateDefault(
+  {
+    body: Joi.object({
+      new_password: Joi.string()
+        .min(8)
+        .regex(/[a-zA-Z0-9]{3,30}/)
         .required(),
     }),
   }

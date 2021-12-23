@@ -15,6 +15,7 @@ module.exports = {
           model: 'users',
           key: 'id'
         },
+        onDelete: 'cascade'
       },
       bib: {
         type: Sequelize.STRING,

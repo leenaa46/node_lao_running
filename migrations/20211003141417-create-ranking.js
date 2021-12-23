@@ -15,6 +15,7 @@ module.exports = {
           model: 'users',
           key: 'id'
         },
+        onDelete: 'cascade'
       },
       total_range: {
         type: Sequelize.DOUBLE,

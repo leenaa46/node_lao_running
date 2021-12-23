@@ -15,6 +15,7 @@ module.exports = {
           model: 'users',
           key: 'id'
         },
+        onDelete: 'cascade'
       },
       approved_by: {
         type: Sequelize.INTEGER,
@@ -23,6 +24,7 @@ module.exports = {
           model: 'users',
           key: 'id'
         },
+        onDelete: 'cascade'
       },
       status: {
         type: Sequelize.ENUM('pending', 'approve', 'reject'),
