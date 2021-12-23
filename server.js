@@ -40,6 +40,9 @@ summary(app);
 import video from "./app/routes/video.routes";
 video(app);
 
+import contact from "./app/routes/contact.routes";
+contact(app);
+
 import error from "./app/routes/error.routes";
 error(app);
 

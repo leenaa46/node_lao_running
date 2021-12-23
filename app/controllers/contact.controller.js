@@ -5,7 +5,7 @@ import Message from '../helpers/message.helper';
 import createError from 'http-errors'
 
 /**
- * Create Video.
+ * Create contact.
  * 
  * @param {*} req 
  * @param {*} res 
@@ -14,8 +14,11 @@ import createError from 'http-errors'
  */
 exports.store = async (req, res, next) => {
   try {
-    const link = await db.Video.create({
-      link: req.body.link
+    const link = await db.Contact.create({
+      name: req.body.name,
+      surname: req.body.surname,
+      phone: req.body.phone,
+      message: req.body.message,
     })
     return Response.success(res, Message.success._success, link);
 
@@ -25,7 +28,7 @@ exports.store = async (req, res, next) => {
 }
 
 /**
- * Get Video.
+ * Get contact.
  * 
  * @param {*} req 
  * @param {*} res 
@@ -42,30 +45,30 @@ exports.index = async (req, res, next) => {
     ];
 
     if (per_page) {
-      let videoData = {}
+      let contactData = {}
       page = page && page > 0 ? page : 1
 
-      const video = await db.Video.findAndCountAll({
+      const contact = await db.Contact.findAndCountAll({
         order: orderCondition,
         limit: per_page,
         offset: (page - 1) * per_page,
         subQuery: false
       })
 
-      videoData.data = video.rows
-      videoData.pagination = {
-        total: video.count,
+      contactData.data = contact.rows
+      contactData.pagination = {
+        total: contact.count,
         per_page: per_page,
-        total_pages: Math.ceil(video.count / per_page),
+        total_pages: Math.ceil(contact.count / per_page),
         current_page: page
       }
-      return Response.success(res, Message.success._success, videoData);
+      return Response.success(res, Message.success._success, contactData);
     }
 
-    const video = await db.Video.findAll({
+    const contact = await db.Contact.findAll({
       order: orderCondition
     })
-    return Response.success(res, Message.success._success, video);
+    return Response.success(res, Message.success._success, contact);
 
   } catch (error) {
     next(error)
@@ -73,7 +76,7 @@ exports.index = async (req, res, next) => {
 }
 
 /**
- * Delete Video.
+ * Delete contact.
  * 
  * @param {*} req 
  * @param {*} res 
@@ -82,15 +85,15 @@ exports.index = async (req, res, next) => {
  */
 exports.destroy = async (req, res, next) => {
   try {
-    const videos = await db.Video.findOne(
+    const contacts = await db.Contact.findOne(
       {
         where: {
           id: req.params.id
         }
       })
-    if (!videos) next(createError(Message.fail._notFound('video'), 404))
+    if (!contacts) next(createError(Message.fail._notFound('contact'), 404))
 
-    await videos.destroy()
+    await contacts.destroy()
 
     return Response.success(res, Message.success._success, null);
 
@@ -100,7 +103,7 @@ exports.destroy = async (req, res, next) => {
 }
 
 /**
- * Get a video.
+ * Get a contact.
  * 
  * @param {*} req 
  * @param {*} res 
@@ -110,15 +113,15 @@ exports.destroy = async (req, res, next) => {
 exports.show = async (req, res, next) => {
   try {
     const id = req.params.id
-    const videos = await db.Video.findOne(
+    const contacts = await db.Contact.findOne(
       {
         where: {
           id: id
         }
       })
-    if (!videos) next(createError(Message.fail._notFound(`video: ${id}`), 404))
+    if (!contacts) next(createError(Message.fail._notFound(`contact: ${id}`), 404))
 
-    return Response.success(res, Message.success._success, videos);
+    return Response.success(res, Message.success._success, contacts);
 
   } catch (error) {
     next(error)

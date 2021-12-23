@@ -11,6 +11,8 @@ module.exports = app => {
   router.post("", auth, role.hasRole(['Admin', 'Super_Admin']), validation.store, video.store);
   // Delete video
   router.delete("/:id", auth, role.hasRole(['Admin', 'Super_Admin']), video.destroy);
+  // Get a video
+  router.get("/:id", video.show);
   // Get video
   router.get("", video.index);
 
