@@ -10,6 +10,7 @@ exports.description = {
 
 exports.fail = {
   _validation: 'validation error.',
+  _no_roles: 'user has not right role.',
   _notFound: (value = null) => {
     return `${value} not found.`
   },

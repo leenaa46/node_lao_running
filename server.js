@@ -37,6 +37,9 @@ info(app);
 import summary from "./app/routes/summary.routes";
 summary(app);
 
+import video from "./app/routes/video.routes";
+video(app);
+
 import error from "./app/routes/error.routes";
 error(app);
 

@@ -7,12 +7,13 @@ import createError from 'http-errors'
 exports.hasRole = role => {
   return async (req, res, next) => {
     let hasRole = false
+
     try {
       const user = await db.User.findByPk(req.user.user_id)
       if (!user) next(createError(Status.code.AuthError, Message.fail._unAutorize))
       const userRoles = await user.getRoles()
       userRoles.some(async userRole => {
-        if (userRole.name == role) {
+        if (userRole.name == role || role.includes(userRole.name)) {
           hasRole = true
           return hasRole
         }
@@ -21,10 +22,15 @@ exports.hasRole = role => {
       next(error)
     }
 
+
     if (!hasRole)
-      next(createError(Status.code.AuthError, {
-        required_role: role
-      }))
+      return res.status(403).json({
+        error: true,
+        code: 403,
+        message: Message.fail._no_roles,
+        data: role
+
+      })
 
     return next()
   };
