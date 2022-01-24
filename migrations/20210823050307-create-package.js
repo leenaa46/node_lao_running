@@ -16,12 +16,6 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false
       },
-      description: {
-        type: Sequelize.STRING,
-      },
-      body: {
-        type: Sequelize.TEXT,
-      },
 
       createdAt: {
         type: Sequelize.DATE,

@@ -53,12 +53,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
     },
-    description: {
-      type: DataTypes.STRING,
-    },
-    body: {
-      type: DataTypes.TEXT,
-    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,

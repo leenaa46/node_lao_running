@@ -259,74 +259,71 @@ exports.findOneNation = async (req, res, next) => {
  */
 exports.findAllRanking = async (req, res, next) => {
   try {
+    const bib = req.query.bib
     const per_page = Number.parseInt(req.query.per_page)
     let page = Number.parseInt(req.query.page)
-    const packageId = req.query.package
-    const includeUser = [{
-      model: db.UserProfile
-    }, {
-      model: db.UserPackage,
-      include: {
-        model: db.Package,
-      },
-    }]
-
-    let package_runnerCondition = null;
-
-    if (packageId) {
-      package_runnerCondition = packageId == "free" ? {
-        package_id: null
-      } : {
-        package_id: packageId
+    const rangeCondition = req.query.range
+      ? {
+        range: req.query.range,
       }
-    }
-    console.log(packageId, package_runnerCondition);
+      : null
 
-    if (per_page) {
-      let rannkingData = {}
-      page = page && page > 0 ? page : 1
-
-      const ranking = await db.Ranking.findAndCountAll({
-        limit: per_page,
-        offset: (page - 1) * per_page,
-        subQuery: false,
-        attributes: [
-          [db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'
-        ],
-        include: {
-          model: db.User,
-          where: package_runnerCondition,
-          required: true,
-          attributes: ['id', 'name', 'email', 'phone'],
-          include: includeUser
-        }
-      })
-
-      rannkingData.data = ranking.rows
-      rannkingData.pagination = {
-        total: ranking.count,
-        per_page: per_page,
-        total_pages: Math.ceil(ranking.count / per_page),
-        current_page: page,
-
-      }
-
-      return Response.success(res, Message.success._success, rannkingData);
-    }
-
-    const ranking = await db.Ranking.findAll({
-      attributes: [
-        [db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'
-      ],
-      include: {
-        model: db.User,
-        where: package_runnerCondition,
+    const includeUser = [
+      {
+        model: db.UserProfile,
         required: true,
-        attributes: ['id', 'name', 'email', 'phone'],
-        include: includeUser
-      }
+        where: rangeCondition
+      }, {
+        model: db.UserPackage,
+        include: {
+          model: db.Package,
+        },
+      }]
+
+    const attributesOption = [
+      [db.sequelize.literal('(RANK() OVER (ORDER BY total_range DESC))'), 'rank'], 'id', 'total_range', 'total_time'
+    ]
+    const includeOption = {
+      model: db.User,
+      required: true,
+      attributes: ['id', 'name', 'email', 'phone'],
+      include: includeUser
+    }
+
+
+    if (!per_page) {
+      const ranking = await db.Ranking.findAll({
+        attributes: attributesOption,
+        include: includeOption
+      })
+      if (bib)
+        return Response.success(res, Message.success._success, ranking.filter(item => item.User.UserProfile.bib == bib));
+
+      return Response.success(res, Message.success._success, ranking);
+    }
+
+    let rannkingData = {}
+    page = page && page > 0 ? page : 1
+
+    const ranking = await db.Ranking.findAndCountAll({
+      limit: per_page,
+      offset: (page - 1) * per_page,
+      subQuery: false,
+      attributes: attributesOption,
+      include: includeOption
     })
-    return Response.success(res, Message.success._success, ranking);
+
+    rannkingData.data = ranking.rows
+
+    rannkingData.pagination = {
+      total: ranking.count,
+      per_page: per_page,
+      total_pages: Math.ceil(ranking.count / per_page),
+      current_page: page,
+
+    }
+
+    return Response.success(res, Message.success._success, rannkingData);
 
   } catch (error) {
     next(error)
