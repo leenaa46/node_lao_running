@@ -268,7 +268,6 @@ exports.findAllRanking = async (req, res, next) => {
       model: db.UserPackage,
       include: {
         model: db.Package,
-        attributes: ['range']
       },
     }]
 
@@ -281,7 +280,7 @@ exports.findAllRanking = async (req, res, next) => {
         package_id: packageId
       }
     }
-    console.log(packageId,package_runnerCondition);
+    console.log(packageId, package_runnerCondition);
 
     if (per_page) {
       let rannkingData = {}

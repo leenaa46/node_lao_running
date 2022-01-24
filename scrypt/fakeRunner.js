@@ -1,9 +1,6 @@
 import db from '../models'
 import faker from 'faker'
 import bcrypt from 'bcryptjs'
-import {
-  create
-} from 'qrcode'
 
 db.Package.findAll()
   .then(packages => {
@@ -42,6 +39,7 @@ function createPackageResult(count, pack, encryptedPassword) {
       name: user.name,
       surname: faker.name.lastName(),
       gender: faker.random.arrayElement(['male', 'female']),
+      range: faker.random.arrayElement(['15', '42', '100', '200']),
       dob: faker.date.past(20),
       bib: user.id.toString().padStart(5, '0'),
       national_id: 126,

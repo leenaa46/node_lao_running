@@ -75,6 +75,12 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       }
     },
+    range: {
+      type: DataTypes.ENUM,
+      values: ['free', '15', '42', '100', '200'],
+      allowNull: true,
+      defaultValue: 'free'
+    },
     size_shirt: {
       type: DataTypes.STRING,
       allowNull: true

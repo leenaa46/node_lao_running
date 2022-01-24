@@ -383,7 +383,7 @@ exports.getOneAdmin = async (req, res, next) => {
       }
       ,
     })
-    if (!userData) next(createError(Message.fail._notFound(`user: ${id}`)))
+    if (!userData) return next(createError(Message.fail._notFound(`user: ${id}`)))
 
     return Response.success(res, Message.success._success, userData);
 
@@ -417,7 +417,7 @@ exports.destroyAdmin = async (req, res, next) => {
       }
       ,
     })
-    if (!userData) next(createError(Message.fail._notFound(`user: ${id}`)))
+    if (!userData) return next(createError(Message.fail._notFound(`user: ${id}`)))
     await userData.destroy()
 
     return Response.success(res, Message.success._success, null);
@@ -452,7 +452,7 @@ exports.resetPasswordAdmin = async (req, res, next) => {
       }
       ,
     })
-    if (!userData) next(createError(Message.fail._notFound(`user: ${id}`)))
+    if (!userData) return next(createError(Message.fail._notFound(`user: ${id}`)))
 
     const password = await bcrypt.hash(req.body.new_password, 10)
 
@@ -461,6 +461,40 @@ exports.resetPasswordAdmin = async (req, res, next) => {
     })
 
     return Response.success(res, Message.success._success, userData);
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
+ * Update Range.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.updateRange = async (req, res, next) => {
+  try {
+    const {
+      range,
+    } = req.body
+
+    if (!req.auth.package_id) return next(createError(Status.code.BadRequest, Message.fail._freeUser))
+
+    const userProfile = await req.auth.getUserProfile({
+      where: {
+        range: 'free'
+      }
+    })
+
+    if (!userProfile) return next(createError(Status.code.BadRequest, Message.fail._areadyChooseRange))
+
+    userProfile.range = range
+    await userProfile.save()
+
+    return Response.success(res, Message.success._success, userProfile.range);
 
   } catch (error) {
     next(error)

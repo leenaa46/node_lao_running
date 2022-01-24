@@ -20,7 +20,9 @@ exports.fail = {
   _badRole: 'can not access with current role.',
   _routeNotfound: 'Route not found.',
   _unAutorize: 'UnAutorize.',
-  _userAreadyPaid: 'User aready had a package.'
+  _userAreadyPaid: 'User aready had a package.',
+  _areadyChooseRange: 'User aready choose a range and can not chage any more.',
+  _freeUser: 'Free user can not choose range.',
 }
 
 exports.serverError = {

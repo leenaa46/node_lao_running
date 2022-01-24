@@ -49,10 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    range: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false
-    },
     price: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false

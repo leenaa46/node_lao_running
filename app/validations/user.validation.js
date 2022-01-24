@@ -118,3 +118,12 @@ exports.resetPassword = validator.validateDefault(
     }),
   }
 )
+
+exports.updateRange = validator.validateDefault(
+  {
+    body: Joi.object({
+      range: Joi.string().valid('15', '42', '100', '200')
+        .required()
+    }),
+  }
+)

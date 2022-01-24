@@ -88,7 +88,7 @@ exports.destroy = async (req, res, next) => {
           id: req.params.id
         }
       })
-    if (!videos) next(createError(Message.fail._notFound('video'), 404))
+    if (!videos) return next(createError(Message.fail._notFound('video'), 404))
 
     await videos.destroy()
 
@@ -116,7 +116,7 @@ exports.show = async (req, res, next) => {
           id: id
         }
       })
-    if (!videos) next(createError(Message.fail._notFound(`video: ${id}`), 404))
+    if (!videos) return next(createError(Message.fail._notFound(`video: ${id}`), 404))
 
     return Response.success(res, Message.success._success, videos);
 

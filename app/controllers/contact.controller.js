@@ -91,7 +91,7 @@ exports.destroy = async (req, res, next) => {
           id: req.params.id
         }
       })
-    if (!contacts) next(createError(Message.fail._notFound('contact'), 404))
+    if (!contacts) return next(createError(Message.fail._notFound('contact'), 404))
 
     await contacts.destroy()
 
@@ -119,7 +119,7 @@ exports.show = async (req, res, next) => {
           id: id
         }
       })
-    if (!contacts) next(createError(Message.fail._notFound(`contact: ${id}`), 404))
+    if (!contacts) return next(createError(Message.fail._notFound(`contact: ${id}`), 404))
 
     return Response.success(res, Message.success._success, contacts);
 

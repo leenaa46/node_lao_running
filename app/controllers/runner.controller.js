@@ -151,7 +151,7 @@ exports.getProfile = async (req, res, next) => {
       attributes: ['package_id', 'status', 'transaction_id'],
       include: {
         model: db.Package,
-        attributes: ['name', 'range']
+        attributes: ['name']
       }
     })
 
@@ -212,7 +212,7 @@ exports.getBcelQr = async (req, res, next) => {
   const transaction = await db.sequelize.transaction()
   try {
     const runnerPackage = await db.Package.findByPk(req.params.packageId)
-    if (!runnerPackage) next(createError(Status.code.NotFound, Message.fail._notFound('runner_package')))
+    if (!runnerPackage) return next(createError(Status.code.NotFound, Message.fail._notFound('runner_package')))
 
     let userPackage = await db.UserPackage.findOne({
       where: {
@@ -307,11 +307,11 @@ exports.payBcelQr = async (req, res, next) => {
         user_id: req.user.user_id
       }
     })
-    if (!payment) next(createError(Status.code.NotFound, Message.fail._notFound('payment')))
-    if (payment.status == 'success') next(createError(Status.code.BadRequest, payment))
+    if (!payment) return next(createError(Status.code.NotFound, Message.fail._notFound('payment')))
+    if (payment.status == 'success') return next(createError(Status.code.BadRequest, payment))
 
     const runnerPackage = await db.Package.findByPk(req.params.packageId)
-    if (!runnerPackage) next(createError(Status.code.NotFound, Message.fail._notFound('package')))
+    if (!runnerPackage) return next(createError(Status.code.NotFound, Message.fail._notFound('package')))
 
     const paid = await payment.update({
       ticket_id: bcelTransaction.data.ticket,
@@ -383,7 +383,7 @@ exports.getAllRunner = async (req, res, next) => {
         attributes: ['package_id', 'status', 'transaction_id'],
         include: {
           model: db.Package,
-          attributes: ['name', 'range']
+          attributes: ['name']
         }
       }]
     },
@@ -463,7 +463,7 @@ exports.getOneRunner = async (req, res, next) => {
           attributes: ['package_id', 'status', 'transaction_id'],
           include: {
             model: db.Package,
-            attributes: ['name', 'range']
+            attributes: ['name']
           }
         }]
       },

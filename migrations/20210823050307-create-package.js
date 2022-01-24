@@ -12,10 +12,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      range: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false
-      },
       price: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false

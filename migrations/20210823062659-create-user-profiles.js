@@ -33,6 +33,11 @@ module.exports = {
         type: Sequelize.ENUM('male', 'female'),
         allowNull: false
       },
+      range: {
+        type: Sequelize.ENUM,
+        values: ['free', '15', '42', '100', '200'],
+        allowNull: true,
+      },
       dob: {
         type: Sequelize.DATE,
         allowNull: false

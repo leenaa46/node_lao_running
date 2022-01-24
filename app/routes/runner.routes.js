@@ -5,6 +5,7 @@ import upload from '../utils/multer'
 import auth from "../middleware/auth.middleware";
 import role from "../middleware/role.middleware";
 import userValidate from "../validations/user.validation"
+import validation from "../validations/user.validation"
 
 const router = express.Router();
 
@@ -39,6 +40,9 @@ module.exports = app => {
 
       // Get One User Profile
       router.get("/:user_profile_id", auth, role.hasRole(['Admin', 'Super_Admin']), runner.getOneRunner);
+
+      // Update range
+      router.post("/range", auth, role.hasRole('User'), validation.updateRange, user.updateRange);
 
       app.use('/api/runner', router);
 }
