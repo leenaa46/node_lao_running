@@ -15,6 +15,7 @@ exports.fail = {
     return `${value} not found.`
   },
   _invalidCredential: 'invalid Credential.',
+  _oldPassword: 'Invalid token, please login again.',
   _invalidToken: 'Invalid token.',
   _noToken: 'A token is required for authentication',
   _badRole: 'can not access with current role.',
@@ -23,6 +24,7 @@ exports.fail = {
   _userAreadyPaid: 'User aready had a package.',
   _areadyChooseRange: 'User aready choose a range and can not chage any more.',
   _freeUser: 'Free user can not choose range.',
+  _existPhone: 'This phone has aready used',
 }
 
 exports.serverError = {

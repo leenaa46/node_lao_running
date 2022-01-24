@@ -7,6 +7,7 @@ import Status from '../helpers/status.helper';
 import Message from '../helpers/message.helper';
 import Image from '../helpers/upload.helper'
 import createError from 'http-errors'
+import Otp from '../helpers/otp.helper'
 import {
   create
 } from "qrcode";
@@ -111,19 +112,30 @@ exports.register = async (req, res, next) => {
     const {
       name,
       surname,
-      phone,
       email,
       password,
       national_id,
       gender,
       dob,
+      id_token,
     } = req.body
+
+    const decodeData = Otp.verify(id_token)
+
+    if (!decodeData) return next(createError(Status.code.BadRequest, Message.fail._invalidToken))
+
+    const oldUser = await db.User.findOne({ where: { sub: decodeData.sub } })
+
+    if (oldUser) return next(createError(Status.code.BadRequest, Message.fail._existPhone))
+
+    const phone = decodeData.phone_number.replace('+85620', '')
 
     const encryptedPassword = password ? await bcrypt.hash(password, 10) : null;
 
     const user = await db.User.create({
       name: name,
       phone: phone,
+      sub: decodeData.sub,
       email: email,
       password: encryptedPassword,
       is_active: true
@@ -226,7 +238,6 @@ exports.login = async (req, res, next) => {
         phone: user.phone,
         role: role,
         token: token,
-
       }
 
 
@@ -495,6 +506,54 @@ exports.updateRange = async (req, res, next) => {
     await userProfile.save()
 
     return Response.success(res, Message.success._success, userProfile.range);
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+/**
+ * Reset a User Password.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * @returns \app\helpers\response.helper
+ */
+exports.resetPasswordUser = async (req, res, next) => {
+  try {
+    const { id_token, password } = req.body
+
+    const decodeData = Otp.verify(id_token)
+
+    if (!decodeData) return next(createError(Status.code.BadRequest, Message.fail._invalidToken))
+
+    const existUser = await db.User.findOne(
+      {
+        where: {
+          sub: decodeData.sub
+        },
+        include: {
+          require: true,
+          model: db.Role,
+          where: {
+            name: "User"
+          }
+        }
+        ,
+      }
+    )
+
+    if (!existUser) return next(createError(Status.code.BadRequest, Message.fail._notFound('user')))
+
+    const encryptedPassword = await bcrypt.hash(password, 10);
+
+    await existUser.update({
+      password: encryptedPassword,
+      resetPasswordAt: new Date().getTime() / 1000
+    })
+
+    return Response.success(res, Message.success._success, existUser);
 
   } catch (error) {
     next(error)

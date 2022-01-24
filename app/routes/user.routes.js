@@ -28,5 +28,8 @@ module.exports = app => {
   // Delete a Admin
   router.put("/admin/:id", auth, role.hasRole('Super_Admin'), validation.resetPassword, user.resetPasswordAdmin);
 
+  // Delete a Admin
+  router.post("/reset-password", validation.resetPasswordUser, user.resetPasswordUser);
+
   app.use('/api/auth', router);
 }

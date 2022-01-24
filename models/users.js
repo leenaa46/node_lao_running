@@ -82,8 +82,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    sub: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     token: {
       type: DataTypes.STRING,
+    },
+    resetPasswordAt: {
+      type: DataTypes.DOUBLE,
+      allowNull: true
     },
     createdAt: {
       allowNull: false,

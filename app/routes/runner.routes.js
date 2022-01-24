@@ -15,7 +15,7 @@ module.exports = app => {
       router.post("/second-step", userValidate.secondStep, user.validateSecond);
 
       // Register User
-      router.post("/register", upload.single('profile_image'), user.register);
+      router.post("/register", upload.single('profile_image'), userValidate.lastStep, user.register);
 
       // Register User
       router.get("/is-unique", runner.isUnique);

@@ -127,3 +127,41 @@ exports.updateRange = validator.validateDefault(
     }),
   }
 )
+
+exports.lastStep = validator.validateDefault(
+  {
+    body: Joi.object({
+      name: Joi.string()
+        .required(),
+      surname: Joi.string()
+        .required(),
+      national_id: Joi.number().required(),
+      dob: Joi.date()
+        .required(),
+      gender: Joi.string()
+        .required(),
+      email: Joi.string()
+        .email()
+        .required(),
+      password: Joi.string()
+        .min(8)
+        .regex(/[a-zA-Z0-9]{3,30}/)
+        .required(),
+      id_token: Joi.string()
+        .required(),
+    }),
+  }
+)
+
+exports.resetPasswordUser = validator.validateDefault(
+  {
+    body: Joi.object({
+      password: Joi.string()
+        .min(8)
+        .regex(/[a-zA-Z0-9]{3,30}/)
+        .required(),
+      id_token: Joi.string()
+        .required(),
+    }),
+  }
+)

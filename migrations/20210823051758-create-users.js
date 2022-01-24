@@ -39,8 +39,16 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      sub: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       token: {
         type: Sequelize.STRING,
+      },
+      resetPasswordAt: {
+        type: Sequelize.DOUBLE,
+        allowNull: true
       },
       createdAt: {
         type: Sequelize.DATE,
