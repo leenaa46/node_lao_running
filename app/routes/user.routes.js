@@ -8,7 +8,7 @@ const router = express.Router();
 
 module.exports = app => {
   // Login User
-  router.post("/login", user.login);
+  router.post("/login", validation.login, user.login);
 
   // Get User by token
   router.post("/me", auth, user.me);

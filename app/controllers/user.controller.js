@@ -213,10 +213,12 @@ exports.login = async (req, res, next) => {
     const email = req.body.email ? req.body.email : null
     const password = req.body.password ? req.body.password : null
 
+    const condition = isNaN(email)
+      ? { email: email }
+      : { phone: email }
+
     const user = await db.User.findOne({
-      where: {
-        email: email
-      }
+      where: condition
     });
 
     if (user && (await bcrypt.compare(password, user.password))) {
