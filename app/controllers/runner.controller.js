@@ -57,7 +57,6 @@ exports.updateProfile = async (req, res, next) => {
       dob,
       national_id,
       profile_image_id,
-      profile_image_id,
       profile_image: profile_image
     }, {
       transaction: transaction,
